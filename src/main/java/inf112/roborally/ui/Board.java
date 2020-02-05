@@ -6,27 +6,26 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import inf112.roborally.entities.Placeable;
 import inf112.roborally.entities.Player;
 
 public class Board implements ApplicationListener {
 
     // Misc
-    private final int TILE_SIZE = 60;  // Size of each tile in width & height
-    private BitmapFont font;
-    private ShapeRenderer shapeRenderer;
+    public static final int TILE_SIZE = 60;  // Size of each tile in width & heigh
+
     // Map
     TiledMap map;
     TiledMapRenderer mapRenderer;
     OrthographicCamera camera;
+
     // Rendering
     private SpriteBatch batch;
+    private BitmapFont font;
 
     private Player player;
 
@@ -35,7 +34,6 @@ public class Board implements ApplicationListener {
         // Rendering
         batch = new SpriteBatch();
         font = new BitmapFont();
-        shapeRenderer = new ShapeRenderer();
 
         // Map
         map = new TmxMapLoader().load("Map.tmx");
@@ -44,9 +42,7 @@ public class Board implements ApplicationListener {
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
 
-        player = new Player(new Vector2(13, 1));
-
-        // Player graphics
+        player = new Player(new Vector2(6, 6));
     }
 
     @Override
@@ -64,20 +60,18 @@ public class Board implements ApplicationListener {
         mapRenderer.setView(camera);
         mapRenderer.render();
 
-        put(player);
+        drawPlayer(player);
     }
 
     /**
      * Puts and draws entity on a cell in the grid.
      *
-     * @param entity The entity to be put
+     * @param player The entity to be put
      */
-    public void put(Placeable entity) {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(entity.getColor());
-
-        shapeRenderer.rect(entity.getPos().x * TILE_SIZE, entity.getPos().y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-        shapeRenderer.end();
+    public void drawPlayer(Player player) {
+        batch.begin();
+        batch.draw(player.getTextureRegion(), player.getPos().x * TILE_SIZE, player.getPos().y * TILE_SIZE);
+        batch.end();
     }
 
     @Override
