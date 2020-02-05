@@ -11,6 +11,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import inf112.roborally.entities.Placeable;
 import inf112.roborally.entities.Player;
 
@@ -43,7 +44,9 @@ public class Board implements ApplicationListener {
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
 
-        player = new Player(13, 1);
+        player = new Player(new Vector2(13, 1));
+
+        // Player graphics
     }
 
     @Override
@@ -73,7 +76,7 @@ public class Board implements ApplicationListener {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(entity.getColor());
 
-        shapeRenderer.rect(entity.getX() * TILE_SIZE, entity.getY() * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        shapeRenderer.rect(entity.getPos().x * TILE_SIZE, entity.getPos().y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
         shapeRenderer.end();
     }
 

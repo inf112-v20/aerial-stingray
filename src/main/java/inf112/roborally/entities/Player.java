@@ -1,43 +1,29 @@
 package inf112.roborally.entities;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * Represents the "robot"/playing piece the human player is associated with.
  */
-public class
-Player implements Placeable {
+public class Player implements Placeable {
 
     // Coordinates
-    private int x;
-    private int y;
+    private Vector2 pos;
 
-    public Player(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Player(Vector2 pos) {
+        this.pos = pos;
     }
+
 
     @Override
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
+    public Vector2 getPos() {
+        return pos;
     }
 
     @Override
     public Color getColor() {
         return Color.BLACK;
-    }
-
-    @Override
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     @Override
