@@ -2,12 +2,10 @@
 
 #### Kartlegging av kompetanse:
 
-Forslag til tekst - kan godt personalisere den mer, men tenker at vi får det bedre frem på rollefordelingen : 
-
 Alle på gruppen har vært gjennom de mest grunnleggende inf fagene som 100, 101 og 102, men kompetansenivået innad i disse fagene vil jo naturlig variere fra person til person. I grupper har vi to stykker som går 2.året på datateknologi, en som går 2. året på IKT, en som går 3. året på bioinformatikk og en siste som går 3. året på datasikkerhet. Alle har programmert tidligere i Java, men litt usikkerhet rundt kjennskapet med de ulike bibliotekene. Vi har heller ingen erfaring med liknende gruppeprosjekt tidligere, og innser at vi er nødt til å tilpasse oss underveis i oppgaven ettersom hva som fungerer for oss. 
 
 
-**Roller**:
+#### Roller:
  
 **Teamlead**: Tiril
 
@@ -41,7 +39,8 @@ Videre har vi valgt å bruke github Projectboard til planlegging og organisering
  
 #### Høynivå krav:
 * Trenger et spillbrett
-* Visuelle illustrasjon av hvor man befinner seg på brettet
+* Trenger en spiller
+* Visuell illustrasjon av hvor man befinner seg på brettet
 * Kunne spille på to ulike enheter, men samtidig være på samme brett – Multiplayer
 * Ta skade
 * Plukke opp flagg
@@ -65,14 +64,20 @@ Videre har vi valgt å bruke github Projectboard til planlegging og organisering
 * Låse kort
 * Flytte brikker
 
+#### Prioritert liste for første sprint:
+* Trenger et spillbrett
+* Trenger en spiller
+* Visulle illustrasjon av hvor man befinner seg på brettet
+
 
 #### Prosjektmetodikk
-Vi ønsker å bruke en kombinasjon av Scrum og Kanban som vår prosjektmetodikk. Planen fremover bli å møtes i utgangspunktet 3-4 ganger i uken, hvor møtene vil vare mellom 30 minutter til 2 timer. Hvis man ønsker å jobbe på egenhånd evt. jobber med utdelte arbeidsoppgaver, må man kommentere hva man har gjort slik at resten av gruppen skjønner hva som er blitt endret. Slack og facebook er kommunikasjonsplattformene mellom møter, hvor Slack blir for mer formelle henvendelser, og facebook forbeholder seg til mer uformelt. Vi kan etterhvert fordele oss på grupper på 2 og 3, og diskutere avgjørelser gruppen må ta sammen alle 5. Nå i begynnelsen tenker vi det er best å jobbe sammen, slik at alle får meg seg hoveddelen av mekanismen - slik at alle vet hvordan det fungerer. Etterhvert kan vi dele oss mer opp, men tenker at vi finner ut av hva som fungerer for oss underveis. Når det kommer til deling av dokumenter vil vi benytte oss av google docs, som senere vil bli konvertert til markdown, mens deling av kode og diagram vil foregå på github. 
+Når det kommer til prosjektmetodikk tenker vi å ikke velge en bestemt, men heller plukke elementer som passer vår gruppe. Dette basert på våre erfaringer med liknende oppgaver, og dermed gi oss mer rom for muligheten til å utvikle oss som en gruppe med et godt samarbeid underveis, istedenfor å møtte følge en etablert prosedyre fra starten av. Med utgangspunkt i oppgavens utforming vil vi kunne ta i bruk sprinter fra Scrum. Dette basert på at det blir obligatoriske innleveringer på mellom 2-4 uker, hvor målet blir å bli ferdig med oppgaven innen fristen. Derfor blir det naturlig å ha sprint-planleggingsmøter for hver deloppgave, hvor vi kartlegger hva som skal gjøres og hvem som skal gjøre hva innen sprinten er over. Dette legges inn i vår Backlog. Dette vil ikke følges like strengt som i scrum, men heller følge scrumban ettersom vi vil holde muligheten oppe for å legge til gjøremål underveis som vi anser som viktig for denne sprinten.  Vi vil også benytte oss av det retrospektivet stadiet til scrum, hvor vi kan se tilbake og endre videre arbeidsmetode for å best forme vår fremgangsmåte. Hva kan gjøres bedre, hva har fungert bra og hva skal tas med videre. Vi kommer også til å gå vekk fra daglige sprintmøter, men vi tenker å ta med oss hovedpunktene fra disse møtene – nemlig hva er blitt gjort siden sist, hindre vi har møtt på og hva skal gjøres til neste gang. Dette vil gjennomgås på møter vi har 2-4 ganger i løpet av uken, med varighet på alt fra 30 minutter til 2 timer.
+
+Vi har også muligheten oppe for å jobbe på egenhånd evt. Jobbe med utdelte arbeidsoppgaver, men man må kommentere hva man har gjort slik at resten av gruppen får med seg hva som er blitt gjort. Vi vil benytte oss av ulike kommunikasjonsplattformer mellom møter, hvor Slack blir benyttet for mer formelle henvendelser og facebook blir forbeholdt til mer uformelle meldinger. Vi vil etterhvert fordele oss på grupper på 2 og 3, og diskutere avgjørelser gruppen må ta sammen alle 5. Nå i begynnelsen tenker vi det er best å jobbe sammen – slik at alle får med seg hoveddelen av mekanismen og at alle vet hvordan den fungerer. Når det kommer til deling av dokumenter vil vi benytte oss av google docs, som senere vil bli konvertert til markdown, mens deling av kode og diagram vil foregå på github. 
+
 
 
 #### Brukerhistorier
-Som __ trenger jeg __ for å __
-
 Brukerhistorier for brett:
 Som spiller trenger jeg et brett for å faktisk kunne spille spillet
 Som spiller trenger jeg et brett for å kunne se hvor jeg kan flytte roboten min
@@ -82,6 +87,3 @@ Som spiller trenger jeg en brikke for å se hvilken robot som er meg og hvor jeg
 Som spiller trenger jeg en retning på brikken for å vite i hvilken retning roboten min går/peker
  
 
-Hva vi mangler:
-Se mer på scrum og kanban og tilføre mer info til deloppgave 3 - hvilke elementer fra prosjektmetodikkene ønsker vi å bruke?
-Vurdere om vi skal beholde rollene som det står nå, eller gå over til færre roller som blir byttet på. 
