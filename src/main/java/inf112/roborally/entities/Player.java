@@ -5,7 +5,8 @@ import com.badlogic.gdx.graphics.Color;
 /**
  * Represents the "robot"/playing piece the human player is associated with.
  */
-public class Player implements Placeable {
+public class
+Player implements Placeable {
 
     // Coordinates
     private int x;

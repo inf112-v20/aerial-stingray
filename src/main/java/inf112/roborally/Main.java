@@ -9,8 +9,8 @@ public class Main {
     public static void main(String[] args) {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "RoboRally by aerial-stingray";
-        cfg.width = 600;
-        cfg.height = 600;
+        cfg.width = 900;
+        cfg.height = 900;
 
         new LwjglApplication(new Board(), cfg);
     }

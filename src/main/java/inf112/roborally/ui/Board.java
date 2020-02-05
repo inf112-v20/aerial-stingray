@@ -2,31 +2,48 @@ package inf112.roborally.ui;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import inf112.roborally.entities.Placeable;
 import inf112.roborally.entities.Player;
 
 public class Board implements ApplicationListener {
 
-    private SpriteBatch batch;
+    // Misc
+    private final int TILE_SIZE = 60;  // Size of each tile in width & height
     private BitmapFont font;
     private ShapeRenderer shapeRenderer;
+    // Map
+    TiledMap map;
+    TiledMapRenderer mapRenderer;
+    OrthographicCamera camera;
+    // Rendering
+    private SpriteBatch batch;
 
     private Player player;
 
-    private int tileSize = 60;  // Size of each tile in width & height
-
     @Override
     public void create() {
+        // Rendering
         batch = new SpriteBatch();
         font = new BitmapFont();
         shapeRenderer = new ShapeRenderer();
 
-        player = new Player(5, 5);
+        // Map
+        map = new TmxMapLoader().load("Map.tmx");
+        mapRenderer = new OrthogonalTiledMapRenderer(map);
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.update();
+
+        player = new Player(13, 1);
     }
 
     @Override
@@ -40,27 +57,11 @@ public class Board implements ApplicationListener {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        drawGrid();
+        camera.update();
+        mapRenderer.setView(camera);
+        mapRenderer.render();
+
         put(player);
-    }
-
-    /**
-     * Draws a grid based on width & height of window, and the size of each tile.
-     */
-    private void drawGrid() {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.BLACK);
-
-        // Horizontal
-        for (int y = 0; y < Gdx.graphics.getHeight(); y += tileSize) {
-            shapeRenderer.line(0, y, Gdx.graphics.getHeight(), y);
-        }
-
-        // Vertical
-        for (int x = 0; x < Gdx.graphics.getWidth(); x += tileSize) {
-            shapeRenderer.line(x, 0, x, Gdx.graphics.getWidth());
-        }
-        shapeRenderer.end();
     }
 
     /**
@@ -72,7 +73,7 @@ public class Board implements ApplicationListener {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(entity.getColor());
 
-        shapeRenderer.rect(entity.getX() * tileSize, entity.getY() * tileSize, tileSize, tileSize);
+        shapeRenderer.rect(entity.getX() * TILE_SIZE, entity.getY() * TILE_SIZE, TILE_SIZE, TILE_SIZE);
         shapeRenderer.end();
     }
 
