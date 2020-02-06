@@ -86,4 +86,7 @@ Brukerhistorie for brikke:
 Som spiller trenger jeg en brikke for å se hvilken robot som er meg og hvor jeg befinner meg 
 Som spiller trenger jeg en retning på brikken for å vite i hvilken retning roboten min går/peker
  
+#### Retrospektiv
+
+Vi føler kanskje det er litt tidlig å vurdere hvordan arbeidsmetoden vår fungerer, men enn så lenge har vi ikke støtt på noen problemer. Vi brukte mesteparten av tiden til å kartlegge og planlegge tiden fremover, og mot slutten gjorde vi kode-delen av oppgaven som vi endte opp med å gjøre i fellesskap. Det som fungerte veldig bra for oss i løpet av denne sprinten, var de felles kode “sessionene”, siden alle fikk delta, få med seg hva som ble gjort og forstå det. Ettersom dette fungerte veldig bra for oss, så kommer vi til å fortsette med det frem til større kode oppgaver - hvor vi eventuelt kan dele oss opp i mindre grupper for mer effektivt utbytte av tiden. Har også skrevet referat underveis, som ligger ute på wikisiden på github prosjektet vårt. 
 
