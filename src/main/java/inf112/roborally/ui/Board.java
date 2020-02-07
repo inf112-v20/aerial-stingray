@@ -42,7 +42,7 @@ public class Board implements ApplicationListener {
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
 
-        player = new Player(new Vector2(6, 6));
+        player = new Player(new Vector2(13, 1));
     }
 
     @Override
