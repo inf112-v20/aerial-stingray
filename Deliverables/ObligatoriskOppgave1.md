@@ -1,11 +1,10 @@
 ## Gruppenavn : Aerial-stingray
 
-#### Kartlegging av kompetanse:
+#### Kartlegging av kompetanse
 
 Alle på gruppen har vært gjennom de mest grunnleggende inf fagene som 100, 101 og 102, men kompetansenivået innad i disse fagene vil jo naturlig variere fra person til person. I grupper har vi to stykker som går 2.året på datateknologi, en som går 2. året på IKT, en som går 3. året på bioinformatikk og en siste som går 3. året på datasikkerhet. Alle har programmert tidligere i Java, men litt usikkerhet rundt kjennskapet med de ulike bibliotekene. Vi har heller ingen erfaring med liknende gruppeprosjekt tidligere, og innser at vi er nødt til å tilpasse oss underveis i oppgaven ettersom hva som fungerer for oss. 
 
-
-#### Roller:
+#### Roller
  
 **Teamlead**: Tiril
 
@@ -33,41 +32,39 @@ Vi har valgt å ikke tildele noen et ansvarsområde for grafikk, ettersom at ing
  
 Videre har vi valgt å bruke github Projectboard til planlegging og organisering av arbeidet, ettersom at vi da får samlet alt på en plass som gir mer oversikt.
  
- 
- 
 **Mål**: Ønske  å lage en enkel, grafikk basert versjon av RoboRally. Vi har to brukere, og målet er at vi kan bevege de forskjellige elementene rundt på brettet. En enkel versjon av RoboRally, som fungerer.
  
-#### Høynivå krav:
-* Trenger et spillbrett
-* Trenger en spiller
-* Visuell illustrasjon av hvor man befinner seg på brettet
-* Kunne spille på to ulike enheter, men samtidig være på samme brett – Multiplayer
-* Ta skade
-* Plukke opp flagg
-* En robot kan dø
-* En spiller kan dø
-* Avslutte spillet, enten ved at alle dør eller at noen vinner
-* Kortstokk
-    * Når det er tomt for kort – shuffle kortene
-* Rekkefølge
-* Vegger
-* Events
-    * Samlebånd, tannhjul, lasere
-    * Dør når man havner utenfor brettet
-* Justere antall kort basert på skade
-* Dytte andre roboter
-* Timeglass
-* Back-up
-* Gjennomføre en fase
-* Velge kort
-* Bekrefte kort
-* Låse kort
-* Flytte brikker
+#### Høynivå krav
+*  Trenger et spillbrett
+*  Trenger en spiller
+*  Visuell illustrasjon av hvor man befinner seg på brettet
+*  Kunne spille på to ulike enheter, men samtidig være på samme brett (multiplayer)
+*  Ta skade
+*  Plukke opp flagg
+*  En robot kan dø
+*  En spiller kan dø
+*  Avslutte spillet, enten ved at alle dør eller at noen vinner
+*  Kortstokk
+    *  Når det er tomt for kort – shuffle kortene
+*  Rekkefølge
+*  Vegger
+*  Events
+    *  Samlebånd, tannhjul, lasere
+    *  Dør når man havner utenfor brettet
+*  Justere antall kort basert på skade
+*  Dytte andre roboter
+*  Timeglass
+*  Back-up
+*  Gjennomføre en fase
+*  Velge kort
+*  Bekrefte kort
+*  Låse kort
+*  Flytte brikker
 
-#### Prioritert liste for første sprint:
-* Trenger et spillbrett
-* Trenger en spiller
-* Visulle illustrasjon av hvor man befinner seg på brettet
+#### Prioritert liste for første sprint
+*  Trenger et spillbrett
+*  Trenger en spiller
+*  Visulle illustrasjon av hvor man befinner seg på brettet
 
 
 #### Prosjektmetodikk
@@ -79,12 +76,12 @@ Vi har også muligheten oppe for å jobbe på egenhånd evt. Jobbe med utdelte a
 
 #### Brukerhistorier
 Brukerhistorier for brett:
-* Som spiller trenger jeg et brett for å faktisk kunne spille spillet
-* Som spiller trenger jeg et brett for å kunne se hvor jeg kan flytte roboten min
+*  Som spiller trenger jeg et brett for å faktisk kunne spille spillet
+*  Som spiller trenger jeg et brett for å kunne se hvor jeg kan flytte roboten min
 
 Brukerhistorie for brikke:
-* Som spiller trenger jeg en brikke for å se hvilken robot som er meg og hvor jeg befinner meg 
-* Som spiller trenger jeg en retning på brikken for å vite i hvilken retning roboten min går/peker
+*  Som spiller trenger jeg en brikke for å se hvilken robot som er meg og hvor jeg befinner meg 
+*  Som spiller trenger jeg en retning på brikken for å vite i hvilken retning roboten min går/peker
  
 #### Retrospektiv
 
