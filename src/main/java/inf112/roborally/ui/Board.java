@@ -16,12 +16,12 @@ import inf112.roborally.entities.Player;
 public class Board implements ApplicationListener {
 
     // Misc
-    public static final int TILE_SIZE = 60;  // Size of each tile in width & heigh
+    public static final int TILE_SIZE = 60;  // Size of each tile in width & height
 
     // Map
-    TiledMap map;
-    TiledMapRenderer mapRenderer;
-    OrthographicCamera camera;
+    private TiledMap map;
+    private TiledMapRenderer mapRenderer;
+    private OrthographicCamera camera;
 
     // Rendering
     private SpriteBatch batch;
