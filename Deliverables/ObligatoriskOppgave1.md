@@ -13,7 +13,7 @@ Tiril passer til  teamlead for gruppen ettersom at hun ikke anser seg selv som v
  
 **Planleggingsingeniør**: Dan
 
-Dan er tildelt planleggingsingeniør - som vil ha et overordnet ansvar for planleggingen og strukturen av selve programmet. Arbeidsområdet vil være å ha et helhetlig bilde og oversikt over koden, og sørge for at det er en sammenheng og struktur til stede, noe som passer Dan ypperlig(?). 
+Dan er tildelt planleggingsingeniør - som vil ha et overordnet ansvar for planleggingen og strukturen av selve programmet. Arbeidsområdet vil være å ha et helhetlig bilde og oversikt over koden, og sørge for at det er en sammenheng og struktur til stede, noe som passer Dan ypperlig. 
 
 **Kode auditør**: Lars
 
@@ -21,7 +21,7 @@ Lars har fått tittelen kode auditør, som vil ha hovedansvar for å “korrektu
 
 **Test auditør**: Maren
 
-Den neste rollen er test auditør, som er tildelt Maren. Her vil fokusområde være å gå over at alt fungerer som det skal, både tester og selve spillet. Alle har ansvar til å skrive egne tester, men maren skal gå over å se om testene tester det de skal, slik at vi får oppdaget eventuelle feil selv når testene er positive(?). (evt. noe om deg selv?) 
+Den neste rollen er test auditør, som er tildelt Maren. Her vil fokusområde være å gå over at alt fungerer som det skal, både tester og selve spillet. Alle har ansvar til å skrive egne tester, men maren skal gå over å se om testene tester det de skal.
 
 **Kundekontakt**: Steffen.
 
@@ -79,12 +79,12 @@ Vi har også muligheten oppe for å jobbe på egenhånd evt. Jobbe med utdelte a
 
 #### Brukerhistorier
 Brukerhistorier for brett:
-Som spiller trenger jeg et brett for å faktisk kunne spille spillet
-Som spiller trenger jeg et brett for å kunne se hvor jeg kan flytte roboten min
+* Som spiller trenger jeg et brett for å faktisk kunne spille spillet
+* Som spiller trenger jeg et brett for å kunne se hvor jeg kan flytte roboten min
 
 Brukerhistorie for brikke:
-Som spiller trenger jeg en brikke for å se hvilken robot som er meg og hvor jeg befinner meg 
-Som spiller trenger jeg en retning på brikken for å vite i hvilken retning roboten min går/peker
+* Som spiller trenger jeg en brikke for å se hvilken robot som er meg og hvor jeg befinner meg 
+* Som spiller trenger jeg en retning på brikken for å vite i hvilken retning roboten min går/peker
  
 #### Retrospektiv
 
