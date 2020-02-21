@@ -14,7 +14,6 @@ public class Player {
     // Coordinates
     private Vector2 pos;
 
-
     // Graphics
     private Texture texture;
     private TextureRegion[][] textureRegion;
@@ -47,11 +46,9 @@ public class Player {
         player.setTile(new StaticTiledMapTile(textureRegion[0][0]));
     }
 
-    //public TextureRegion getTextureRegion() {
-    //    return textureRegion;
-    //}
-
     public TiledMapTileLayer.Cell getPlayerIcon() {
+        if (flag1 && flag2 && flag3 && flag4)
+            return playerWon;
         return player;
     }
 
@@ -76,9 +73,20 @@ public class Player {
         return str;
     }
 
-    public void setLife() {
-        this.life --;
+    public void hasFlag1() {
+        flag1 = true;
     }
 
+    public void hasFlag2() {
+        flag2 = true;
+    }
+
+    public void hasFlag3() {
+        flag3 = true;
+    }
+
+    public void hasFlag4() {
+        flag4 = true;
+    }
 
 }

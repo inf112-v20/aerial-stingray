@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -28,8 +31,11 @@ public class Board extends InputAdapter implements ApplicationListener{
 
     // Map layers
     TiledMapTileLayer playerLayer;
-    TiledMapTileLayer holeLayer;
-    TiledMapTileLayer conLeft;
+
+    // Objects within the map
+    MapLayer objectEvents;
+    MapLayer objectLasers;
+    MapLayer objectWalls;
 
     // Rendering
     private SpriteBatch batch;
@@ -44,23 +50,27 @@ public class Board extends InputAdapter implements ApplicationListener{
         batch = new SpriteBatch();
         font = new BitmapFont();
 
+        // Input
         Gdx.input.setInputProcessor(this);
 
         // Map
         map = new TmxMapLoader().load("Map.tmx");
         playerLayer = (TiledMapTileLayer) map.getLayers().get("Player");
-        holeLayer = (TiledMapTileLayer) map.getLayers().get("Hole");
-        conLeft = (TiledMapTileLayer) map.getLayers().get("ConLeft");
 
+        // Objects
+        objectEvents = map.getLayers().get("OEvents");
+        objectLasers = map.getLayers().get("OLasers");
+        objectWalls = map.getLayers().get("OWalls");
 
+        // Camera
         mapRenderer = new OrthogonalTiledMapRenderer(map);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
 
+        // Player
         player = new Player(new Vector2(13, 1));
         playerIcon = player.getPlayerIcon();
-
     }
 
     @Override
@@ -87,19 +97,36 @@ public class Board extends InputAdapter implements ApplicationListener{
             playerLayer.setCell(x, y, null);
             playerIcon = player.getPlayerIcon();
             System.out.println(player.showStatus());
-            activateBoard();
+            reactToCurrentTile();
             return true;
         }
         return false;
     }
 
-    private void activateBoard(){
-        if (holeLayer.getCell((int) player.getPos().x, (int) player.getPos().y) != null){
-            playerIcon = player.getDeadPlayerIcon();
-            player.setLife();
-        }else{
-            if (conLeft.getCell((int) player.getPos().x, (int) player.getPos().y) != null) {
-                player.getPos().x--;
+    /**
+     * Player icon changes based on which tile the player stands on.
+     */
+    private void reactToCurrentTile() {
+        for (MapObject mo : map.getLayers().get("OEvents").getObjects()) {
+            if (mo instanceof RectangleMapObject) {
+                int x = (int) ((RectangleMapObject) mo).getRectangle().x / TILE_SIZE;
+                int y = (int) ((RectangleMapObject) mo).getRectangle().y / TILE_SIZE;
+                String type = (String) mo.getProperties().get("type");
+
+                if ((int) player.getPos().x == x && (int) player.getPos().y == y) {
+                    if (type.equals("Hole")) {
+                        // Falls in hole
+                        playerIcon = player.getDeadPlayerIcon();
+                    } else if (type.equals("Flag1")) {
+                        player.hasFlag1();
+                    } else if (type.equals("Flag2")) {
+                        player.hasFlag2();
+                    } else if (type.equals("Flag3")) {
+                        player.hasFlag3();
+                    } else if (type.equals("Flag4")) {
+                        player.hasFlag4();
+                    }
+                }
             }
         }
     }
@@ -120,26 +147,14 @@ public class Board extends InputAdapter implements ApplicationListener{
         mapRenderer.setView(camera);
         mapRenderer.render();
 
-
-        //if (holeLayer.getCell((int) player.getPos().x, (int) player.getPos().y) != null){
-        //    playerLayer.setCell((int) player.getPos().x, (int) player.getPos().y, player.getDeadPlayerIcon());
-        //}else
-        //    playerLayer.setCell((int) player.getPos().x, (int) player.getPos().y, player.getPlayerIcon());
-
-
-        playerLayer.setCell((int) player.getPos().x, (int) player.getPos().y, playerIcon);
-        //drawPlayer(player);
+        drawPlayer();
     }
 
     /**
-     * Puts and draws entity on a cell in the grid.
-     *
-     * @param player The entity to be put
+     * Draws player on the grid.
      */
-    public void drawPlayer(Player player) {
-        //batch.begin();
-        //batch.draw(player.getTextureRegion(), player.getPos().x * TILE_SIZE, player.getPos().y * TILE_SIZE);
-        //batch.end();
+    public void drawPlayer() {
+        playerLayer.setCell((int) player.getPos().x, (int) player.getPos().y, playerIcon);
     }
 
     @Override
