@@ -48,8 +48,12 @@ public class Player {
         this.pos = pos;
     }
 
+    public boolean hasAllFlags() {
+        return flag1 && flag2 && flag3 && flag4;
+    }
+
     public TiledMapTileLayer.Cell getPlayerIcon() {
-        if (flag1 && flag2 && flag3 && flag4)
+        if (hasAllFlags())
             return getPlayerWonCell();
         return getPlayerNormalCell();
     }
@@ -65,7 +69,9 @@ public class Player {
     public String showStatus() {
         if (life <= 0) return "You are dead";
         String str = "Life: " + life + ", Damage: " + damage;
-        if (flag3)
+        if (hasAllFlags())
+            str += "\n You have all flags";
+        else if (flag3)
             str += "\n You have 3 flags";
         else if (flag2)
             str += "\n You have 2 flags";
@@ -75,19 +81,19 @@ public class Player {
         return str;
     }
 
-    public void hasFlag1() {
+    public void addFlag1() {
         flag1 = true;
     }
 
-    public void hasFlag2() {
+    public void addFlag2() {
         flag2 = true;
     }
 
-    public void hasFlag3() {
+    public void addFlag3() {
         flag3 = true;
     }
 
-    public void hasFlag4() {
+    public void addFlag4() {
         flag4 = true;
     }
 }
