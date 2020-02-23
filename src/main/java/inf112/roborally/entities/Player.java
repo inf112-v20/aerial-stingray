@@ -15,13 +15,7 @@ public class Player {
     private Vector2 pos;
 
     // Graphics
-    private Texture texture;
-    private TextureRegion[][] textureRegion;
-
-    // Player icons
-    private TiledMapTileLayer.Cell player;
-    private TiledMapTileLayer.Cell playerDead;
-    private TiledMapTileLayer.Cell playerWon;
+    private final String PLAYER_PATH = "player.png";
 
     // Life, damage and flags
     private int life = 3;
@@ -31,36 +25,44 @@ public class Player {
     private boolean flag3 = false;
     private boolean flag4 = false;
 
+    private TextureRegion[][] getTextureRegion() {
+        return TextureRegion.split(new Texture(PLAYER_PATH), 60, 60);
+    }
+
+    public TiledMapTileLayer.Cell getPlayerNormalCell() {
+        TextureRegion textureRegion = getTextureRegion()[0][0];
+        return new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion));
+    }
+
+    public TiledMapTileLayer.Cell getPlayerDeadCell() {
+        TextureRegion textureRegion = getTextureRegion()[0][1];
+        return new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion));
+    }
+
+    public TiledMapTileLayer.Cell getPlayerWonCell() {
+        TextureRegion textureRegion = getTextureRegion()[0][2];
+        return new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion));
+    }
 
     public Player(Vector2 pos) {
         this.pos = pos;
-
-        // Graphics
-        texture = new Texture("player.png");
-        textureRegion = TextureRegion.split(texture, 60, 60);
-
-        player = new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion[0][0]));
-        playerDead = new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion[0][1]));
-        playerWon = new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion[0][2]));
-
-        player.setTile(new StaticTiledMapTile(textureRegion[0][0]));
     }
 
     public TiledMapTileLayer.Cell getPlayerIcon() {
         if (flag1 && flag2 && flag3 && flag4)
-            return playerWon;
-        return player;
+            return getPlayerWonCell();
+        return getPlayerNormalCell();
     }
 
-    public TiledMapTileLayer.Cell getDeadPlayerIcon() { return playerDead; }
-
-    public TiledMapTileLayer.Cell getWonPlayerIcon() {
-        return playerWon;
+    public TiledMapTileLayer.Cell getDeadPlayerIcon() {
+        return getPlayerDeadCell();
     }
 
-    public Vector2 getPos() { return pos; }
+    public Vector2 getPos() {
+        return pos;
+    }
 
-    public String showStatus(){
+    public String showStatus() {
         if (life <= 0) return "You are dead";
         String str = "Life: " + life + ", Damage: " + damage;
         if (flag3)
@@ -88,5 +90,4 @@ public class Player {
     public void hasFlag4() {
         flag4 = true;
     }
-
 }
