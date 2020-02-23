@@ -19,15 +19,13 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import inf112.roborally.entities.Player;
 
-public class Board extends InputAdapter implements ApplicationListener{
+public class Board extends InputAdapter implements ApplicationListener {
 
     // Misc
     public static final int TILE_SIZE = 60;  // Size of each tile in width & height
 
     // Map
     private TiledMap map;
-    private TiledMapRenderer mapRenderer;
-    private OrthographicCamera camera;
 
     // Map layers
     TiledMapTileLayer playerLayer;
@@ -40,7 +38,10 @@ public class Board extends InputAdapter implements ApplicationListener{
     // Rendering
     private SpriteBatch batch;
     private BitmapFont font;
+    private TiledMapRenderer mapRenderer;
+    private OrthographicCamera camera;
 
+    // Players
     private Player player;
     TiledMapTileLayer.Cell playerIcon;
 
@@ -114,17 +115,27 @@ public class Board extends InputAdapter implements ApplicationListener{
                 String type = (String) mo.getProperties().get("type");
 
                 if ((int) player.getPos().x == x && (int) player.getPos().y == y) {
-                    if (type.equals("Hole")) {
-                        // Falls in hole
-                        playerIcon = player.getDeadPlayerIcon();
-                    } else if (type.equals("Flag1")) {
-                        player.hasFlag1();
-                    } else if (type.equals("Flag2")) {
-                        player.hasFlag2();
-                    } else if (type.equals("Flag3")) {
-                        player.hasFlag3();
-                    } else if (type.equals("Flag4")) {
-                        player.hasFlag4();
+                    switch (type) {
+                        case "Hole":
+                            // Falls in hole
+                            playerIcon = player.getDeadPlayerIcon();
+                            break;
+
+                        case "Flag1":
+                            player.addFlag1();
+                            break;
+
+                        case "Flag2":
+                            player.addFlag2();
+                            break;
+
+                        case "Flag3":
+                            player.addFlag3();
+                            break;
+
+                        case "Flag4":
+                            player.addFlag4();
+                            break;
                     }
                 }
             }
@@ -140,14 +151,15 @@ public class Board extends InputAdapter implements ApplicationListener{
 
     @Override
     public void render() {
+        // Clears screen
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        drawPlayer();
 
         camera.update();
         mapRenderer.setView(camera);
         mapRenderer.render();
-
-        drawPlayer();
     }
 
     /**
