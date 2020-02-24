@@ -23,7 +23,7 @@ public class Player {
     private boolean[] flags = {false, false, false, false};
 
     private Directions dir = Directions.NORTH;
-    private int currentRotation = 0;
+    private int currentRotation = 2;
     /**
      * 0 = south
      * 1 = east
