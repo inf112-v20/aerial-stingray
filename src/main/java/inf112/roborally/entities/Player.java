@@ -45,7 +45,8 @@ public class Player {
         if(right)
             currentRotation = (currentRotation+1)%4;
         else
-            currentRotation = Math.floorMod((currentRotation - 1), 4);
+            currentRotation = (currentRotation+1)%4; //Math.floorMod((currentRotation - 1), 4);
+            currentRotation = currentRotation < 0? currentRotation + 4 : currentRotation;
 
         switch (currentRotation){
             case 0: dir = Directions.SOUTH;
