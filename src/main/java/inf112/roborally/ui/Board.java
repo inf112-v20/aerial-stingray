@@ -118,7 +118,7 @@ public class Board extends InputAdapter implements ApplicationListener {
                     switch (type) {
                         case "Hole":
                             // Falls in hole
-                            playerIcon = player.getDeadPlayerIcon();
+                            playerIcon = player.getPlayerDeadCell();
                             break;
 
                         case "Flag1":

@@ -58,9 +58,6 @@ public class Player {
         return getPlayerNormalCell();
     }
 
-    public TiledMapTileLayer.Cell getDeadPlayerIcon() {
-        return getPlayerDeadCell();
-    }
 
     public Vector2 getPos() {
         return pos;
