@@ -60,14 +60,18 @@ public class Player {
         return pos;
     }
 
+    public boolean[] getFlags() {
+        return flags;
+    }
+
     public String showStatus() {
         if (life <= 0) return "You are dead";
         String str = "Life: " + life + ", Damage: " + damage;
         if (hasAllFlags())
             str += "\n You have all flags";
-        else if (flags[2])
+        else if (flags[2] && flags[1] && flags[0])
             str += "\n You have 3 flags";
-        else if (flags[1])
+        else if (flags[1] && flags[0])
             str += "\n You have 2 flags";
         else if (flags[0])
             str += "\n You have flag 1";
