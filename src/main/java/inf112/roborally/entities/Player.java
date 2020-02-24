@@ -6,8 +6,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
 
-import static com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell.ROTATE_90;
-
 /**
  * Represents the "robot"/playing piece the human player is associated with.
  */
@@ -45,8 +43,7 @@ public class Player {
         if(right)
             currentRotation = (currentRotation+1)%4;
         else
-            currentRotation = (currentRotation+1)%4; //Math.floorMod((currentRotation - 1), 4);
-            currentRotation = currentRotation < 0? currentRotation + 4 : currentRotation;
+            currentRotation = Math.floorMod((currentRotation - 1), 4);
 
         switch (currentRotation){
             case 0: dir = Directions.SOUTH;
