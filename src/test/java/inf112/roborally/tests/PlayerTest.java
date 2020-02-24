@@ -10,8 +10,8 @@ import static org.junit.Assert.assertFalse;
 
 public class PlayerTest {
 
-    Vector2 playerPos;
-    Player player;
+    private Vector2 playerPos;
+    private Player player;
 
     @Before
     public void initialize() {

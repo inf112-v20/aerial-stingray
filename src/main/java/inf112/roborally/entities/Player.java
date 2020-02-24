@@ -46,26 +46,45 @@ public class Player {
             currentRotation = Math.floorMod((currentRotation - 1), 4);
 
         switch (currentRotation){
-            case 0: dir = Directions.SOUTH;
+            case 0:
+                dir = Directions.SOUTH;
                 break;
-            case 1: dir = Directions.EAST;
+
+            case 1:
+                dir = Directions.EAST;
                 break;
-            case 2: dir = Directions.NORTH;
+
+            case 2:
+                dir = Directions.NORTH;
                 break;
-            case 3: dir = Directions.WEST;
+
+            case 3:
+                dir = Directions.WEST;
+                break;
+
+            default:
+                System.err.println("Non-valid rotation!");
                 break;
         }
     }
 
-    public void move(int num){
-        switch (dir){
-            case NORTH: getPos().y += num;
+    public void move(int num) {
+        switch (dir) {
+            case NORTH:
+                getPos().y += num;
                 break;
-            case EAST: getPos().x += num;
+            case EAST:
+                getPos().x += num;
                 break;
-            case SOUTH: getPos().y -= num;
+            case SOUTH:
+                getPos().y -= num;
                 break;
-            case WEST: getPos().x -= num;
+            case WEST:
+                getPos().x -= num;
+                break;
+
+            default:
+                System.err.println("Non-valid move!");
                 break;
         }
     }

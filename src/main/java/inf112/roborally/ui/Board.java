@@ -28,12 +28,12 @@ public class Board extends InputAdapter implements ApplicationListener {
     private TiledMap map;
 
     // Map layers
-    TiledMapTileLayer playerLayer;
+    private TiledMapTileLayer playerLayer;
 
     // Objects within the map
-    MapLayer objectEvents;
-    MapLayer objectLasers;
-    MapLayer objectWalls;
+    private MapLayer objectEvents;
+    private MapLayer objectLasers;
+    private MapLayer objectWalls;
 
     // Rendering
     private SpriteBatch batch;
@@ -43,7 +43,7 @@ public class Board extends InputAdapter implements ApplicationListener {
 
     // Players
     private Player player;
-    TiledMapTileLayer.Cell playerIcon;
+    private TiledMapTileLayer.Cell playerIcon;
 
     @Override
     public void create() {
@@ -138,6 +138,10 @@ public class Board extends InputAdapter implements ApplicationListener {
                         case "Flag4":
                             if (player.getFlags()[0] && player.getFlags()[1] && player.getFlags()[2])
                                 player.addFlag4();
+                            break;
+
+                        default:
+                            playerIcon = player.getPlayerIcon();
                             break;
                     }
                 }
