@@ -81,16 +81,16 @@ public class Board extends InputAdapter implements ApplicationListener {
         int y = (int) player.getPos().y;
 
         if (keycode == Input.Keys.UP) {
-            player.getPos().y += 1;
+            player.move(1);
             moved = true;
         } else if (keycode == Input.Keys.DOWN){
-            player.getPos().y -= 1;
+            player.move(-1);
             moved = true;
         }else if(keycode ==Input.Keys.LEFT){
-            player.getPos().x -=1;
+            player.rotate(false);
             moved = true;
         }else if (keycode == Input.Keys.RIGHT) {
-            player.getPos().x += 1;
+            player.rotate(true);
             moved = true;
         }
 

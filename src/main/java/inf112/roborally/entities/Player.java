@@ -47,11 +47,8 @@ public class Player {
     public void rotate(Boolean right){
         if(right)
             currentRotation = (currentRotation+1)%4;
-        else {
+        else
             currentRotation = Math.floorMod((currentRotation - 1), 4);
-        }
-
-        System.out.println(currentRotation);
 
         switch (currentRotation){
             case 0: dir = Directions.SOUTH;
