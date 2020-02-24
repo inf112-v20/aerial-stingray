@@ -6,6 +6,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
 
+import static com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell.ROTATE_90;
+
 /**
  * Represents the "robot"/playing piece the human player is associated with.
  */
@@ -25,8 +27,55 @@ public class Player {
     private boolean flag3 = false;
     private boolean flag4 = false;
 
+    private Directions dir = Directions.NORTH;
+    private int currentRotation = 0;
+    /**
+     * 0 = south
+     * 1 = east
+     * 2 = north
+     * 3 = west
+     */
+
+    public Player(Vector2 pos) {
+        this.pos = pos;
+    }
+
     private TextureRegion[][] getTextureRegion() {
         return TextureRegion.split(new Texture(PLAYER_PATH), 60, 60);
+    }
+
+    public void rotate(Boolean right){
+        if(right)
+            currentRotation = (currentRotation+1)%4;
+        else {
+            currentRotation = Math.floorMod((currentRotation - 1), 4);
+        }
+
+        System.out.println(currentRotation);
+
+        switch (currentRotation){
+            case 0: dir = Directions.SOUTH;
+                break;
+            case 1: dir = Directions.EAST;
+                break;
+            case 2: dir = Directions.NORTH;
+                break;
+            case 3: dir = Directions.WEST;
+                break;
+        }
+    }
+
+    public void move(int num){
+        switch (dir){
+            case NORTH: getPos().y += num;
+                break;
+            case EAST: getPos().x += num;
+                break;
+            case SOUTH: getPos().y -= num;
+                break;
+            case WEST: getPos().x -= num;
+                break;
+        }
     }
 
     public TiledMapTileLayer.Cell getPlayerNormalCell() {
@@ -44,9 +93,6 @@ public class Player {
         return new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion));
     }
 
-    public Player(Vector2 pos) {
-        this.pos = pos;
-    }
 
     public boolean hasAllFlags() {
         return flag1 && flag2 && flag3 && flag4;
@@ -55,7 +101,7 @@ public class Player {
     public TiledMapTileLayer.Cell getPlayerIcon() {
         if (hasAllFlags())
             return getPlayerWonCell();
-        return getPlayerNormalCell();
+        return getPlayerNormalCell().setRotation(currentRotation);
     }
 
 
