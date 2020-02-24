@@ -22,10 +22,7 @@ public class Player {
     // Life, damage and flags
     private int life = 3;
     private int damage = 0;
-    private boolean flag1 = false;
-    private boolean flag2 = false;
-    private boolean flag3 = false;
-    private boolean flag4 = false;
+    private boolean[] flags = {false, false, false, false};
 
     private Directions dir = Directions.NORTH;
     private int currentRotation = 0;
@@ -92,7 +89,7 @@ public class Player {
 
 
     public boolean hasAllFlags() {
-        return flag1 && flag2 && flag3 && flag4;
+        return flags[0] && flags[1] && flags[2] && flags[3];
     }
 
     public TiledMapTileLayer.Cell getPlayerIcon() {
@@ -106,34 +103,38 @@ public class Player {
         return pos;
     }
 
+    public boolean[] getFlags() {
+        return flags;
+    }
+
     public String showStatus() {
         if (life <= 0) return "You are dead";
         String str = "Life: " + life + ", Damage: " + damage;
         if (hasAllFlags())
             str += "\n You have all flags";
-        else if (flag3)
+        else if (flags[2] && flags[1] && flags[0])
             str += "\n You have 3 flags";
-        else if (flag2)
+        else if (flags[1] && flags[0])
             str += "\n You have 2 flags";
-        else if (flag1)
+        else if (flags[0])
             str += "\n You have flag 1";
 
         return str;
     }
 
     public void addFlag1() {
-        flag1 = true;
+        flags[0] = true;
     }
 
     public void addFlag2() {
-        flag2 = true;
+        flags[1] = true;
     }
 
     public void addFlag3() {
-        flag3 = true;
+        flags[2] = true;
     }
 
     public void addFlag4() {
-        flag4 = true;
+        flags[3] = true;
     }
 }

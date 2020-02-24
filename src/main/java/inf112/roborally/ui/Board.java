@@ -126,15 +126,18 @@ public class Board extends InputAdapter implements ApplicationListener {
                             break;
 
                         case "Flag2":
-                            player.addFlag2();
+                            if (player.getFlags()[0])
+                                player.addFlag2();
                             break;
 
                         case "Flag3":
-                            player.addFlag3();
+                            if (player.getFlags()[0] && player.getFlags()[1])
+                                player.addFlag3();
                             break;
 
                         case "Flag4":
-                            player.addFlag4();
+                            if (player.getFlags()[0] && player.getFlags()[1] && player.getFlags()[2])
+                                player.addFlag4();
                             break;
                     }
                 }
