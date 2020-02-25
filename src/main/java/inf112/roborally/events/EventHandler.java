@@ -33,6 +33,7 @@ public class EventHandler {
                         case "Hole":
                             // Falls in hole
                             player.setPlayerIcon(player.getPlayerDeadCell());
+                            player.subtractLife();
                             break;
 
                         case "Flag1":

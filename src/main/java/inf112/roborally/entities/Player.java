@@ -148,6 +148,13 @@ public class Player {
         setPos(backup);
     }
 
+    /**
+     * Removes one life.
+     */
+    public void subtractLife() {
+        life--;
+    }
+
     public boolean[] getFlags() {
         return flags;
     }
