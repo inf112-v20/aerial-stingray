@@ -17,6 +17,7 @@ public class Player {
 
     // Graphics
     private final String PLAYER_PATH = "player.png";
+    private TiledMapTileLayer.Cell playerIcon;
 
     // Life, damage and flags
     private int life = 3;
@@ -40,29 +41,18 @@ public class Player {
         return TextureRegion.split(new Texture(PLAYER_PATH), 60, 60);
     }
 
-    public void rotate(Boolean right){
-        if(right)
-            currentRotation = (currentRotation+1)%4;
-        else
-            currentRotation = Math.floorMod((currentRotation - 1), 4);
+    public TiledMapTileLayer.Cell getPlayerIcon() {
+        if (playerIcon == null)
+            playerIcon = getPlayerNormalCell();
 
-        switch (currentRotation){
-            case 0:
-                dir = Directions.SOUTH;
-                break;
-            case 1:
-                dir = Directions.EAST;
-                break;
-            case 2:
-                dir = Directions.NORTH;
-                break;
-            case 3:
-                dir = Directions.WEST;
-                break;
-            default:
-                System.err.println("Non-valid rotation!");
-                break;
-        }
+        if (hasAllFlags())
+            playerIcon = getPlayerWonCell();
+
+        return playerIcon.setRotation(currentRotation);
+    }
+
+    public void setPlayerIcon(TiledMapTileLayer.Cell playerIcon) {
+        this.playerIcon = playerIcon;
     }
 
     public void move(int num) {
@@ -106,10 +96,29 @@ public class Player {
         return flags[0] && flags[1] && flags[2] && flags[3];
     }
 
-    public TiledMapTileLayer.Cell getPlayerIcon() {
-        if (hasAllFlags())
-            return getPlayerWonCell();
-        return getPlayerNormalCell().setRotation(currentRotation);
+    public void rotate(Boolean right) {
+        if (right)
+            currentRotation = (currentRotation + 1) % 4;
+        else
+            currentRotation = Math.floorMod((currentRotation - 1), 4);
+
+        switch (currentRotation) {
+            case 0:
+                dir = Directions.SOUTH;
+                break;
+            case 1:
+                dir = Directions.EAST;
+                break;
+            case 2:
+                dir = Directions.NORTH;
+                break;
+            case 3:
+                dir = Directions.WEST;
+                break;
+            default:
+                System.err.println("Non-valid rotation!");
+                break;
+        }
     }
 
 

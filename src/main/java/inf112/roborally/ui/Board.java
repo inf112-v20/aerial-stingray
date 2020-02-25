@@ -9,8 +9,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -18,6 +16,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import inf112.roborally.entities.Player;
+import inf112.roborally.events.EventHandler;
 
 public class Board extends InputAdapter implements ApplicationListener {
 
@@ -43,7 +42,6 @@ public class Board extends InputAdapter implements ApplicationListener {
 
     // Players
     private Player player;
-    private TiledMapTileLayer.Cell playerIcon;
 
     @Override
     public void create() {
@@ -71,7 +69,6 @@ public class Board extends InputAdapter implements ApplicationListener {
 
         // Player
         player = new Player(new Vector2(13, 1));
-        playerIcon = player.getPlayerIcon();
     }
 
     @Override
@@ -96,7 +93,6 @@ public class Board extends InputAdapter implements ApplicationListener {
 
         if (moved) {
             playerLayer.setCell(x, y, null);
-            playerIcon = player.getPlayerIcon();
             System.out.println(player.showStatus());
             reactToCurrentTile();
             return true;
@@ -108,45 +104,7 @@ public class Board extends InputAdapter implements ApplicationListener {
      * Player icon changes based on which tile the player stands on.
      */
     private void reactToCurrentTile() {
-        for (MapObject mo : map.getLayers().get("OEvents").getObjects()) {
-            if (mo instanceof RectangleMapObject) {
-                int x = (int) ((RectangleMapObject) mo).getRectangle().x / TILE_SIZE;
-                int y = (int) ((RectangleMapObject) mo).getRectangle().y / TILE_SIZE;
-                String type = (String) mo.getProperties().get("type");
-
-                if ((int) player.getPos().x == x && (int) player.getPos().y == y) {
-                    switch (type) {
-                        case "Hole":
-                            // Falls in hole
-                            playerIcon = player.getPlayerDeadCell();
-                            break;
-
-                        case "Flag1":
-                            player.addFlag1();
-                            break;
-
-                        case "Flag2":
-                            if (player.getFlags()[0])
-                                player.addFlag2();
-                            break;
-
-                        case "Flag3":
-                            if (player.getFlags()[0] && player.getFlags()[1])
-                                player.addFlag3();
-                            break;
-
-                        case "Flag4":
-                            if (player.getFlags()[0] && player.getFlags()[1] && player.getFlags()[2])
-                                player.addFlag4();
-                            break;
-
-                        default:
-                            playerIcon = player.getPlayerIcon();
-                            break;
-                    }
-                }
-            }
-        }
+        EventHandler.handleEvent(map, player);
     }
 
 
@@ -173,7 +131,7 @@ public class Board extends InputAdapter implements ApplicationListener {
      * Draws player on the grid.
      */
     public void drawPlayer() {
-        playerLayer.setCell((int) player.getPos().x, (int) player.getPos().y, playerIcon);
+        playerLayer.setCell((int) player.getPos().x, (int) player.getPos().y, player.getPlayerIcon());
     }
 
     @Override
