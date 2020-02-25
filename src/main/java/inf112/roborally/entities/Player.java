@@ -34,7 +34,6 @@ public class Player {
 
     public Player(Vector2 pos) {
         this.pos = pos;
-        backup = pos;
     }
 
     private TextureRegion[][] getTextureRegion() {
@@ -48,26 +47,41 @@ public class Player {
             currentRotation = Math.floorMod((currentRotation - 1), 4);
 
         switch (currentRotation){
-            case 0: dir = Directions.SOUTH;
+            case 0:
+                dir = Directions.SOUTH;
                 break;
-            case 1: dir = Directions.EAST;
+            case 1:
+                dir = Directions.EAST;
                 break;
-            case 2: dir = Directions.NORTH;
+            case 2:
+                dir = Directions.NORTH;
                 break;
-            case 3: dir = Directions.WEST;
+            case 3:
+                dir = Directions.WEST;
+                break;
+            default:
+                System.err.println("Non-valid rotation!");
                 break;
         }
     }
 
-    public void move(int num){
-        switch (dir){
-            case NORTH: pos.y += num;
+    public void move(int num) {
+        switch (dir) {
+            case NORTH:
+                getPos().y += num;
                 break;
-            case EAST: pos.x += num;
+            case EAST:
+                getPos().x += num;
                 break;
-            case SOUTH: pos.y -= num;
+            case SOUTH:
+                getPos().y -= num;
                 break;
-            case WEST: pos.x -= num;
+            case WEST:
+                getPos().x -= num;
+                break;
+
+            default:
+                System.err.println("Non-valid move!");
                 break;
         }
     }
