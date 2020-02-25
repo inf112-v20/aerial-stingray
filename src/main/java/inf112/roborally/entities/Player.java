@@ -34,6 +34,7 @@ public class Player {
 
     public Player(Vector2 pos) {
         this.pos = pos;
+        this.backup = pos
     }
 
     private TextureRegion[][] getTextureRegion() {
