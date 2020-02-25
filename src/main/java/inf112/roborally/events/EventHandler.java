@@ -13,7 +13,7 @@ import static inf112.roborally.ui.Board.TILE_SIZE;
 public class EventHandler {
 
     /**
-     * Handles an event on a current tile.
+     * Handles an event on a current tile with a given map & player.
      *
      * @param map    The current TiledMap
      * @param player The player who stands on the tile
@@ -36,22 +36,22 @@ public class EventHandler {
                             break;
 
                         case "Flag1":
-                            player.addFlag1();
+                            player.addFlag(1);
                             break;
 
                         case "Flag2":
                             if (player.getFlags()[0])
-                                player.addFlag2();
+                                player.addFlag(2);
                             break;
 
                         case "Flag3":
                             if (player.getFlags()[0] && player.getFlags()[1])
-                                player.addFlag3();
+                                player.addFlag(3);
                             break;
 
                         case "Flag4":
                             if (player.getFlags()[0] && player.getFlags()[1] && player.getFlags()[2])
-                                player.addFlag4();
+                                player.addFlag(4);
                             break;
 
                         default:
