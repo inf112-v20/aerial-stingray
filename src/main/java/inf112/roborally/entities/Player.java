@@ -13,6 +13,7 @@ public class Player {
 
     // Coordinates
     private Vector2 pos;
+    private Vector2 backup;
 
     // Graphics
     private final String PLAYER_PATH = "player.png";
@@ -33,6 +34,7 @@ public class Player {
 
     public Player(Vector2 pos) {
         this.pos = pos;
+        backup = pos;
     }
 
     private TextureRegion[][] getTextureRegion() {
@@ -59,13 +61,13 @@ public class Player {
 
     public void move(int num){
         switch (dir){
-            case NORTH: getPos().y += num;
+            case NORTH: pos.y += num;
                 break;
-            case EAST: getPos().x += num;
+            case EAST: pos.x += num;
                 break;
-            case SOUTH: getPos().y -= num;
+            case SOUTH: pos.y -= num;
                 break;
-            case WEST: getPos().x -= num;
+            case WEST: pos.x -= num;
                 break;
         }
     }
@@ -99,6 +101,14 @@ public class Player {
 
     public Vector2 getPos() {
         return pos;
+    }
+
+    public void setBackup(Vector2 backup) {
+        this.backup = backup;
+    }
+
+    public void respawn(){
+        pos = backup;
     }
 
     public boolean[] getFlags() {
