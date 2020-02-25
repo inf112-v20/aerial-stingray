@@ -5,8 +5,7 @@ import inf112.roborally.entities.Player;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 public class PlayerTest {
 
@@ -25,8 +24,19 @@ public class PlayerTest {
     }
 
     @Test
-    public void testHasAllFlags() {
-        // Should not have all flags at constructor
+    public void testHasAllFlagsIsFalse() {
+        // Should not have all flags without collecting flags
         assertFalse(player.hasAllFlags());
+    }
+
+    @Test
+    public void testHasAllFlagsIsTrue() {
+        Player localPlayer = new Player(new Vector2());  // new player as we are gathering flags
+        localPlayer.addFlag(1);
+        localPlayer.addFlag(2);
+        localPlayer.addFlag(3);
+        localPlayer.addFlag(4);
+
+        assertTrue(localPlayer.hasAllFlags());
     }
 }

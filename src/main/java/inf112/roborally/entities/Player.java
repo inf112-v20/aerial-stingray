@@ -168,7 +168,7 @@ public class Player {
     }
 
     public void addFlag(int flagNum) throws IllegalArgumentException {
-        if (flagNum <= 0 || flagNum > 3)
+        if (flagNum <= 0 || flagNum > 4)
             throw new IllegalArgumentException("Flag number must be between 1-4 (inclusive).");
 
         flags[flagNum-1] = true;
