@@ -3,6 +3,7 @@ package inf112.roborally.events;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Rectangle;
 import inf112.roborally.entities.Player;
 
 import static inf112.roborally.ui.Board.TILE_SIZE;
@@ -19,19 +20,14 @@ public class EventHandler {
      * @param player The player who stands on the tile
      */
     public static void handleEvent(TiledMap map, Player player) {
-        int pX = (int) player.getPos().x;
-        int pY = (int) player.getPos().y;
-
         for (MapObject mo : map.getLayers().get("OEvents").getObjects()) {
             if (mo instanceof RectangleMapObject) {
-                int rectX = (int) ((RectangleMapObject) mo).getRectangle().x / TILE_SIZE;
-                int rectY = (int) ((RectangleMapObject) mo).getRectangle().y / TILE_SIZE;
-                String type = (String) mo.getProperties().get("type");
+                Rectangle rect = ((RectangleMapObject) mo).getRectangle();
 
-                if (pX == rectX && pY == rectY) {
+                String type = (String) mo.getProperties().get("type");
+                if (playerInsideRectangle(player, rect)) {  // If player is currently on the tile-type
                     switch (type) {
                         case "Hole":
-                            // Falls in hole
                             player.setPlayerIcon(player.getPlayerDeadCell());
                             player.subtractLife();
                             break;
@@ -62,5 +58,28 @@ public class EventHandler {
                 }
             }
         }
+    }
+
+    /**
+     * Check if player intersects rect.
+     * Used for long conveyors that span multiple tiles.
+     *
+     * @param rect A rectangle area to check if player within
+     * @return true if player withing the specified rectangle
+     */
+    private static boolean playerInsideRectangle(Player player, Rectangle rect) {
+        int playerX = (int) player.getPos().x;
+        int playerY = (int) player.getPos().y;
+
+        int rectX = (int) (rect.x / TILE_SIZE);
+        int rectY = (int) (rect.y / TILE_SIZE);
+        int rectWidth = (int) rect.getWidth() / TILE_SIZE;
+        int rectHeight = (int) rect.getHeight() / TILE_SIZE;
+
+        if (playerX >= rectX && (playerX < rectX + rectWidth)) {  // If x within bounds
+            // If y withing bounds
+            return playerY <= rectY && (playerY > rectY - rectHeight);
+        }
+        return false;
     }
 }
