@@ -108,9 +108,9 @@ public class Player {
 
     public void rotate(Boolean right) {
         if (right)
-            currentRotation = (currentRotation + 1) % 4;
-        else
             currentRotation = Math.floorMod((currentRotation - 1), 4);
+        else
+            currentRotation = (currentRotation + 1) % 4;
 
         switch (currentRotation) {
             case 0:
