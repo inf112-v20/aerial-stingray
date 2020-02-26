@@ -11,26 +11,37 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Player {
 
-    // Coordinates
-    private Vector2 pos;
-    private Vector2 backup;
-
-    // Graphics
+    /**
+     * Graphics
+     */
     private final String PLAYER_PATH = "player.png";
-
-    // Life, damage and flags
+    private Vector2 backup;
+    /**
+     * Coordinates
+     */
+    private Vector2 pos;
+    private TiledMapTileLayer.Cell playerIcon;
+    /**
+     * Life, damage & flags
+     */
     private int life = 3;
     private int damage = 0;
     private boolean[] flags = {false, false, false, false};
 
-    private Directions dir = Directions.NORTH;
-    private int currentRotation = 2;
     /**
+     * Direction
+     */
+    private Directions dir = Directions.NORTH;
+
+    /**
+     * Current rotation
      * 0 = south
      * 1 = east
      * 2 = north
      * 3 = west
      */
+    private int currentRotation = 2;
+
 
     public Player(Vector2 pos) {
         this.pos = pos;
@@ -41,29 +52,18 @@ public class Player {
         return TextureRegion.split(new Texture(PLAYER_PATH), 60, 60);
     }
 
-    public void rotate(Boolean right){
-        if(right)
-            currentRotation = (currentRotation+1)%4;
-        else
-            currentRotation = Math.floorMod((currentRotation - 1), 4);
+    public TiledMapTileLayer.Cell getPlayerIcon() {
+        if (playerIcon == null)
+            playerIcon = getPlayerNormalCell();
 
-        switch (currentRotation){
-            case 0:
-                dir = Directions.SOUTH;
-                break;
-            case 1:
-                dir = Directions.EAST;
-                break;
-            case 2:
-                dir = Directions.NORTH;
-                break;
-            case 3:
-                dir = Directions.WEST;
-                break;
-            default:
-                System.err.println("Non-valid rotation!");
-                break;
-        }
+        if (hasAllFlags())
+            playerIcon = getPlayerWonCell();
+
+        return playerIcon.setRotation(currentRotation);
+    }
+
+    public void setPlayerIcon(TiledMapTileLayer.Cell playerIcon) {
+        this.playerIcon = playerIcon;
     }
 
     public void move(int num) {
@@ -87,6 +87,7 @@ public class Player {
         }
     }
 
+    /** TiledMapTileLayer.Cell */
     public TiledMapTileLayer.Cell getPlayerNormalCell() {
         TextureRegion textureRegion = getTextureRegion()[0][0];
         return new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion));
@@ -102,15 +103,33 @@ public class Player {
         return new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion));
     }
 
-
     public boolean hasAllFlags() {
         return flags[0] && flags[1] && flags[2] && flags[3];
     }
 
-    public TiledMapTileLayer.Cell getPlayerIcon() {
-        if (hasAllFlags())
-            return getPlayerWonCell();
-        return getPlayerNormalCell().setRotation(currentRotation);
+    public void rotate(Boolean right) {
+        if (right)
+            currentRotation = Math.floorMod((currentRotation - 1), 4);
+        else
+            currentRotation = (currentRotation + 1) % 4;
+
+        switch (currentRotation) {
+            case 0:
+                dir = Directions.SOUTH;
+                break;
+            case 1:
+                dir = Directions.EAST;
+                break;
+            case 2:
+                dir = Directions.NORTH;
+                break;
+            case 3:
+                dir = Directions.WEST;
+                break;
+            default:
+                System.err.println("Non-valid rotation!");
+                break;
+        }
     }
 
 
@@ -118,12 +137,23 @@ public class Player {
         return pos;
     }
 
+    public void setPos(Vector2 pos) {
+        this.pos = pos;
+    }
+
     public void setBackup(Vector2 backup) {
         this.backup = backup;
     }
 
-    public void respawn(){
-        pos = backup;
+    public void respawn() {
+        setPos(backup);
+    }
+
+    /**
+     * Removes one life.
+     */
+    public void subtractLife() {
+        life--;
     }
 
     public boolean[] getFlags() {
@@ -145,19 +175,10 @@ public class Player {
         return str;
     }
 
-    public void addFlag1() {
-        flags[0] = true;
-    }
+    public void addFlag(int flagNum) throws IllegalArgumentException {
+        if (flagNum <= 0 || flagNum > 4)
+            throw new IllegalArgumentException("Flag number must be between 1-4 (inclusive).");
 
-    public void addFlag2() {
-        flags[1] = true;
-    }
-
-    public void addFlag3() {
-        flags[2] = true;
-    }
-
-    public void addFlag4() {
-        flags[3] = true;
+        flags[flagNum-1] = true;
     }
 }

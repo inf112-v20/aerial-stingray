@@ -2,7 +2,6 @@ package inf112.roborally;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import inf112.roborally.ui.Board;
 
 public class Main {
     public static void main(String[] args) {
@@ -11,6 +10,6 @@ public class Main {
         cfg.width = 1440;  // Num. of horizontal tiles x size of tiles
         cfg.height = 720;  // Num. of vertical tiles x size of tiles
 
-        new LwjglApplication(new Board(), cfg);
+        new LwjglApplication(new Game(), cfg);
     }
 }
