@@ -24,11 +24,7 @@ Denne listen har blitt litt finjustert underveis i oppgaven. Vi startet med 12 i
 
 Project boardet vårt underveis i oppgaven:
 
-
-
-
-
-
+[![projectboard.png](https://i.postimg.cc/tJRmMHf1/projectboard.png)](https://postimg.cc/dkXBhgJv)
 
 
 I forrige sprint implementerte vi brettet og visuelle illustrasjoner av hvor man befinner seg på brettet. Dette ønsker vi å grafisk forbedre for denne sprinten, slik at vi tar utgangspunkt i et ferdig utviklet brett. Dette gjør vi med å implementere kartet først slik at vi kan gi alle event tilene et eget object hvor eventets type blir gitt. Dette gjør det enkelt for oss å hente de ulike type event tilene med map.getLayers().get(“Objects”).getObjects(). Her vil vi implementere en sjekk på hvilken event tile som spilleren står på og tilstøtende tiles. Brikken vil utføre events etter hvilken type event tile spilleren står på. 
