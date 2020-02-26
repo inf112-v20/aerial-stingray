@@ -16,11 +16,13 @@ public class Player {
      */
     private final String PLAYER_PATH = "player.png";
     private Vector2 backup;
+
     /**
      * Coordinates
      */
     private Vector2 pos;
     private TiledMapTileLayer.Cell playerIcon;
+
     /**
      * Life, damage & flags
      */
@@ -45,7 +47,7 @@ public class Player {
 
     public Player(Vector2 pos) {
         this.pos = pos;
-        this.backup = pos;
+        this.backup = new Vector2(pos.x,pos.y);
     }
 
     private TextureRegion[][] getTextureRegion() {
@@ -87,7 +89,13 @@ public class Player {
         }
     }
 
-    /** TiledMapTileLayer.Cell */
+    public Directions getDir() {
+        return dir;
+    }
+
+    /**
+     * TiledMapTileLayer.Cell
+     */
     public TiledMapTileLayer.Cell getPlayerNormalCell() {
         TextureRegion textureRegion = getTextureRegion()[0][0];
         return new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion));
@@ -146,7 +154,9 @@ public class Player {
     }
 
     public void respawn() {
-        setPos(backup);
+        setPos(new Vector2(backup.x, backup.y));
+        System.out.println(backup);
+        setPlayerIcon(getPlayerNormalCell());
     }
 
     /**
