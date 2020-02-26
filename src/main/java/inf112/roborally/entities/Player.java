@@ -13,72 +13,151 @@ public class Player {
 
     // Coordinates
     private Vector2 pos;
-
+    private Vector2 backup;
 
     // Graphics
-    private Texture texture;
-    private TextureRegion[][] textureRegion;
-
-    // Player icons
-    private TiledMapTileLayer.Cell player;
-    private TiledMapTileLayer.Cell playerDead;
-    private TiledMapTileLayer.Cell playerWon;
+    private final String PLAYER_PATH = "player.png";
 
     // Life, damage and flags
     private int life = 3;
     private int damage = 0;
-    private boolean flag1 = false;
-    private boolean flag2 = false;
-    private boolean flag3 = false;
-    private boolean flag4 = false;
+    private boolean[] flags = {false, false, false, false};
 
+    private Directions dir = Directions.NORTH;
+    private int currentRotation = 2;
+    /**
+     * 0 = south
+     * 1 = east
+     * 2 = north
+     * 3 = west
+     */
 
     public Player(Vector2 pos) {
         this.pos = pos;
-
-        // Graphics
-        texture = new Texture("player.png");
-        textureRegion = TextureRegion.split(texture, 60, 60);
-
-        player = new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion[0][0]));
-        playerDead = new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion[0][1]));
-        playerWon = new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion[0][2]));
-
-        player.setTile(new StaticTiledMapTile(textureRegion[0][0]));
+        this.backup = pos;
     }
 
-    //public TextureRegion getTextureRegion() {
-    //    return textureRegion;
-    //}
+    private TextureRegion[][] getTextureRegion() {
+        return TextureRegion.split(new Texture(PLAYER_PATH), 60, 60);
+    }
+
+    public void rotate(Boolean right){
+        if(right)
+            currentRotation = (currentRotation+1)%4;
+        else
+            currentRotation = Math.floorMod((currentRotation - 1), 4);
+
+        switch (currentRotation){
+            case 0:
+                dir = Directions.SOUTH;
+                break;
+            case 1:
+                dir = Directions.EAST;
+                break;
+            case 2:
+                dir = Directions.NORTH;
+                break;
+            case 3:
+                dir = Directions.WEST;
+                break;
+            default:
+                System.err.println("Non-valid rotation!");
+                break;
+        }
+    }
+
+    public void move(int num) {
+        switch (dir) {
+            case NORTH:
+                getPos().y += num;
+                break;
+            case EAST:
+                getPos().x += num;
+                break;
+            case SOUTH:
+                getPos().y -= num;
+                break;
+            case WEST:
+                getPos().x -= num;
+                break;
+
+            default:
+                System.err.println("Non-valid move!");
+                break;
+        }
+    }
+
+    public TiledMapTileLayer.Cell getPlayerNormalCell() {
+        TextureRegion textureRegion = getTextureRegion()[0][0];
+        return new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion));
+    }
+
+    public TiledMapTileLayer.Cell getPlayerDeadCell() {
+        TextureRegion textureRegion = getTextureRegion()[0][1];
+        return new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion));
+    }
+
+    public TiledMapTileLayer.Cell getPlayerWonCell() {
+        TextureRegion textureRegion = getTextureRegion()[0][2];
+        return new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion));
+    }
+
+
+    public boolean hasAllFlags() {
+        return flags[0] && flags[1] && flags[2] && flags[3];
+    }
 
     public TiledMapTileLayer.Cell getPlayerIcon() {
-        return player;
+        if (hasAllFlags())
+            return getPlayerWonCell();
+        return getPlayerNormalCell().setRotation(currentRotation);
     }
 
-    public TiledMapTileLayer.Cell getDeadPlayerIcon() { return playerDead; }
 
-    public TiledMapTileLayer.Cell getWonPlayerIcon() {
-        return playerWon;
+    public Vector2 getPos() {
+        return pos;
     }
 
-    public Vector2 getPos() { return pos; }
+    public void setBackup(Vector2 backup) {
+        this.backup = backup;
+    }
 
-    public String showStatus(){
+    public void respawn(){
+        pos = backup;
+    }
+
+    public boolean[] getFlags() {
+        return flags;
+    }
+
+    public String showStatus() {
         if (life <= 0) return "You are dead";
         String str = "Life: " + life + ", Damage: " + damage;
-        if (flag3)
+        if (hasAllFlags())
+            str += "\n You have all flags";
+        else if (flags[2] && flags[1] && flags[0])
             str += "\n You have 3 flags";
-        else if (flag2)
+        else if (flags[1] && flags[0])
             str += "\n You have 2 flags";
-        else if (flag1)
+        else if (flags[0])
             str += "\n You have flag 1";
 
         return str;
     }
 
-    public void setLife() {
-        this.life --;
+    public void addFlag1() {
+        flags[0] = true;
     }
 
+    public void addFlag2() {
+        flags[1] = true;
+    }
 
+    public void addFlag3() {
+        flags[2] = true;
+    }
+
+    public void addFlag4() {
+        flags[3] = true;
+    }
 }
