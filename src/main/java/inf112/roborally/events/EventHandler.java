@@ -130,6 +130,14 @@ public class EventHandler {
                 player.getPos().y+=2;
                 break;
 
+            case "RotateLeft":
+                player.rotate(false);
+                break;
+
+            case "RotateRight":
+                player.rotate(true);
+                break;
+
 
 
             default:
