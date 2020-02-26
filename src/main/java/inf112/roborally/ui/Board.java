@@ -144,13 +144,16 @@ public class Board extends InputAdapter implements ApplicationListener{
 
     @Override
     public void resize(int width, int height) {
+        //intentionally empty method body
     }
 
     @Override
     public void pause() {
+        //intentionally empty method body
     }
 
     @Override
     public void resume() {
+        //intentionally empty method body
     }
 }
