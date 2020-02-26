@@ -149,10 +149,6 @@ public class Player {
         this.pos = pos;
     }
 
-    public void setBackup(Vector2 backup) {
-        this.backup = backup;
-    }
-
     public void respawn() {
         setPos(new Vector2(backup.x, backup.y));
         System.out.println(backup);
