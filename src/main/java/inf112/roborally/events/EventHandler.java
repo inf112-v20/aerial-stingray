@@ -19,6 +19,11 @@ public class EventHandler {
      *
      * @param map    The current TiledMap
      * @param player The player who stands on the tile
+     *
+     * Temporary implementation for conveyors with two directions
+     *
+     * Known bug: Express_Conveyor_SouthWest case calls on Express_Conveyor_South
+     *            case instead of its actual case.
      */
     public static void handleEvent(TiledMap map, Player player) {
         String type = getTile(map, player.getPos());
@@ -63,6 +68,69 @@ public class EventHandler {
             case "Normal_Conveyor_West":
                 player.getPos().x--;
                 break;
+
+            case "Normal_Conveyor_EastNorth":
+                player.rotate(false);
+                player.getPos().y++;
+                break;
+
+            case "Normal_Conveyor_NorthEast":
+                player.rotate(true);
+                player.getPos().x++;
+                break;
+
+            case "Normal_Conveyor_EastSouth":
+                player.rotate(true);
+                player.getPos().y--;
+                break;
+
+            case "Normal_Conveyor_SouthEast":
+                player.rotate(false);
+                player.getPos().x++;
+                break;
+
+            case "Express_Conveyor_North":
+                player.getPos().y+=2;
+                break;
+
+            case "Express_Conveyor_West":
+                player.getPos().x-=2;
+                break;
+
+            case "Express_Conveyor_South":
+                player.getPos().y-=2;
+                break;
+
+            case "Express_Conveyor_East":
+                player.getPos().x+=2;
+                break;
+
+            case "Express_Conveyor_EastNorth":
+                player.rotate(false);
+                player.getPos().y+=2;
+                break;
+
+            case "Express_Conveyor_NorthEast":
+                player.rotate(true);
+                player.getPos().x+=2;
+                break;
+
+            case "Express_Conveyor_EastSouth":
+                player.rotate(true);
+                player.getPos().y-=2;
+                break;
+
+            case "Express_Conveyor_SouthWest":
+                player.rotate(true);
+                player.getPos().x-=2;
+                break;
+
+            case "Express_Conveyor_WestNorth":
+                player.rotate(true);
+                player.getPos().y+=2;
+                break;
+
+
 
             default:
                 player.setPlayerIcon(player.getPlayerIcon());
