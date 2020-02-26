@@ -16,11 +16,13 @@ public class Player {
      */
     private final String PLAYER_PATH = "player.png";
     private Vector2 backup;
+
     /**
      * Coordinates
      */
     private Vector2 pos;
     private TiledMapTileLayer.Cell playerIcon;
+
     /**
      * Life, damage & flags
      */
@@ -87,7 +89,13 @@ public class Player {
         }
     }
 
-    /** TiledMapTileLayer.Cell */
+    public Directions getDir() {
+        return dir;
+    }
+
+    /**
+     * TiledMapTileLayer.Cell
+     */
     public TiledMapTileLayer.Cell getPlayerNormalCell() {
         TextureRegion textureRegion = getTextureRegion()[0][0];
         return new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion));

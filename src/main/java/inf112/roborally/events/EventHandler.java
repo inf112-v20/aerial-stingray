@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import inf112.roborally.entities.Directions;
 import inf112.roborally.entities.Player;
 
 import static inf112.roborally.ui.Board.TILE_SIZE;
@@ -21,7 +22,7 @@ public class EventHandler {
      * @param player The player who stands on the tile
      */
     public static void handleEvent(TiledMap map, Player player) {
-        String type = getTile(map, player.getPos());
+        String type = getTile(map, "OEvents", player.getPos());
 
         switch (type) {
             case "Hole":
@@ -72,14 +73,92 @@ public class EventHandler {
     }
 
     /**
+     * Checks if the player can move / be pushed in a certain direction.
+     * E.g. false if player wants to move north but there is a wall there.
+     * TODO add support for moving across multiple tiles.
+     *
+     * @param map    The map the player is on
+     * @param player Representing player, with it's direction
+     * @param steps  Number of steps to move (currently not used)
+     * @return A boolean true if you can go in a specific direction
+     */
+    public static boolean canGo(TiledMap map, Player player, int steps) {
+        Directions dir = player.getDir();
+        // Getting position of player
+        Vector2 nextPos;
+        if (dir == Directions.NORTH)
+            nextPos = new Vector2(player.getPos().x, player.getPos().y + 1);
+        else if (dir == Directions.SOUTH)
+            nextPos = new Vector2(player.getPos().x, player.getPos().y - 1);
+        else if (dir == Directions.EAST)
+            nextPos = new Vector2(player.getPos().x + 1, player.getPos().y);
+        else
+            nextPos = new Vector2(player.getPos().x - 1, player.getPos().y);
+
+        // Can go from current tile
+        String wallType = getTile(map, "OWalls", player.getPos());
+        if (wallType != null) {
+            switch (wallType) {
+                case "Wall_North":
+                    if (player.getDir() == Directions.NORTH)
+                        return false;
+                    break;
+
+                case "Wall_South":
+                    if (player.getDir() == Directions.SOUTH)
+                        return false;
+                    break;
+
+                case "Wall_East":
+                    if (player.getDir() == Directions.EAST)
+                        return false;
+                    break;
+
+                case "Wall_West":
+                    if (player.getDir() == Directions.WEST)
+                        return false;
+                    break;
+            }
+        }
+
+        // Can go to next tile
+        wallType = getTile(map, "OWalls", nextPos);
+        if (wallType != null) {
+            switch (wallType) {
+                case "Wall_North":
+                    if (player.getDir() == Directions.SOUTH)
+                        return false;
+                    break;
+
+                case "Wall_South":
+                    if (player.getDir() == Directions.NORTH)
+                        return false;
+                    break;
+
+                case "Wall_East":
+                    if (player.getDir() == Directions.WEST)
+                        return false;
+                    break;
+
+                case "Wall_West":
+                    if (player.getDir() == Directions.EAST)
+                        return false;
+                    break;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Gets tile-type at a certain position.
      *
      * @param map The map which holds the tiles
      * @param pos Position of the cell
      * @return A String representing the type of tile at the pos.
      */
-    private static String getTile(TiledMap map, Vector2 pos) {
-        for (MapObject mo : map.getLayers().get("OEvents").getObjects()) {
+    private static String getTile(TiledMap map, String layer, Vector2 pos) {
+        for (MapObject mo : map.getLayers().get(layer).getObjects()) {
             if (mo instanceof RectangleMapObject) {
                 Rectangle rect = ((RectangleMapObject) mo).getRectangle();
                 if (pointInsideRectangle(pos, rect))
