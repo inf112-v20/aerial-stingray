@@ -45,7 +45,7 @@ public class Player {
 
     public Player(Vector2 pos) {
         this.pos = pos;
-        this.backup = pos;
+        this.backup = new Vector2(pos.x,pos.y);
     }
 
     private TextureRegion[][] getTextureRegion() {
@@ -146,7 +146,9 @@ public class Player {
     }
 
     public void respawn() {
-        setPos(backup);
+        setPos(new Vector2(backup.x, backup.y));
+        System.out.println(backup);
+        setPlayerIcon(getPlayerNormalCell());
     }
 
     /**

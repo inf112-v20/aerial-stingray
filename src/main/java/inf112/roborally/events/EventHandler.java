@@ -27,6 +27,7 @@ public class EventHandler {
             case "Hole":
                 player.setPlayerIcon(player.getPlayerDeadCell());
                 player.subtractLife();
+                player.respawn();
                 break;
 
             case "Flag1":
