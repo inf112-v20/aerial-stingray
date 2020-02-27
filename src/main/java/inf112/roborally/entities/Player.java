@@ -64,23 +64,24 @@ public class Player {
         return playerIcon.setRotation(currentRotation);
     }
 
-    public void setPlayerIcon(TiledMapTileLayer.Cell playerIcon) {
-        this.playerIcon = playerIcon;
-    }
-
-    public void move(int num) {
+    /**
+     * Move in the current direction.
+     *
+     * @param steps Steps to move
+     */
+    public void move(int steps) {
         switch (dir) {
             case NORTH:
-                getPos().y += num;
+                getPos().y += steps;
                 break;
             case EAST:
-                getPos().x += num;
+                getPos().x += steps;
                 break;
             case SOUTH:
-                getPos().y -= num;
+                getPos().y -= steps;
                 break;
             case WEST:
-                getPos().x -= num;
+                getPos().x -= steps;
                 break;
 
             default:
@@ -98,11 +99,6 @@ public class Player {
      */
     public TiledMapTileLayer.Cell getPlayerNormalCell() {
         TextureRegion textureRegion = getTextureRegion()[0][0];
-        return new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion));
-    }
-
-    public TiledMapTileLayer.Cell getPlayerDeadCell() {
-        TextureRegion textureRegion = getTextureRegion()[0][1];
         return new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion));
     }
 
@@ -140,7 +136,6 @@ public class Player {
         }
     }
 
-
     public Vector2 getPos() {
         return pos;
     }
@@ -149,10 +144,14 @@ public class Player {
         this.pos = pos;
     }
 
+    /**
+     * Changes position to backup-pos.
+     * Also sets player icon to normal-mode.
+     */
     public void respawn() {
         setPos(new Vector2(backup.x, backup.y));
         System.out.println(backup);
-        setPlayerIcon(getPlayerNormalCell());
+        playerIcon = getPlayerNormalCell();
     }
 
     /**
@@ -181,10 +180,16 @@ public class Player {
         return str;
     }
 
+    /**
+     * Adds a flag to the player inventory.
+     *
+     * @param flagNum Flag number to add
+     * @throws IllegalArgumentException when flagNum is not 1-4 (inclusive)
+     */
     public void addFlag(int flagNum) throws IllegalArgumentException {
         if (flagNum <= 0 || flagNum > 4)
             throw new IllegalArgumentException("Flag number must be between 1-4 (inclusive).");
 
-        flags[flagNum-1] = true;
+        flags[flagNum - 1] = true;
     }
 }

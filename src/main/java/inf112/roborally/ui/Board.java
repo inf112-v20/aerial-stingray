@@ -1,6 +1,6 @@
 package inf112.roborally.ui;
 
-import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -22,21 +22,21 @@ public class Board {
      */
     private TiledMapTileLayer playerLayer;
 
-    /** Object Layers */
-    private MapLayer objectEvents;
-    private MapLayer objectLasers;
-    private MapLayer objectWalls;
+    /**
+     * Object Layers
+     */
+    private MapObjects objectEvents;
+    private MapObjects objectLasers;
+    private MapObjects objectWalls;
 
 
     public Board() {
-        // Map
         map = new TmxMapLoader().load("Map.tmx");
         playerLayer = (TiledMapTileLayer) map.getLayers().get("Player");
 
-        // Objects
-        objectEvents = map.getLayers().get("OEvents");
-        objectLasers = map.getLayers().get("OLasers");
-        objectWalls = map.getLayers().get("OWalls");
+        objectEvents = map.getLayers().get("OEvents").getObjects();
+        objectLasers = map.getLayers().get("OLasers").getObjects();
+        objectWalls = map.getLayers().get("OWalls").getObjects();
     }
 
     public TiledMap getMap() {
@@ -47,15 +47,18 @@ public class Board {
         return playerLayer;
     }
 
-    public MapLayer getObjectEvents() {
-        return objectEvents;
-    }
+    public MapObjects getObjectLayer(String layer) {
+        switch (layer) {
+            case "OEvents":
+                return objectEvents;
 
-    public MapLayer getObjectLasers() {
-        return objectLasers;
-    }
+            case "OLasers":
+                return objectLasers;
 
-    public MapLayer getObjectWalls() {
-        return objectWalls;
+            case "OWalls":
+                return objectWalls;
+        }
+
+        return null;
     }
 }

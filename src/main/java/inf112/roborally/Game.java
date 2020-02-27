@@ -68,11 +68,11 @@ public class Game extends InputAdapter implements ApplicationListener {
         int y = (int) player.getPos().y;
 
         if (keycode == Input.Keys.UP) {
-            if (EventHandler.canGo(board.getMap(), player, 1))
+            if (EventHandler.canGo(board, player, 1))
                 player.move(1);
             moved = true;
         } else if (keycode == Input.Keys.DOWN) {
-            if (EventHandler.canGo(board.getMap(), player, 1))
+            if (EventHandler.canGo(board, player, 1))
                 player.move(-1);
             moved = true;
         } else if (keycode == Input.Keys.LEFT) {
@@ -96,7 +96,7 @@ public class Game extends InputAdapter implements ApplicationListener {
      * Player icon changes based on which tile the player stands on.
      */
     private void reactToCurrentTile() {
-        EventHandler.handleEvent(board.getMap(), player);
+        EventHandler.handleEvent(board, player);
     }
 
     @Override

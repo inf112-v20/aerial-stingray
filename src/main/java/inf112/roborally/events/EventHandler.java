@@ -2,11 +2,11 @@ package inf112.roborally.events;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import inf112.roborally.entities.Directions;
 import inf112.roborally.entities.Player;
+import inf112.roborally.ui.Board;
 
 import static inf112.roborally.ui.Board.TILE_SIZE;
 
@@ -18,20 +18,19 @@ public class EventHandler {
     /**
      * Handles an event on a current tile with a given map & player.
      *
-     * @param map    The current TiledMap
+     * @param board  The current Board which holds all tiles
      * @param player The player who stands on the tile
-     *
-     * Temporary implementation for conveyors with two directions
-     *
-     * Known bug: Express_Conveyor_SouthWest case calls on Express_Conveyor_South
-     *            case instead of its actual case.
+     *               <p>
+     *               Temporary implementation for conveyors with two directions
+     *               <p>
+     *               Known bug: Express_Conveyor_SouthWest case calls on Express_Conveyor_South
+     *               case instead of its actual case.
      */
-    public static void handleEvent(TiledMap map, Player player) {
-        String type = getTileType(map, "OEvents", player.getPos());
+    public static void handleEvent(Board board, Player player) {
+        String type = getTileType(board, "OEvents", player.getPos());
 
         switch (type) {
             case "Hole":
-                player.setPlayerIcon(player.getPlayerDeadCell());
                 player.subtractLife();
                 player.respawn();
                 break;
@@ -139,12 +138,6 @@ public class EventHandler {
             case "RotateRight":
                 player.rotate(true);
                 break;
-
-
-
-            default:
-                player.setPlayerIcon(player.getPlayerIcon());
-                break;
         }
     }
 
@@ -153,26 +146,25 @@ public class EventHandler {
      * E.g. false if player wants to move north but there is a wall there.
      * TODO add support for moving across multiple tiles.
      *
-     * @param map    The map the player is on
+     * @param board  The current Board which holds all tiles
      * @param player Representing player, with it's direction
-     * @param steps  Number of steps to move (currently not used)
      * @return A boolean true if you can go in a specific direction
      */
-    public static boolean canGo(TiledMap map, Player player, int steps) {
+    public static boolean canGo(Board board, Player player, int steps) {
         Directions dir = player.getDir();
         // Getting position of player
         Vector2 nextPos;
         if (dir == Directions.NORTH)
-            nextPos = new Vector2(player.getPos().x, player.getPos().y + 1);
+            nextPos = new Vector2(player.getPos().x, player.getPos().y + steps);
         else if (dir == Directions.SOUTH)
-            nextPos = new Vector2(player.getPos().x, player.getPos().y - 1);
+            nextPos = new Vector2(player.getPos().x, player.getPos().y - steps);
         else if (dir == Directions.EAST)
-            nextPos = new Vector2(player.getPos().x + 1, player.getPos().y);
+            nextPos = new Vector2(player.getPos().x + steps, player.getPos().y);
         else
-            nextPos = new Vector2(player.getPos().x - 1, player.getPos().y);
+            nextPos = new Vector2(player.getPos().x - steps, player.getPos().y);
 
         // Can go from current tile
-        String wallType = getTileType(map, "OWalls", player.getPos());
+        String wallType = getTileType(board, "OWalls", player.getPos());
         if (wallType != null) {
             switch (wallType) {
                 case "Wall_North":
@@ -198,7 +190,7 @@ public class EventHandler {
         }
 
         // Can go to next tile
-        wallType = getTileType(map, "OWalls", nextPos);
+        wallType = getTileType(board, "OWalls", nextPos);
         if (wallType != null) {
             switch (wallType) {
                 case "Wall_North":
@@ -229,12 +221,12 @@ public class EventHandler {
     /**
      * Gets tile-type at a certain position.
      *
-     * @param map The map which holds the tiles
-     * @param pos Position of the cell
+     * @param board The Board which holds the tiles
+     * @param pos   Position of the cell
      * @return A String representing the type of tile at the pos.
      */
-    private static String getTileType(TiledMap map, String layer, Vector2 pos) {
-        for (MapObject mo : map.getLayers().get(layer).getObjects()) {
+    private static String getTileType(Board board, String layer, Vector2 pos) {
+        for (MapObject mo : board.getObjectLayer(layer)) {
             if (mo instanceof RectangleMapObject) {
                 Rectangle rect = ((RectangleMapObject) mo).getRectangle();
                 int rectX = (int) rect.x / TILE_SIZE;
