@@ -250,6 +250,6 @@
   <object id="225" type="Wall_North" x="1020" y="300" width="60" height="60"/>
   <object id="226" type="Wall_North" x="1080" y="300" width="60" height="60"/>
   <object id="227" type="Wall_North" x="1140" y="300" width="60" height="60"/>
-  <object id="228" x="1200" y="300" width="60" height="60"/>
+  <object id="228" type="Wall_North" x="1200" y="300" width="60" height="60"/>
  </objectgroup>
 </map>
