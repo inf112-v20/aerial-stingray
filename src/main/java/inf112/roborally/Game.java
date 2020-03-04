@@ -68,12 +68,10 @@ public class Game extends InputAdapter implements ApplicationListener {
         int y = (int) player.getPos().y;
 
         if (keycode == Input.Keys.UP) {
-            if (EventHandler.canGo(board, player, 1))
-                player.move(1);
+            player.move(board, player.getDir(), 1);
             moved = true;
         } else if (keycode == Input.Keys.DOWN) {
-            if (EventHandler.canGo(board, player, 1))
-                player.move(-1);
+            player.move(board, player.getOppositeDir(), 1);
             moved = true;
         } else if (keycode == Input.Keys.LEFT) {
             player.rotate(false);

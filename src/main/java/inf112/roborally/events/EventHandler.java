@@ -99,7 +99,7 @@ public class EventHandler {
                 break;
 
             case "Express_Conveyor_South":
-                player.getPos().y-=2;
+                player.move(board, Directions.SOUTH, 2);
                 break;
 
             case "Express_Conveyor_East":
@@ -150,8 +150,7 @@ public class EventHandler {
      * @param player Representing player, with it's direction
      * @return A boolean true if you can go in a specific direction
      */
-    public static boolean canGo(Board board, Player player, int steps) {
-        Directions dir = player.getDir();
+    public static boolean canGo(Board board, Player player, Directions dir, int steps) {
         // Getting position of player
         Vector2 nextPos;
         if (dir == Directions.NORTH)
@@ -168,22 +167,22 @@ public class EventHandler {
         if (wallType != null) {
             switch (wallType) {
                 case "Wall_North":
-                    if (player.getDir() == Directions.NORTH)
+                    if (dir == Directions.NORTH)
                         return false;
                     break;
 
                 case "Wall_South":
-                    if (player.getDir() == Directions.SOUTH)
+                    if (dir == Directions.SOUTH)
                         return false;
                     break;
 
                 case "Wall_East":
-                    if (player.getDir() == Directions.EAST)
+                    if (dir == Directions.EAST)
                         return false;
                     break;
 
                 case "Wall_West":
-                    if (player.getDir() == Directions.WEST)
+                    if (dir == Directions.WEST)
                         return false;
                     break;
             }
@@ -194,22 +193,22 @@ public class EventHandler {
         if (wallType != null) {
             switch (wallType) {
                 case "Wall_North":
-                    if (player.getDir() == Directions.SOUTH)
+                    if (dir == Directions.SOUTH)
                         return false;
                     break;
 
                 case "Wall_South":
-                    if (player.getDir() == Directions.NORTH)
+                    if (dir == Directions.NORTH)
                         return false;
                     break;
 
                 case "Wall_East":
-                    if (player.getDir() == Directions.WEST)
+                    if (dir == Directions.WEST)
                         return false;
                     break;
 
                 case "Wall_West":
-                    if (player.getDir() == Directions.EAST)
+                    if (dir == Directions.EAST)
                         return false;
                     break;
             }

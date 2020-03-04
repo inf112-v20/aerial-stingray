@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
+import inf112.roborally.events.EventHandler;
+import inf112.roborally.ui.Board;
 
 /**
  * Represents the "robot"/playing piece the human player is associated with.
@@ -65,33 +67,54 @@ public class Player {
     }
 
     /**
-     * Move in the current direction.
+     * Moves the player in a certain direction with specified num. of steps.
+     * Checks that the player can go on each tile for each step.
      *
-     * @param steps Steps to move
+     * @param board The board to move on
+     * @param dir   The direction to move 1 step towards
+     * @param steps Number of steps to take
      */
-    public void move(int steps) {
-        switch (dir) {
-            case NORTH:
-                getPos().y += steps;
-                break;
-            case EAST:
-                getPos().x += steps;
-                break;
-            case SOUTH:
-                getPos().y -= steps;
-                break;
-            case WEST:
-                getPos().x -= steps;
-                break;
+    public void move(Board board, Directions dir, int steps) {
+        for (int i = 0; i < steps; i++) {
+            switch (dir) {
+                case NORTH:
+                    if (EventHandler.canGo(board, this, Directions.NORTH, 1))
+                        getPos().y++;
+                    break;
+                case EAST:
+                    if (EventHandler.canGo(board, this, Directions.EAST, 1))
+                        getPos().x++;
+                    break;
+                case SOUTH:
+                    if (EventHandler.canGo(board, this, Directions.SOUTH, 1))
+                        getPos().y--;
+                    break;
 
-            default:
-                System.err.println("Non-valid move!");
-                break;
+                case WEST:
+                    if (EventHandler.canGo(board, this, Directions.WEST, 1))
+                        getPos().x--;
+                    break;
+
+                default:
+                    System.err.println("Non-valid move!");
+                    break;
+            }
         }
     }
 
     public Directions getDir() {
         return dir;
+    }
+
+    public Directions getOppositeDir() {
+        if (dir == Directions.NORTH)
+            return Directions.SOUTH;
+        else if (dir == Directions.EAST)
+            return Directions.WEST;
+        else if (dir == Directions.SOUTH)
+            return Directions.NORTH;
+        else
+            return Directions.EAST;
     }
 
     /**
