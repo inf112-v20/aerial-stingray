@@ -55,47 +55,47 @@ public class EventHandler {
                 break;
 
             case "Normal_Conveyor_North":
-                player.getPos().y++;
+                player.move(board, Directions.NORTH, 1);
                 break;
 
             case "Normal_Conveyor_East":
-                player.getPos().x++;
+                player.move(board, Directions.EAST, 1);
                 break;
 
             case "Normal_Conveyor_South":
-                player.getPos().y--;
+                player.move(board, Directions.SOUTH, 1);
                 break;
 
             case "Normal_Conveyor_West":
-                player.getPos().x--;
+                player.move(board, Directions.WEST, 1);
                 break;
 
             case "Normal_Conveyor_EastNorth":
                 player.rotate(false);
-                player.getPos().y++;
+                player.move(board, Directions.NORTH, 1);
                 break;
 
             case "Normal_Conveyor_NorthEast":
                 player.rotate(true);
-                player.getPos().x++;
+                player.move(board, Directions.EAST, 1);
                 break;
 
             case "Normal_Conveyor_EastSouth":
                 player.rotate(true);
-                player.getPos().y--;
+                player.move(board, Directions.SOUTH, 1);
                 break;
 
             case "Normal_Conveyor_SouthEast":
                 player.rotate(false);
-                player.getPos().x++;
+                player.move(board, Directions.EAST, 1);
                 break;
 
             case "Express_Conveyor_North":
-                player.getPos().y+=2;
+                player.move(board, Directions.NORTH, 2);
                 break;
 
             case "Express_Conveyor_West":
-                player.getPos().x-=2;
+                player.move(board, Directions.WEST, 2);
                 break;
 
             case "Express_Conveyor_South":
@@ -103,32 +103,32 @@ public class EventHandler {
                 break;
 
             case "Express_Conveyor_East":
-                player.getPos().x+=2;
+                player.move(board, Directions.EAST, 2);
                 break;
 
             case "Express_Conveyor_EastNorth":
                 player.rotate(false);
-                player.getPos().y+=2;
+                player.move(board, Directions.NORTH, 2);
                 break;
 
             case "Express_Conveyor_NorthEast":
                 player.rotate(true);
-                player.getPos().x+=2;
+                player.move(board, Directions.EAST, 2);
                 break;
 
             case "Express_Conveyor_EastSouth":
                 player.rotate(true);
-                player.getPos().y-=2;
+                player.move(board, Directions.SOUTH, 2);
                 break;
 
             case "Express_Conveyor_SouthWest":
                 player.rotate(true);
-                player.getPos().x-=2;
+                player.move(board, Directions.WEST, 2);
                 break;
 
             case "Express_Conveyor_WestNorth":
                 player.rotate(true);
-                player.getPos().y+=2;
+                player.move(board, Directions.NORTH, 2);
                 break;
 
             case "RotateLeft":
@@ -138,6 +138,9 @@ public class EventHandler {
             case "RotateRight":
                 player.rotate(true);
                 break;
+
+            default:
+                System.out.println("Tile not recognized.");
         }
     }
 
