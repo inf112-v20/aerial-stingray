@@ -6,6 +6,7 @@ import java.util.Stack;
 
 public class Deck {
 
+    public final static int DECK_SIZE = 84;
     private Stack<ProgramCard> deck;
 
     /**
@@ -56,7 +57,7 @@ public class Deck {
         ArrayList<Integer> randomPriorities = new ArrayList<>();
 
         // 84 different priorities, one for each card
-        for (int i = 1; i < 85; i++) {
+        for (int i = 1; i < DECK_SIZE + 1; i++) {
             randomPriorities.add(i * 10);
         }
 
