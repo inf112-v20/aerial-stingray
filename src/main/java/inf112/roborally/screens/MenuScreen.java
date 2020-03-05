@@ -3,12 +3,10 @@ package inf112.roborally.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -30,6 +28,9 @@ public class MenuScreen implements Screen {
     public void show() {
         Table menuComponents = new Table();
         Skin menuSkin = new Skin(Gdx.files.internal("rusty-robot/skin/rusty-robot-ui.json"));
+
+        Image robot = new Image(new Texture(Gdx.files.internal("rusty-robot/raw/robot.png")));
+        robot.setPosition(1000, 0);
 
         TextField textField = new TextField("RoboRally", menuSkin);
         textField.setDisabled(true);
@@ -62,6 +63,7 @@ public class MenuScreen implements Screen {
         menuComponents.setFillParent(true);
 
         stage.addActor(menuComponents);
+        stage.addActor(robot);
         Gdx.input.setInputProcessor(stage);
     }
 
