@@ -34,3 +34,6 @@ There are currently three test classes.
 
 ## UML diagram
 ![UML](assets/UML.png)
+
+## Thanks to :heart:
+* [gdx-skins](https://github.com/czyzby/gdx-skins) by czyzby for allowing us to use cool component-skins

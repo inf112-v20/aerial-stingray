@@ -1,9 +1,9 @@
-package inf112.roborally;
+package inf112.roborally.screens;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -15,12 +15,7 @@ import inf112.roborally.entities.Player;
 import inf112.roborally.events.EventHandler;
 import inf112.roborally.ui.Board;
 
-/**
- * Main class for RoboRally.
- * <p>
- * Contains logic & main-loop for the game.
- */
-public class Game extends InputAdapter implements ApplicationListener {
+public class GameScreen extends InputAdapter implements Screen {
 
     /**
      * Rendering
@@ -41,8 +36,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     private Board board;
 
 
-    @Override
-    public void create() {
+    public GameScreen() {
         // Board
         board = new Board();
 
@@ -90,6 +84,10 @@ public class Game extends InputAdapter implements ApplicationListener {
         return false;
     }
 
+    @Override
+    public void show() {
+    }
+
     /**
      * Player icon changes based on which tile the player stands on.
      */
@@ -98,7 +96,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
 
     @Override
-    public void render() {
+    public void render(float v) {
         // Clear screen
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -134,5 +132,10 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     @Override
     public void resume() {
+    }
+
+    @Override
+    public void hide() {
+
     }
 }
