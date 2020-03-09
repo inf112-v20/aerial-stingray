@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import inf112.roborally.entities.Player;
 import inf112.roborally.events.EventHandler;
 import inf112.roborally.ui.Board;
+import inf112.roborally.ui.MenuScreen;
 
 /**
  * Main class for RoboRally.
@@ -25,10 +26,11 @@ public class Game extends InputAdapter implements ApplicationListener {
     /**
      * Rendering
      */
-    private SpriteBatch batch;
+    public SpriteBatch batch;
     private BitmapFont font;
     private TiledMapRenderer mapRenderer;
     private OrthographicCamera camera;
+    MenuScreen menuScreen;
 
     /**
      * Players
