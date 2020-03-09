@@ -5,13 +5,19 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
+import inf112.roborally.RoboRally;
 import inf112.roborally.events.EventHandler;
+import inf112.roborally.screens.GameScreen;
+import inf112.roborally.screens.LoseScreen;
+import inf112.roborally.screens.MenuScreen;
+import inf112.roborally.screens.WinScreen;
 import inf112.roborally.ui.Board;
 
 /**
  * Represents the "robot"/playing piece the human player is associated with.
  */
 public class Player {
+    private RoboRally parent;
 
     /**
      * Graphics
@@ -46,10 +52,12 @@ public class Player {
      */
     private int currentRotation = 2;
 
+    public Player(Vector2 pos, RoboRally parent) {
+        this.parent = parent;
 
-    public Player(Vector2 pos) {
         this.pos = pos;
         this.backup = new Vector2(pos.x,pos.y);
+
     }
 
     private TextureRegion[][] getTextureRegion() {
@@ -182,6 +190,9 @@ public class Player {
      */
     public void subtractLife() {
         life--;
+        if (life <= 0){
+            parent.setScreen(new LoseScreen(parent));
+        }
     }
 
     public boolean[] getFlags() {
@@ -214,5 +225,11 @@ public class Player {
             throw new IllegalArgumentException("Flag number must be between 1-4 (inclusive).");
 
         flags[flagNum - 1] = true;
+    }
+
+    public void winCondition() {
+        if (flags[3]){
+            parent.setScreen(new WinScreen(parent));
+        }
     }
 }

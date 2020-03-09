@@ -34,3 +34,7 @@ There are currently three test classes.
 
 ## UML diagram
 ![UML](assets/UML.png)
+
+## Thanks to :heart:
+* [gdx-skins](https://github.com/czyzby/gdx-skins) by czyzby for allowing us to use cool component-skins.
+    * We used the "Rusty Robot UI" created by [Raymond "Raeleus" Buckley](https://ray3k.wordpress.com/software/skin-composer-for-libgdx/)

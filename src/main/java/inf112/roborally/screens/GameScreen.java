@@ -1,9 +1,9 @@
-package inf112.roborally;
+package inf112.roborally.screens;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -11,17 +11,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import inf112.roborally.RoboRally;
 import inf112.roborally.entities.Player;
 import inf112.roborally.events.EventHandler;
 import inf112.roborally.ui.Board;
 import inf112.roborally.ui.MenuScreen;
 
-/**
- * Main class for RoboRally.
- * <p>
- * Contains logic & main-loop for the game.
- */
-public class Game extends InputAdapter implements ApplicationListener {
+public class GameScreen extends InputAdapter implements Screen {
+    private RoboRally parent;
 
     /**
      * Rendering
@@ -43,8 +40,9 @@ public class Game extends InputAdapter implements ApplicationListener {
     private Board board;
 
 
-    @Override
-    public void create() {
+    public GameScreen(RoboRally parent) {
+        this.parent = parent;
+
         // Board
         board = new Board();
 
@@ -60,7 +58,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         Gdx.input.setInputProcessor(this);
 
         // Players
-        player = new Player(new Vector2(13, 1));
+        player = new Player(new Vector2(13, 1), parent);
     }
 
     @Override
@@ -92,6 +90,10 @@ public class Game extends InputAdapter implements ApplicationListener {
         return false;
     }
 
+    @Override
+    public void show() {
+    }
+
     /**
      * Player icon changes based on which tile the player stands on.
      */
@@ -100,12 +102,13 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
 
     @Override
-    public void render() {
+    public void render(float v) {
         // Clear screen
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         drawPlayer();
+        player.winCondition();
 
         // Render
         camera.update();
@@ -136,5 +139,10 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     @Override
     public void resume() {
+    }
+
+    @Override
+    public void hide() {
+
     }
 }
