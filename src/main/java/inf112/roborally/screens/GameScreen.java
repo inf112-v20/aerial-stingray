@@ -11,11 +11,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import inf112.roborally.RoboRally;
 import inf112.roborally.entities.Player;
 import inf112.roborally.events.EventHandler;
 import inf112.roborally.ui.Board;
 
 public class GameScreen extends InputAdapter implements Screen {
+    private RoboRally parent;
 
     /**
      * Rendering
@@ -36,7 +38,9 @@ public class GameScreen extends InputAdapter implements Screen {
     private Board board;
 
 
-    public GameScreen() {
+    public GameScreen(RoboRally parent) {
+        this.parent = parent;
+
         // Board
         board = new Board();
 
@@ -52,7 +56,7 @@ public class GameScreen extends InputAdapter implements Screen {
         Gdx.input.setInputProcessor(this);
 
         // Players
-        player = new Player(new Vector2(13, 1));
+        player = new Player(new Vector2(13, 1), parent);
     }
 
     @Override

@@ -19,7 +19,7 @@ public class PlayerTest {
     @Before
     public void initialize() {
         playerPos = new Vector2(10, 10);
-        player = new Player(playerPos);
+        player = new Player(playerPos, null);
     }
 
     @Test
@@ -34,7 +34,7 @@ public class PlayerTest {
 
     @Test
     public void testRotateRight() {
-        Player player = new Player(new Vector2(0, 0));
+        Player player = new Player(new Vector2(0, 0), null);
         player.rotate(true);
 
         assertEquals(player.getDir(), Directions.EAST);
@@ -42,7 +42,7 @@ public class PlayerTest {
 
     @Test
     public void testRotateLeft() {
-        Player player = new Player(new Vector2(0, 0));
+        Player player = new Player(new Vector2(0, 0), null);
         player.rotate(false);
 
         assertEquals(player.getDir(), Directions.WEST);
@@ -56,7 +56,7 @@ public class PlayerTest {
 
     @Test
     public void testHasAllFlagsIsTrue() {
-        Player localPlayer = new Player(new Vector2(0, 0));
+        Player localPlayer = new Player(new Vector2(0, 0), null);
         localPlayer.addFlag(1);
         localPlayer.addFlag(2);
         localPlayer.addFlag(3);

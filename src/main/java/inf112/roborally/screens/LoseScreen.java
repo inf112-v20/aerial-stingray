@@ -13,12 +13,12 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import inf112.roborally.Main;
 import inf112.roborally.RoboRally;
 
-public class MenuScreen implements Screen {
+public class LoseScreen implements Screen {
 
     private RoboRally parent;
     private Stage stage;
 
-    public MenuScreen(RoboRally parent) {
+    public LoseScreen(RoboRally parent) {
         this.parent = parent;
 
         stage = new Stage(new StretchViewport(Main.WIDTH, Main.HEIGHT));
@@ -32,17 +32,16 @@ public class MenuScreen implements Screen {
         Image robot = new Image(new Texture(Gdx.files.internal("rusty-robot/raw/robot.png")));
         robot.setPosition(1000, 0);
 
-        TextField textField = new TextField("RoboRally", menuSkin);
+        TextField textField = new TextField("You Lost.. :(", menuSkin);
         textField.setDisabled(true);
         textField.setAlignment(Align.center);
-        TextButton start = new TextButton("Start Game", menuSkin);
-        TextButton settings = new TextButton("Settings", menuSkin);
+        TextButton mainMenu = new TextButton("Main Menu", menuSkin);
         TextButton exit = new TextButton("Exit", menuSkin);
 
-        start.addListener(new ChangeListener() {
+        mainMenu.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
-                parent.setScreen(new GameScreen(parent));
+                parent.setScreen(new MenuScreen(parent));
             }
         });
 
@@ -55,9 +54,7 @@ public class MenuScreen implements Screen {
 
         menuComponents.add(textField).size(200, 75).expandX().padBottom(20);
         menuComponents.row();
-        menuComponents.add(start).size(300, 120).expandX();
-        menuComponents.row();
-        menuComponents.add(settings).size(300, 120).expandX();
+        menuComponents.add(mainMenu).size(300, 120).expandX();
         menuComponents.row();
         menuComponents.add(exit).size(300, 120).expandX();
         menuComponents.setFillParent(true);
