@@ -106,6 +106,7 @@ public class GameScreen extends InputAdapter implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         drawPlayer();
+        player.winCondition();
 
         // Render
         camera.update();

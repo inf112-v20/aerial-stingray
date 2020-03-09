@@ -225,6 +225,9 @@ public class Player {
             throw new IllegalArgumentException("Flag number must be between 1-4 (inclusive).");
 
         flags[flagNum - 1] = true;
+    }
+
+    public void winCondition() {
         if (flags[3]){
             parent.setScreen(new WinScreen(parent));
         }
