@@ -15,6 +15,9 @@ import static inf112.roborally.ui.Board.TILE_SIZE;
  */
 public class EventHandler {
 
+    private static boolean fromConveyor;
+
+
     /**
      * Handles an event on a current tile with a given map & player.
      *
@@ -27,120 +30,159 @@ public class EventHandler {
      *               case instead of its actual case.
      */
     public static void handleEvent(Board board, Player player) {
-        String type = getTileType(board, "OEvents", player.getPos());
+        String movers = getTileType(board, "OMovers", player.getPos());
 
-        switch (type) {
+        switch (movers) {
+
+            case "Normal_Conveyor_North":
+                player.move(board, Directions.NORTH, 1);
+                fromConveyor = true;
+                break;
+
+            case "Normal_Conveyor_East":
+                player.move(board, Directions.EAST, 1);
+                fromConveyor = true;
+                break;
+
+            case "Normal_Conveyor_South":
+                player.move(board, Directions.SOUTH, 1);
+                fromConveyor = true;
+                break;
+
+            case "Normal_Conveyor_West":
+                player.move(board, Directions.WEST, 1);
+                fromConveyor = true;
+                break;
+
+            case "Normal_Conveyor_EastNorth":
+                if (fromConveyor)
+                    player.rotate(false);
+                player.move(board, Directions.NORTH, 1);
+                fromConveyor = true;
+                break;
+
+            case "Normal_Conveyor_NorthEast":
+                if (fromConveyor)
+                player.move(board, Directions.EAST, 1);
+                fromConveyor = true;
+                break;
+
+            case "Normal_Conveyor_EastSouth":
+                if (fromConveyor)
+                    player.rotate(true);
+                player.move(board, Directions.SOUTH, 1);
+                fromConveyor = true;
+                break;
+
+            case "Normal_Conveyor_SouthEast":
+                if (fromConveyor)
+                    player.rotate(false);
+                player.move(board, Directions.EAST, 1);
+                fromConveyor = true;
+                break;
+
+            case "Express_Conveyor_North":
+                player.move(board, Directions.NORTH, 2);
+                fromConveyor = true;
+                break;
+
+            case "Express_Conveyor_West":
+                player.move(board, Directions.WEST, 2);
+                fromConveyor = true;
+                break;
+
+            case "Express_Conveyor_South":
+                player.move(board, Directions.SOUTH, 2);
+                fromConveyor = true;
+                break;
+
+            case "Express_Conveyor_East":
+                player.move(board, Directions.EAST, 2);
+                fromConveyor = true;
+                break;
+
+            case "Express_Conveyor_EastNorth":
+                if (fromConveyor)
+                    player.rotate(false);
+                player.move(board, Directions.NORTH, 2);
+                fromConveyor = true;
+                break;
+
+            case "Express_Conveyor_NorthEast":
+                if (fromConveyor)
+                    player.rotate(true);
+                player.move(board, Directions.EAST, 2);
+                fromConveyor = true;
+                break;
+
+            case "Express_Conveyor_EastSouth":
+                if (fromConveyor)
+                    player.rotate(true);
+                player.move(board, Directions.SOUTH, 2);
+                fromConveyor = true;
+                break;
+
+            case "Express_Conveyor_SouthWest":
+                if (fromConveyor)
+                    player.rotate(true);
+                player.move(board, Directions.WEST, 2);
+                fromConveyor = true;
+                break;
+
+            case "Express_Conveyor_WestNorth":
+                if (fromConveyor)
+                    player.rotate(true);
+                player.move(board, Directions.NORTH, 2);
+                fromConveyor = true;
+                break;
+        }
+
+        String events = getTileType(board, "OEvents", player.getPos());
+
+        switch (events) {
+
             case "Hole":
                 player.subtractLife();
                 player.respawn();
+                fromConveyor = false;
+                break;
+
+            case "RotateLeft":
+                player.rotate(false);
+                fromConveyor = false;
+                break;
+
+            case "RotateRight":
+                player.rotate(true);
+                fromConveyor = false;
                 break;
 
             case "Flag1":
                 player.addFlag(1);
+                fromConveyor = false;
                 break;
 
             case "Flag2":
                 if (player.getFlags()[0])
                     player.addFlag(2);
+                fromConveyor = false;
                 break;
 
             case "Flag3":
                 if (player.getFlags()[0] && player.getFlags()[1])
                     player.addFlag(3);
+                fromConveyor = false;
                 break;
 
             case "Flag4":
                 if (player.getFlags()[0] && player.getFlags()[1] && player.getFlags()[2])
                     player.addFlag(4);
+                fromConveyor = false;
                 break;
 
-            case "Normal_Conveyor_North":
-                player.move(board, Directions.NORTH, 1);
+            case "Floor":
+                fromConveyor = false;
                 break;
-
-            case "Normal_Conveyor_East":
-                player.move(board, Directions.EAST, 1);
-                break;
-
-            case "Normal_Conveyor_South":
-                player.move(board, Directions.SOUTH, 1);
-                break;
-
-            case "Normal_Conveyor_West":
-                player.move(board, Directions.WEST, 1);
-                break;
-
-            case "Normal_Conveyor_EastNorth":
-                player.rotate(false);
-                player.move(board, Directions.NORTH, 1);
-                break;
-
-            case "Normal_Conveyor_NorthEast":
-                player.rotate(true);
-                player.move(board, Directions.EAST, 1);
-                break;
-
-            case "Normal_Conveyor_EastSouth":
-                player.rotate(true);
-                player.move(board, Directions.SOUTH, 1);
-                break;
-
-            case "Normal_Conveyor_SouthEast":
-                player.rotate(false);
-                player.move(board, Directions.EAST, 1);
-                break;
-
-            case "Express_Conveyor_North":
-                player.move(board, Directions.NORTH, 2);
-                break;
-
-            case "Express_Conveyor_West":
-                player.move(board, Directions.WEST, 2);
-                break;
-
-            case "Express_Conveyor_South":
-                player.move(board, Directions.SOUTH, 2);
-                break;
-
-            case "Express_Conveyor_East":
-                player.move(board, Directions.EAST, 2);
-                break;
-
-            case "Express_Conveyor_EastNorth":
-                player.rotate(false);
-                player.move(board, Directions.NORTH, 2);
-                break;
-
-            case "Express_Conveyor_NorthEast":
-                player.rotate(true);
-                player.move(board, Directions.EAST, 2);
-                break;
-
-            case "Express_Conveyor_EastSouth":
-                player.rotate(true);
-                player.move(board, Directions.SOUTH, 2);
-                break;
-
-            case "Express_Conveyor_SouthWest":
-                player.rotate(true);
-                player.move(board, Directions.WEST, 2);
-                break;
-
-            case "Express_Conveyor_WestNorth":
-                player.rotate(true);
-                player.move(board, Directions.NORTH, 2);
-                break;
-
-            case "RotateLeft":
-                player.rotate(false);
-                break;
-
-            case "RotateRight":
-                player.rotate(true);
-                break;
-
-            default:
-                System.out.println("Tile not recognized.");
         }
     }
 

@@ -26,8 +26,10 @@ public class Board {
      * Object Layers
      */
     private MapObjects objectEvents;
+    private MapObjects objectMovers;
     private MapObjects objectLasers;
     private MapObjects objectWalls;
+
 
 
     public Board() {
@@ -35,6 +37,7 @@ public class Board {
         playerLayer = (TiledMapTileLayer) map.getLayers().get("Player");
 
         objectEvents = map.getLayers().get("OEvents").getObjects();
+        objectMovers = map.getLayers().get("OMovers").getObjects();
         objectLasers = map.getLayers().get("OLasers").getObjects();
         objectWalls = map.getLayers().get("OWalls").getObjects();
     }
@@ -51,6 +54,9 @@ public class Board {
         switch (layer) {
             case "OEvents":
                 return objectEvents;
+
+            case "OMovers":
+                return objectMovers;
 
             case "OLasers":
                 return objectLasers;
