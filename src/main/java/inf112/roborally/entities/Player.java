@@ -24,6 +24,11 @@ public class Player {
     private Vector2 backup;
 
     /**
+     * Player color
+     */
+    public Color color;
+
+    /**
      * Coordinates
      */
     private Vector2 pos;
@@ -50,11 +55,13 @@ public class Player {
      */
     private int currentRotation = 2;
 
-    public Player(Vector2 pos, RoboRally parent) {
+    public Player(Vector2 pos, RoboRally parent, Color color) {
         this.parent = parent;
 
         this.pos = pos;
         this.backup = new Vector2(pos.x,pos.y);
+
+        this.color = color;
 
     }
 
@@ -62,16 +69,16 @@ public class Player {
      * @return player direction icon
      */
     private TextureRegion getNorthTextureRegion() {
-        return new TextureRegion(new Texture("player-skin/green/player-north.png"));
+        return new TextureRegion(new Texture("player-skin/"+color+"/player-north.png"));
     }
     private TextureRegion getSouthTextureRegion() {
-        return new TextureRegion(new Texture("player-skin/green/player-south.png"));
+        return new TextureRegion(new Texture("player-skin/"+color+"/player-south.png"));
     }
     private TextureRegion getWestTextureRegion() {
-        return new TextureRegion(new Texture("player-skin/green/player-west.png"));
+        return new TextureRegion(new Texture("player-skin/"+color+"/player-west.png"));
     }
     private TextureRegion getEastTextureRegion() {
-        return new TextureRegion(new Texture("player-skin/green/player-east.png"));
+        return new TextureRegion(new Texture("player-skin/"+color+"/player-east.png"));
     }
 
     public TiledMapTileLayer.Cell getPlayerIcon() {
