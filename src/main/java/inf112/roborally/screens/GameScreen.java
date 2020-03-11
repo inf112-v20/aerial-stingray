@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import inf112.roborally.Main;
 import inf112.roborally.RoboRally;
+import inf112.roborally.entities.Color;
 import inf112.roborally.entities.Player;
 import inf112.roborally.events.EventHandler;
 import inf112.roborally.ui.Board;
@@ -82,7 +83,7 @@ public class GameScreen extends InputAdapter implements Screen {
         Gdx.input.setInputProcessor(im);
 
         // Players
-        player = new Player(new Vector2(13, 1), parent);
+        player = new Player(new Vector2(13, 1), parent, Color.RED);
     }
 
     @Override
