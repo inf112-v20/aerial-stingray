@@ -123,6 +123,10 @@ public class GameScreen extends InputAdapter implements Screen {
      */
     private void reactToCurrentTile() {
         EventHandler.handleEvent(board, player);
+        if(EventHandler.outOfBounds(player)) {
+            player.subtractLife();
+            player.respawn();
+        }
     }
 
     @Override
