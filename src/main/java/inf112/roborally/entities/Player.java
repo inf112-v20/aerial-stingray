@@ -7,9 +7,7 @@ import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
 import inf112.roborally.RoboRally;
 import inf112.roborally.events.EventHandler;
-import inf112.roborally.screens.GameScreen;
 import inf112.roborally.screens.LoseScreen;
-import inf112.roborally.screens.MenuScreen;
 import inf112.roborally.screens.WinScreen;
 import inf112.roborally.ui.Board;
 
@@ -60,18 +58,24 @@ public class Player {
 
     }
 
-    private TextureRegion[][] getTextureRegion() {
-        return TextureRegion.split(new Texture(PLAYER_PATH), 60, 60);
+    /**
+     * @return player direction icon
+     */
+    private TextureRegion getNorthTextureRegion() {
+        return new TextureRegion(new Texture("player-skin/green/player-north.png"));
+    }
+    private TextureRegion getSouthTextureRegion() {
+        return new TextureRegion(new Texture("player-skin/green/player-south.png"));
+    }
+    private TextureRegion getWestTextureRegion() {
+        return new TextureRegion(new Texture("player-skin/green/player-west.png"));
+    }
+    private TextureRegion getEastTextureRegion() {
+        return new TextureRegion(new Texture("player-skin/green/player-east.png"));
     }
 
     public TiledMapTileLayer.Cell getPlayerIcon() {
-        if (playerIcon == null)
-            playerIcon = getPlayerNormalCell();
-
-        if (hasAllFlags())
-            playerIcon = getPlayerWonCell();
-
-        return playerIcon.setRotation(currentRotation);
+        return getPlayerNormalCell();
     }
 
     /**
@@ -129,14 +133,28 @@ public class Player {
      * TiledMapTileLayer.Cell
      */
     public TiledMapTileLayer.Cell getPlayerNormalCell() {
-        TextureRegion textureRegion = getTextureRegion()[0][0];
+        TextureRegion textureRegion = getNorthTextureRegion();
+        switch (dir){
+            case NORTH:
+                textureRegion = getNorthTextureRegion();
+                break;
+            case EAST:
+                textureRegion = getEastTextureRegion();
+                break;
+            case SOUTH:
+                textureRegion = getSouthTextureRegion();
+                break;
+            case WEST:
+                textureRegion = getWestTextureRegion();
+                break;
+            default:
+                System.err.println("Non-valid direction!");
+                break;
+        }
         return new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion));
+
     }
 
-    public TiledMapTileLayer.Cell getPlayerWonCell() {
-        TextureRegion textureRegion = getTextureRegion()[0][2];
-        return new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion));
-    }
 
     public boolean hasAllFlags() {
         return flags[0] && flags[1] && flags[2] && flags[3];
