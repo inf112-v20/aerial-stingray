@@ -4,6 +4,7 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import inf112.roborally.Main;
 import inf112.roborally.entities.Directions;
 import inf112.roborally.entities.Player;
 import inf112.roborally.ui.Board;
@@ -184,6 +185,12 @@ public class EventHandler {
                 fromConveyor = false;
                 break;
         }
+    }
+
+    public static boolean outOfBounds(Player player) {
+        if (player.getPos().x < 0 || player.getPos().y < 0)
+            return true;
+        return (player.getPos().x >= (Main.WIDTH / TILE_SIZE)) || (player.getPos().y >= (Main.HEIGHT / TILE_SIZE));
     }
 
     /**
