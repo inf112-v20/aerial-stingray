@@ -38,7 +38,7 @@ public class Player {
      * Life, damage & flags
      */
     private int life = 3;
-    private int damage = 0;
+    public int damage = 0;
     private boolean[] flags = {false, false, false, false};
 
     /**
