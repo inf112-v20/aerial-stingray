@@ -108,8 +108,8 @@ public class GameScreen extends InputAdapter implements Screen {
 
         if (moved) {
             board.getPlayerLayer().setCell(x, y, null);
-            System.out.println(player.showStatus());
             reactToCurrentTile();
+            System.out.println(player.showStatus());
             return true;
         }
         return false;

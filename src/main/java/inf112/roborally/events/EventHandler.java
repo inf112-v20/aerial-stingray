@@ -144,7 +144,6 @@ public class EventHandler {
 
             case "Hole":
                 player.subtractLife();
-                player.respawn();
                 fromConveyor = false;
                 break;
 
@@ -190,21 +189,12 @@ public class EventHandler {
 
         switch (lasers) {
             case "Laser":
-                player.damage++;
-                if(player.damage == 10) {
-                    player.subtractLife();
-                    player.damage = 0;
-                    player.respawn();
-                }
+                player.takeDamage();
                 break;
 
             case "Laser_2x":
-                player.damage += 2;
-                if(player.damage >= 10) {
-                    player.subtractLife();
-                    player.damage = 0;
-                    player.respawn();
-                }
+                player.takeDamage();
+                player.takeDamage();
                 break;
         }
     }

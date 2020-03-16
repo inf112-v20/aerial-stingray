@@ -38,7 +38,7 @@ public class Player {
      * Life, damage & flags
      */
     private int life = 3;
-    public int damage = 0;
+    private int damage = 0;
     private boolean[] flags = {false, false, false, false};
 
     /**
@@ -215,8 +215,20 @@ public class Player {
      */
     public void subtractLife() {
         life--;
+        respawn();
         if (life <= 0){
             parent.setScreen(new LoseScreen(parent));
+        }
+    }
+
+    /**
+     * add one damage
+     */
+    public void takeDamage(){
+        damage++;
+        if (damage >= 10){
+            subtractLife();
+            damage = 10;
         }
     }
 
