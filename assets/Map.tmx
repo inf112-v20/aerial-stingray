@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="24" height="12" tilewidth="60" tileheight="60" infinite="0" nextlayerid="21" nextobjectid="419">
+<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="24" height="12" tilewidth="60" tileheight="60" infinite="0" nextlayerid="21" nextobjectid="441">
  <tileset firstgid="1" name="tiles" tilewidth="60" tileheight="60" tilecount="136" columns="8">
   <image source="tiles.png" width="480" height="1020"/>
  </tileset>
@@ -151,6 +151,13 @@
   <object id="378" type="Floor" x="840" y="600" width="60" height="60"/>
   <object id="379" type="Floor" x="120" y="0" width="60" height="180"/>
   <object id="380" type="Floor" x="60" y="0" width="60" height="180"/>
+  <object id="426" type="Normal_Conv" x="1140" y="180" width="60" height="60"/>
+  <object id="430" type="Double_Wrench" x="480" y="480" width="60" height="60"/>
+  <object id="431" type="Single_Wrench" x="840" y="360" width="60" height="60"/>
+  <object id="435" type="Single_Wrench" x="1140" y="420" width="60" height="60"/>
+  <object id="436" type="Single_Wrench" x="480" y="660" width="60" height="60"/>
+  <object id="439" type="Floor" x="1200" y="540" width="60" height="60"/>
+  <object id="440" type="Double_Wrench" x="1140" y="120" width="60" height="60"/>
  </objectgroup>
  <objectgroup id="15" name="OMovers">
   <object id="162" type="Normal_Conveyor_East" x="1200" y="180" width="60" height="60"/>
@@ -192,7 +199,6 @@
   <object id="150" type="Express_Conveyor_South" x="1380" y="180" width="60" height="60"/>
   <object id="23" type="Normal_Conveyor_EastSouth" x="1320" y="180" width="60" height="60"/>
   <object id="163" type="Normal_Conveyor_East" x="1260" y="180" width="60" height="60"/>
-  <object id="161" type="Normal_Conveyor_East" x="1140" y="180" width="60" height="60"/>
   <object id="160" type="Normal_Conveyor_East" x="1080" y="180" width="60" height="60"/>
   <object id="159" type="Normal_Conveyor_East" x="1020" y="180" width="60" height="60"/>
   <object id="158" type="Normal_Conveyor_East" x="960" y="180" width="60" height="60"/>
@@ -232,7 +238,6 @@
   <object id="188" type="Normal_Conveyor_East" x="720" y="540" width="60" height="60"/>
   <object id="187" type="Normal_Conveyor_East" x="660" y="540" width="60" height="60"/>
   <object id="11" type="Normal_Conveyor_SouthEast" x="600" y="540" width="60" height="60"/>
-  <object id="358" type="Floor" x="1200" y="540" width="60" height="60"/>
  </objectgroup>
  <objectgroup id="11" name="OLasers">
   <object id="72" type="Laser_2x" x="540" y="420" width="60" height="60"/>
