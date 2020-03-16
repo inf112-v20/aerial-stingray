@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="24" height="12" tilewidth="60" tileheight="60" infinite="0" nextlayerid="20" nextobjectid="382">
+<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="24" height="12" tilewidth="60" tileheight="60" infinite="0" nextlayerid="21" nextobjectid="419">
  <tileset firstgid="1" name="tiles" tilewidth="60" tileheight="60" tilecount="136" columns="8">
   <image source="tiles.png" width="480" height="1020"/>
  </tileset>
@@ -235,19 +235,39 @@
   <object id="358" type="Floor" x="1200" y="540" width="60" height="60"/>
  </objectgroup>
  <objectgroup id="11" name="OLasers">
-  <object id="60" type="Laser" x="360" y="0" width="60" height="300"/>
-  <object id="69" type="Laser" x="720" y="540" width="60" height="180"/>
-  <object id="70" type="Laser" x="1080" y="300" width="60" height="120"/>
-  <object id="71" type="Laser" x="1260" y="0" width="60" height="720"/>
   <object id="72" type="Laser_2x" x="540" y="420" width="60" height="60"/>
   <object id="73" type="Laser_2x" x="660" y="420" width="60" height="60"/>
-  <object id="74" type="Laser" x="540" y="300" width="60" height="120"/>
   <object id="75" type="Laser" x="480" y="420" width="60" height="60"/>
   <object id="76" type="Laser" x="540" y="480" width="60" height="60"/>
   <object id="77" type="Laser" x="600" y="420" width="60" height="60"/>
-  <object id="78" type="Laser" x="660" y="300" width="60" height="120"/>
   <object id="79" type="Laser" x="660" y="480" width="60" height="60"/>
   <object id="80" type="Laser" x="720" y="420" width="60" height="60"/>
+  <object id="391" type="Laser" x="360" y="0" width="60" height="60"/>
+  <object id="392" type="Laser" x="360" y="60" width="60" height="60"/>
+  <object id="393" type="Laser" x="360" y="120" width="60" height="60"/>
+  <object id="394" type="Laser" x="360" y="180" width="60" height="60"/>
+  <object id="395" type="Laser" x="360" y="240" width="60" height="60"/>
+  <object id="396" type="Laser" x="540" y="300" width="60" height="60"/>
+  <object id="397" type="Laser" x="540" y="360" width="60" height="60"/>
+  <object id="398" type="Laser" x="660" y="300" width="60" height="60"/>
+  <object id="399" type="Laser" x="660" y="360" width="60" height="60"/>
+  <object id="400" x="720" y="540" width="60" height="60"/>
+  <object id="401" type="Laser" x="720" y="600" width="60" height="60"/>
+  <object id="402" type="Laser" x="720" y="660" width="60" height="60"/>
+  <object id="403" type="Laser" x="1080" y="300" width="60" height="60"/>
+  <object id="404" type="Laser" x="1080" y="360" width="60" height="60"/>
+  <object id="405" type="Laser" x="1260" y="0" width="60" height="60"/>
+  <object id="406" type="Laser" x="1260" y="60" width="60" height="60"/>
+  <object id="407" type="Laser" x="1260" y="120" width="60" height="60"/>
+  <object id="408" type="Laser" x="1260" y="180" width="60" height="60"/>
+  <object id="409" type="Laser" x="1260" y="240" width="60" height="60"/>
+  <object id="410" type="Laser" x="1260" y="600" width="60" height="60"/>
+  <object id="412" type="Laser" x="1260" y="300" width="60" height="60"/>
+  <object id="413" type="Laser" x="1260" y="360" width="60" height="60"/>
+  <object id="414" type="Laser" x="1260" y="420" width="60" height="60"/>
+  <object id="415" type="Laser" x="1260" y="480" width="60" height="60"/>
+  <object id="416" type="Laser" x="1260" y="540" width="60" height="60"/>
+  <object id="417" type="Laser" x="1260" y="660" width="60" height="60"/>
  </objectgroup>
  <objectgroup id="12" name="OWalls">
   <object id="81" type="Wall_North" x="360" y="0" width="60" height="60"/>

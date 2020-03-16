@@ -185,6 +185,28 @@ public class EventHandler {
                 fromConveyor = false;
                 break;
         }
+
+        String lasers = getTileType(board, "OLasers", player.getPos());
+
+        switch (lasers) {
+            case "Laser":
+                player.damage++;
+                if(player.damage == 10) {
+                    player.subtractLife();
+                    player.damage = 0;
+                    player.respawn();
+                }
+                break;
+
+            case "Laser_2x":
+                player.damage += 2;
+                if(player.damage >= 10) {
+                    player.subtractLife();
+                    player.damage = 0;
+                    player.respawn();
+                }
+                break;
+        }
     }
 
     public static boolean outOfBounds(Player player) {
