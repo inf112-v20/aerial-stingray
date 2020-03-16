@@ -49,7 +49,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
     public GameScreen(RoboRally parent) {
         // Resize
-        Gdx.graphics.setWindowedMode(Main.WIDTH, Main.HEIGHT + DECK_WINDOW_SIZE);
+        resize(Main.WIDTH, Main.HEIGHT + DECK_WINDOW_SIZE);
 
         // Board
         board = new Board();
@@ -163,6 +163,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        Gdx.graphics.setWindowedMode(width, height);
     }
 
     @Override
