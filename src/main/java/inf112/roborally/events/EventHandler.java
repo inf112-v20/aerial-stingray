@@ -183,6 +183,20 @@ public class EventHandler {
             case "Floor":
                 fromConveyor = false;
                 break;
+
+            case "Single_Wrench":
+                if(player.getDamage() > 0)
+                    player.subtractDamage();
+                fromConveyor = false;
+                break;
+
+            case "Hammer_Wrench":
+                //Also need to give an option card
+                if(player.getDamage() > 0) {
+                    player.subtractDamage();
+                }
+                fromConveyor = false;
+                break;
         }
 
         String lasers = getTileType(board, "OLasers", player.getPos());

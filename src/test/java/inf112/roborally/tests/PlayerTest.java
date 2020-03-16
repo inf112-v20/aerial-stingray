@@ -71,6 +71,7 @@ public class PlayerTest {
         assertTrue(localPlayer.hasAllFlags());
     }
 
+
     /* Not working as it needs libGDX engine to load assets in Board.java.
     @Test
     public void testMove1Step() {

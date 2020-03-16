@@ -231,6 +231,14 @@ public class Player {
             damage = 10;
         }
     }
+    public void subtractDamage(){
+        if(damage > 0)
+            damage--;
+    }
+
+    public int getDamage(){
+        return this.damage;
+    }
 
     public boolean[] getFlags() {
         return flags;

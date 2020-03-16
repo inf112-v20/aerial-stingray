@@ -152,12 +152,12 @@
   <object id="379" type="Floor" x="120" y="0" width="60" height="180"/>
   <object id="380" type="Floor" x="60" y="0" width="60" height="180"/>
   <object id="426" type="Normal_Conv" x="1140" y="180" width="60" height="60"/>
-  <object id="430" type="Double_Wrench" x="480" y="480" width="60" height="60"/>
+  <object id="430" type="Hammer_Wrench" x="480" y="480" width="60" height="60"/>
   <object id="431" type="Single_Wrench" x="840" y="360" width="60" height="60"/>
   <object id="435" type="Single_Wrench" x="1140" y="420" width="60" height="60"/>
   <object id="436" type="Single_Wrench" x="480" y="660" width="60" height="60"/>
   <object id="439" type="Floor" x="1200" y="540" width="60" height="60"/>
-  <object id="440" type="Double_Wrench" x="1140" y="120" width="60" height="60"/>
+  <object id="440" type="Hammer_Wrench" x="1140" y="120" width="60" height="60"/>
  </objectgroup>
  <objectgroup id="15" name="OMovers">
   <object id="162" type="Normal_Conveyor_East" x="1200" y="180" width="60" height="60"/>
