@@ -251,7 +251,7 @@
   <object id="397" type="Laser" x="540" y="360" width="60" height="60"/>
   <object id="398" type="Laser" x="660" y="300" width="60" height="60"/>
   <object id="399" type="Laser" x="660" y="360" width="60" height="60"/>
-  <object id="400" x="720" y="540" width="60" height="60"/>
+  <object id="400" type="Laser" x="720" y="540" width="60" height="60"/>
   <object id="401" type="Laser" x="720" y="600" width="60" height="60"/>
   <object id="402" type="Laser" x="720" y="660" width="60" height="60"/>
   <object id="403" type="Laser" x="1080" y="300" width="60" height="60"/>
