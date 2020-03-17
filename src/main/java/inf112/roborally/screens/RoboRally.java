@@ -13,14 +13,22 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import inf112.roborally.Main;
-import inf112.roborally.RoboRally;
 import inf112.roborally.entities.Color;
 import inf112.roborally.entities.Player;
 import inf112.roborally.events.EventHandler;
 import inf112.roborally.ui.Board;
 
-public class GameScreen extends InputAdapter implements Screen {
+import java.util.ArrayList;
 
+/**
+ * Handles logic of game & controlling players.
+ */
+public class RoboRally extends InputAdapter implements Screen {
+
+    /**
+     * Const.
+     */
+    private final int DECK_WINDOW_SIZE = 280;
 
     /**
      * Rendering
@@ -29,7 +37,6 @@ public class GameScreen extends InputAdapter implements Screen {
     private BitmapFont font;
     private TiledMapRenderer mapRenderer;
     private OrthographicCamera camera;
-    private final int DECK_WINDOW_SIZE = 280;
 
     /**
      * Components
@@ -37,22 +44,47 @@ public class GameScreen extends InputAdapter implements Screen {
     private Stage stage;
 
     /**
-     * Players
-     */
-    private Player player;
-
-    /**
-     * Board
+     * Board to be played on.
      */
     private Board board;
 
+    /**
+     * Players on the board
+     */
+    private ArrayList<Player> players;
 
-    public GameScreen(RoboRally parent) {
+    /**
+     * As of now, only handle one player.
+     * Reference to the player associated with this instance of RoboRally
+     */
+    private Player thisPlayer;
+
+
+    public RoboRally() {
+        setupBoard();
+        setupPlayers();
+        setupRendering();
+        setupUI();
+        setupInput();
+    }
+
+    private void setupBoard() {
+        board = new Board();
+    }
+
+    private void setupPlayers() {
+        players = new ArrayList<>();
+
+        // Adding a player
+        Player p1 = new Player(new Vector2(13, 1), Color.RED);
+        players.add(p1);
+
+        thisPlayer = players.get(0);
+    }
+
+    private void setupRendering() {
         // Resize
         resize(Main.WIDTH, Main.HEIGHT + DECK_WINDOW_SIZE);
-
-        // Board
-        board = new Board();
 
         // Rendering
         batch = new SpriteBatch();
@@ -62,7 +94,9 @@ public class GameScreen extends InputAdapter implements Screen {
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.position.y -= DECK_WINDOW_SIZE;
         camera.update();
+    }
 
+    private void setupUI() {
         // Components
         TextureRegionDrawable clicked = new TextureRegionDrawable(new Texture(Gdx.files.internal("cards/uTurn_pressed.png")));
         TextureRegionDrawable unclicked = new TextureRegionDrawable(new Texture(Gdx.files.internal("cards/uTurn_notPressed.png")));
@@ -75,58 +109,54 @@ public class GameScreen extends InputAdapter implements Screen {
 
             stage.addActor(btn);
         }
+        ScreenManager.getInstance().setScreen(this);
+    }
 
+    private void setupInput() {
         // Input - both for controlling player and selecting cards
         InputMultiplexer im = new InputMultiplexer();
         im.addProcessor(this);
         im.addProcessor(stage);
         Gdx.input.setInputProcessor(im);
-
-        // Players
-        player = new Player(new Vector2(13, 1), parent, Color.RED);
     }
 
     @Override
     public boolean keyUp(int keycode) {
         boolean moved = false;
-        int x = (int) player.getPos().x;
-        int y = (int) player.getPos().y;
+        int x = (int) thisPlayer.getPos().x;
+        int y = (int) thisPlayer.getPos().y;
 
         if (keycode == Input.Keys.UP) {
-            player.move(board, player.getDir(), 1);
+            thisPlayer.move(board, thisPlayer.getDir(), 1);
             moved = true;
         } else if (keycode == Input.Keys.DOWN) {
-            player.move(board, player.getOppositeDir(), 1);
+            thisPlayer.move(board, thisPlayer.getOppositeDir(), 1);
             moved = true;
         } else if (keycode == Input.Keys.LEFT) {
-            player.rotate(false);
+            thisPlayer.rotate(false);
             moved = true;
         } else if (keycode == Input.Keys.RIGHT) {
-            player.rotate(true);
+            thisPlayer.rotate(true);
             moved = true;
         }
 
         if (moved) {
             board.getPlayerLayer().setCell(x, y, null);
             reactToCurrentTile();
-            System.out.println(player.showStatus());
+            System.out.println(thisPlayer.showStatus());
             return true;
         }
         return false;
-    }
-
-    @Override
-    public void show() {
     }
 
     /**
      * Player icon changes based on which tile the player stands on.
      */
     private void reactToCurrentTile() {
-        EventHandler.handleEvent(board, player);
-        if(EventHandler.outOfBounds(player)) {
-            player.subtractLife();
-            player.respawn();
+        EventHandler.handleEvent(board, thisPlayer);
+        if (EventHandler.outOfBounds(thisPlayer)) {
+            thisPlayer.subtractLife();
+            thisPlayer.respawn();
         }
     }
 
@@ -137,7 +167,7 @@ public class GameScreen extends InputAdapter implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         drawPlayer();
-        player.winCondition();
+        thisPlayer.winCondition();
 
         stage.act(v);
         stage.draw();
@@ -152,13 +182,17 @@ public class GameScreen extends InputAdapter implements Screen {
      * Draws player on the grid.
      */
     public void drawPlayer() {
-        board.getPlayerLayer().setCell((int) player.getPos().x, (int) player.getPos().y, player.getPlayerIcon());
+        board.getPlayerLayer().setCell((int) thisPlayer.getPos().x, (int) thisPlayer.getPos().y, thisPlayer.getPlayerIcon());
     }
 
     @Override
     public void dispose() {
         batch.dispose();
         font.dispose();
+    }
+
+    @Override
+    public void show() {
     }
 
     @Override

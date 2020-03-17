@@ -31,7 +31,6 @@ public class Board {
     private MapObjects objectWalls;
 
 
-
     public Board() {
         map = new TmxMapLoader().load("Map.tmx");
         playerLayer = (TiledMapTileLayer) map.getLayers().get("Player");

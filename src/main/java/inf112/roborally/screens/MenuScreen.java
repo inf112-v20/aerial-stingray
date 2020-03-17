@@ -11,16 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import inf112.roborally.Main;
-import inf112.roborally.RoboRally;
 
 public class MenuScreen implements Screen {
 
-    private RoboRally parent;
     private Stage stage;
 
-    public MenuScreen(RoboRally parent) {
-        this.parent = parent;
-
+    public MenuScreen() {
         stage = new Stage(new StretchViewport(Main.WIDTH, Main.HEIGHT));
     }
 
@@ -42,7 +38,7 @@ public class MenuScreen implements Screen {
         start.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
-                parent.setScreen(new GameScreen(parent));
+                new RoboRally();
             }
         });
 

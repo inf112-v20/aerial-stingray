@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
-import inf112.roborally.RoboRally;
 import inf112.roborally.events.EventHandler;
 import inf112.roborally.screens.LoseScreen;
+import inf112.roborally.screens.ScreenManager;
 import inf112.roborally.screens.WinScreen;
 import inf112.roborally.ui.Board;
 
@@ -15,12 +15,10 @@ import inf112.roborally.ui.Board;
  * Represents the "robot"/playing piece the human player is associated with.
  */
 public class Player {
-    private RoboRally parent;
 
     /**
      * Graphics
      */
-    private final String PLAYER_PATH = "player.png";
     private Vector2 backup;
 
     /**
@@ -32,7 +30,6 @@ public class Player {
      * Coordinates
      */
     private Vector2 pos;
-    private TiledMapTileLayer.Cell playerIcon;
 
     /**
      * Life, damage & flags
@@ -55,11 +52,9 @@ public class Player {
      */
     private int currentRotation = 2;
 
-    public Player(Vector2 pos, RoboRally parent, Color color) {
-        this.parent = parent;
-
+    public Player(Vector2 pos, Color color) {
         this.pos = pos;
-        this.backup = new Vector2(pos.x,pos.y);
+        this.backup = new Vector2(pos.x, pos.y);
 
         this.color = color;
 
@@ -158,8 +153,10 @@ public class Player {
                 System.err.println("Non-valid direction!");
                 break;
         }
-        return new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion));
+        TiledMapTileLayer.Cell tileCell = new TiledMapTileLayer.Cell();
+        tileCell.setTile(new StaticTiledMapTile(textureRegion));
 
+        return tileCell;
     }
 
 
@@ -207,7 +204,6 @@ public class Player {
     public void respawn() {
         setPos(new Vector2(backup.x, backup.y));
         System.out.println(backup);
-        playerIcon = getPlayerNormalCell();
     }
 
     /**
@@ -217,7 +213,7 @@ public class Player {
         life--;
         respawn();
         if (life <= 0){
-            parent.setScreen(new LoseScreen(parent));
+            ScreenManager.getInstance().setScreen(new LoseScreen());
         }
     }
 
@@ -266,7 +262,7 @@ public class Player {
 
     public void winCondition() {
         if (flags[3]){
-            parent.setScreen(new WinScreen(parent));
+            ScreenManager.getInstance().setScreen(new WinScreen());
         }
     }
 }
