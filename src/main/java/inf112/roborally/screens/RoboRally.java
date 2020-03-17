@@ -3,16 +3,18 @@ package inf112.roborally.screens;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import inf112.roborally.Main;
+import inf112.roborally.cards.Deck;
+import inf112.roborally.cards.ProgramCard;
 import inf112.roborally.entities.Color;
 import inf112.roborally.entities.Player;
 import inf112.roborally.events.EventHandler;
@@ -49,6 +51,11 @@ public class RoboRally extends InputAdapter implements Screen {
     private Board board;
 
     /**
+     * Deck to choose cards from.
+     */
+    private Deck deck;
+
+    /**
      * Players on the board
      */
     private ArrayList<Player> players;
@@ -61,14 +68,15 @@ public class RoboRally extends InputAdapter implements Screen {
 
 
     public RoboRally() {
-        setupBoard();
+        setupGameComponents();
         setupPlayers();
         setupRendering();
         setupUI();
         setupInput();
     }
 
-    private void setupBoard() {
+    private void setupGameComponents() {
+        deck = new Deck();
         board = new Board();
     }
 
@@ -97,17 +105,24 @@ public class RoboRally extends InputAdapter implements Screen {
     }
 
     private void setupUI() {
-        // Components
-        TextureRegionDrawable clicked = new TextureRegionDrawable(new Texture(Gdx.files.internal("cards/uTurn_pressed.png")));
-        TextureRegionDrawable unclicked = new TextureRegionDrawable(new Texture(Gdx.files.internal("cards/uTurn_notPressed.png")));
-
         stage = new Stage();
+
+        // Adding 9 cards (demo purposes)
+        int index = 0;
         for (int i = 21; i < Main.WIDTH - 140; i += 140 + 15) {
-            ImageButton btn = new ImageButton(unclicked, clicked, clicked);
-            btn.setSize(140, 260);
+            ProgramCard card = deck.getCards().get(index);
+
+            ImageButton btn = card.getImageButton();
             btn.setPosition(i, 0);
+            btn.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    System.out.println("[  " + card.getType() + " ] Checked: " + btn.isChecked());
+                }
+            });
 
             stage.addActor(btn);
+            index++;
         }
         ScreenManager.getInstance().setScreen(this);
     }

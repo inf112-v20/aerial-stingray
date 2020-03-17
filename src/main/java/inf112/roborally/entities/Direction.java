@@ -1,6 +1,6 @@
 package inf112.roborally.entities;
 
-public enum Directions {
+public enum Direction {
     NORTH,
     SOUTH,
     EAST,

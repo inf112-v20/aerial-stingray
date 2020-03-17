@@ -1,6 +1,6 @@
 package inf112.roborally.cards;
 
-public enum CardTypes {
+public enum CardType {
     MOVE1,
     MOVE2,
     MOVE3,

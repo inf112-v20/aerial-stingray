@@ -2,7 +2,7 @@ package inf112.roborally.tests;
 
 import com.badlogic.gdx.math.Vector2;
 import inf112.roborally.entities.Color;
-import inf112.roborally.entities.Directions;
+import inf112.roborally.entities.Direction;
 import inf112.roborally.entities.Player;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class PlayerTest {
 
     @Test
     public void testStartingDirectionNorth() {
-        assertEquals(this.player.getDir(), Directions.NORTH);
+        assertEquals(this.player.getDir(), Direction.NORTH);
     }
 
     @Test
@@ -43,7 +43,7 @@ public class PlayerTest {
         Player player = new Player(new Vector2(0, 0), null);
         player.rotate(true);
 
-        assertEquals(player.getDir(), Directions.EAST);
+        assertEquals(player.getDir(), Direction.EAST);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class PlayerTest {
         Player player = new Player(new Vector2(0, 0), null);
         player.rotate(false);
 
-        assertEquals(player.getDir(), Directions.WEST);
+        assertEquals(player.getDir(), Direction.WEST);
     }
 
     @Test

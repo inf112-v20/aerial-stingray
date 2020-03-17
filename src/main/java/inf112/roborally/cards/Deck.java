@@ -24,33 +24,43 @@ public class Deck {
         ArrayList<Integer> randomPriorities = getRandomPriorities();
 
         for (int i = 0; i < 18; i++) {
-            ProgramCard card = new ProgramCard(CardTypes.MOVE1, randomPriorities.remove(0));
+            ProgramCard card = new ProgramCard(CardType.MOVE1, randomPriorities.remove(0));
             deck.add(card);
         }
         for (int i = 0; i < 12; i++) {
-            ProgramCard card = new ProgramCard(CardTypes.MOVE2, randomPriorities.remove(0));
+            ProgramCard card = new ProgramCard(CardType.MOVE2, randomPriorities.remove(0));
             deck.add(card);
         }
         for (int i = 0; i < 6; i++) {
-            ProgramCard card = new ProgramCard(CardTypes.MOVE3, randomPriorities.remove(0));
+            ProgramCard card = new ProgramCard(CardType.MOVE3, randomPriorities.remove(0));
             deck.add(card);
         }
         for (int i = 0; i < 6; i++) {
-            ProgramCard card = new ProgramCard(CardTypes.BACKUP, randomPriorities.remove(0));
+            ProgramCard card = new ProgramCard(CardType.BACKUP, randomPriorities.remove(0));
             deck.add(card);
         }
         for (int i = 0; i < 18; i++) {
-            ProgramCard card = new ProgramCard(CardTypes.TURN_RIGHT, randomPriorities.remove(0));
+            ProgramCard card = new ProgramCard(CardType.TURN_RIGHT, randomPriorities.remove(0));
             deck.add(card);
         }
         for (int i = 0; i < 18; i++) {
-            ProgramCard card = new ProgramCard(CardTypes.TURN_LEFT, randomPriorities.remove(0));
+            ProgramCard card = new ProgramCard(CardType.TURN_LEFT, randomPriorities.remove(0));
             deck.add(card);
         }
         for (int i = 0; i < 6; i++) {
-            ProgramCard card = new ProgramCard(CardTypes.TURN_U, randomPriorities.remove(0));
+            ProgramCard card = new ProgramCard(CardType.TURN_U, randomPriorities.remove(0));
             deck.add(card);
         }
+
+        Collections.shuffle(deck);
+    }
+
+    private ArrayList<ProgramCard> get9Cards() {
+        ArrayList<ProgramCard> cards = new ArrayList<>();
+        for (int i = 0; i < 9; i++)
+            cards.add(deck.pop());
+
+        return cards;
     }
 
     private ArrayList<Integer> getRandomPriorities() {

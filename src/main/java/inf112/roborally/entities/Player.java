@@ -41,7 +41,7 @@ public class Player {
     /**
      * Direction
      */
-    private Directions dir = Directions.NORTH;
+    private Direction dir = Direction.NORTH;
 
     /**
      * Current rotation
@@ -55,9 +55,7 @@ public class Player {
     public Player(Vector2 pos, Color color) {
         this.pos = pos;
         this.backup = new Vector2(pos.x, pos.y);
-
         this.color = color;
-
     }
 
     /**
@@ -88,24 +86,24 @@ public class Player {
      * @param dir   The direction to move 1 step towards
      * @param steps Number of steps to take
      */
-    public void move(Board board, Directions dir, int steps) {
+    public void move(Board board, Direction dir, int steps) {
         for (int i = 0; i < steps; i++) {
             switch (dir) {
                 case NORTH:
-                    if (EventHandler.canGo(board, this, Directions.NORTH, 1))
+                    if (EventHandler.canGo(board, this, Direction.NORTH, 1))
                         getPos().y++;
                     break;
                 case EAST:
-                    if (EventHandler.canGo(board, this, Directions.EAST, 1))
+                    if (EventHandler.canGo(board, this, Direction.EAST, 1))
                         getPos().x++;
                     break;
                 case SOUTH:
-                    if (EventHandler.canGo(board, this, Directions.SOUTH, 1))
+                    if (EventHandler.canGo(board, this, Direction.SOUTH, 1))
                         getPos().y--;
                     break;
 
                 case WEST:
-                    if (EventHandler.canGo(board, this, Directions.WEST, 1))
+                    if (EventHandler.canGo(board, this, Direction.WEST, 1))
                         getPos().x--;
                     break;
 
@@ -116,19 +114,19 @@ public class Player {
         }
     }
 
-    public Directions getDir() {
+    public Direction getDir() {
         return dir;
     }
 
-    public Directions getOppositeDir() {
-        if (dir == Directions.NORTH)
-            return Directions.SOUTH;
-        else if (dir == Directions.EAST)
-            return Directions.WEST;
-        else if (dir == Directions.SOUTH)
-            return Directions.NORTH;
+    public Direction getOppositeDir() {
+        if (dir == Direction.NORTH)
+            return Direction.SOUTH;
+        else if (dir == Direction.EAST)
+            return Direction.WEST;
+        else if (dir == Direction.SOUTH)
+            return Direction.NORTH;
         else
-            return Directions.EAST;
+            return Direction.EAST;
     }
 
     /**
@@ -136,7 +134,7 @@ public class Player {
      */
     public TiledMapTileLayer.Cell getPlayerNormalCell() {
         TextureRegion textureRegion = getNorthTextureRegion();
-        switch (dir){
+        switch (dir) {
             case NORTH:
                 textureRegion = getNorthTextureRegion();
                 break;
@@ -172,16 +170,16 @@ public class Player {
 
         switch (currentRotation) {
             case 0:
-                dir = Directions.SOUTH;
+                dir = Direction.SOUTH;
                 break;
             case 1:
-                dir = Directions.EAST;
+                dir = Direction.EAST;
                 break;
             case 2:
-                dir = Directions.NORTH;
+                dir = Direction.NORTH;
                 break;
             case 3:
-                dir = Directions.WEST;
+                dir = Direction.WEST;
                 break;
             default:
                 System.err.println("Non-valid rotation!");
