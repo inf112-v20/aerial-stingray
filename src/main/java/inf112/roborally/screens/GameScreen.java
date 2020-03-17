@@ -117,6 +117,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
     @Override
     public void show() {
+        //Intentionally left blank
     }
 
     /**
@@ -168,14 +169,16 @@ public class GameScreen extends InputAdapter implements Screen {
 
     @Override
     public void pause() {
+        //Intentionally left blank
     }
 
     @Override
     public void resume() {
+        //Intentionally left blank
     }
 
     @Override
     public void hide() {
-
+        //Intentionally left blank
     }
 }
