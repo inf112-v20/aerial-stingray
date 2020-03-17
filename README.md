@@ -32,7 +32,8 @@ There are currently three test classes.
 * DirectionsTest will check if:
     * The number of directions is 4.
 
-## UML diagram
+## ER diagram for overview over essential classes
+![ER](assets/ER.png)
 ![UML](assets/UML.png)
 
 ## Thanks to :heart:
