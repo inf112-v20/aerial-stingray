@@ -208,6 +208,7 @@ public class Player {
         setPos(new Vector2(backup.x, backup.y));
         System.out.println(backup);
         playerIcon = getPlayerNormalCell();
+        damage = 0;
     }
 
     /**
@@ -228,7 +229,6 @@ public class Player {
         damage++;
         if (damage >= 10){
             subtractLife();
-            damage = 10;
         }
     }
     public void subtractDamage(){
