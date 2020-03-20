@@ -39,3 +39,4 @@ There are currently three test classes.
 ## Thanks to :heart:
 * [gdx-skins](https://github.com/czyzby/gdx-skins) by czyzby for allowing us to use cool component-skins.
     * We used the "Rusty Robot UI" created by [Raymond "Raeleus" Buckley](https://ray3k.wordpress.com/software/skin-composer-for-libgdx/)
+* <a href="https://www.freepik.com/free-photos-vectors/infographic">Infographic vector created by freepik - www.freepik.com</a> (arrow graphics)
