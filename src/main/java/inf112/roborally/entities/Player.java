@@ -212,17 +212,21 @@ public class Player {
         life--;
         damage = 0;
         respawn();
-        if (life <= 0){
+        if (life <= 0) {
             ScreenManager.getInstance().setScreen(new LoseScreen());
         }
+    }
+
+    public int getDamage() {
+        return damage;
     }
 
     /**
      * add one damage
      */
-    public void takeDamage(){
+    public void takeDamage() {
         damage++;
-        if (damage >= 10){
+        if (damage >= 10) {
             subtractLife();
             damage = 0;
         }

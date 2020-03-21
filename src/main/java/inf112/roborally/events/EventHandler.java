@@ -140,7 +140,6 @@ public class EventHandler {
 
         String events = getTileType(board, "OEvents", player.getPos());
         switch (events) {
-
             case "Hole":
                 player.subtractLife();
                 fromConveyor = false;
@@ -185,14 +184,14 @@ public class EventHandler {
 
             case "Single_Wrench":
                 if(player.getDamage() > 0)
-                    player.subtractDamage();
+                    player.takeDamage();
                 fromConveyor = false;
                 break;
 
             case "Hammer_Wrench":
                 //Also need to give an option card
                 if(player.getDamage() > 0) {
-                    player.subtractDamage();
+                    player.takeDamage();
                 }
                 fromConveyor = false;
                 break;

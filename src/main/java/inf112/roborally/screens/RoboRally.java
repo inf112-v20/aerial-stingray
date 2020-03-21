@@ -124,7 +124,6 @@ public class RoboRally extends InputAdapter implements Screen {
         TextButton submitCards = new TextButton("Lock in cards!", skin);
         submitCards.setSize(200, 80);
         submitCards.setPosition((float) Main.WIDTH / 2 - (submitCards.getWidth() / 2), 200);
-        submitCards.setDebug(true);
         submitCards.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -144,7 +143,6 @@ public class RoboRally extends InputAdapter implements Screen {
             ImageButton btn = card.getImageButton();
             btn.setPosition(i * margin + startX, 0);
             btn.setSize(140, 200);
-            btn.setDebug(true);
             btn.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
