@@ -24,22 +24,10 @@ public class ProgramCard {
      */
     private CardType type;
 
-    /**
-     * ImageButton corresponding to cardtype.
-     */
-    private ImageButton imageButton;
-
 
     public ProgramCard(CardType type, int priority) {
         this.type = type;
         this.priority = priority;
-
-        imageButton = new ImageButton(
-                getTextureFromType(type, false),
-                getTextureFromType(type, true),
-                getTextureFromType(type, true)
-        );
-        imageButton.setSize(dimension.width, dimension.height);
     }
 
     /**
@@ -75,6 +63,12 @@ public class ProgramCard {
      * @return An ImageButton with the same type & priority graphics (not yet finished).
      */
     public ImageButton getImageButton() {
+        ImageButton imageButton = new ImageButton(
+                getTextureFromType(type, false),
+                getTextureFromType(type, true),
+                getTextureFromType(type, true)
+        );
+        imageButton.setSize(dimension.width, dimension.height);
         return imageButton;
     }
 
