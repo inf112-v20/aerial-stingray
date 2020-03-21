@@ -13,12 +13,22 @@ public class ProgramCard {
      * Each card's texture is 140x260 px
      */
     private final Dimension dimension = new Dimension(140, 260);
+
+    /**
+     * A unique priority to decide which card plays first.
+     */
     private int priority;
+
+    /**
+     * The type of the card.
+     */
     private CardType type;
+
     /**
      * ImageButton corresponding to cardtype.
      */
     private ImageButton imageButton;
+
 
     public ProgramCard(CardType type, int priority) {
         this.type = type;
@@ -32,6 +42,38 @@ public class ProgramCard {
         imageButton.setSize(dimension.width, dimension.height);
     }
 
+    /**
+     * Creates a new ProgramCard with the exact type and priority.
+     *
+     * @return A ProgramCard with equal properties
+     */
+    public ProgramCard copy() {
+        return new ProgramCard(type, priority);
+    }
+
+    /**
+     * A method for getting the image up texture used on an ImageButton.
+     *
+     * @return A texture used on an ImageButton.
+     */
+    public TextureRegionDrawable getImageUp() {
+        return this.getTextureFromType(this.getType(), false);
+    }
+
+    /**
+     * A method for getting the image down texture used on an ImageButton.
+     *
+     * @return A texture used on an ImageButton.
+     */
+    public TextureRegionDrawable getImageDown() {
+        return this.getTextureFromType(this.getType(), true);
+    }
+
+    /**
+     * Getting the associated ImageButton with this ProgramCard.
+     *
+     * @return An ImageButton with the same type & priority graphics (not yet finished).
+     */
     public ImageButton getImageButton() {
         return imageButton;
     }

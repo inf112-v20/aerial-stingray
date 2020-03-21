@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
+import inf112.roborally.cards.ProgramCard;
 import inf112.roborally.events.EventHandler;
 import inf112.roborally.screens.LoseScreen;
 import inf112.roborally.screens.ScreenManager;
@@ -209,6 +210,7 @@ public class Player {
      */
     public void subtractLife() {
         life--;
+        damage = 0;
         respawn();
         if (life <= 0){
             ScreenManager.getInstance().setScreen(new LoseScreen());
@@ -222,7 +224,7 @@ public class Player {
         damage++;
         if (damage >= 10){
             subtractLife();
-            damage = 10;
+            damage = 0;
         }
     }
 
@@ -246,6 +248,14 @@ public class Player {
     }
 
     /**
+     * Rotates 2 x 90 degrees to the right= 180 degrees
+     */
+    public void rotate180() {
+        this.rotate(true);
+        this.rotate(true);
+    }
+
+    /**
      * Adds a flag to the player inventory.
      *
      * @param flagNum Flag number to add
@@ -258,9 +268,61 @@ public class Player {
         flags[flagNum - 1] = true;
     }
 
-    public void winCondition() {
-        if (flags[3]){
+    /**
+     * Checks if the player has won.
+     * If the player has won, set screen to the WinScreen.
+     */
+    public void checkIfWon() {
+        if (flags[3]) {
             ScreenManager.getInstance().setScreen(new WinScreen());
+        }
+    }
+
+    public void executeCard(Board board, ProgramCard card) {
+        switch (card.getType()) {
+            case TURN_RIGHT:
+                this.rotate(true);
+                EventHandler.handleEvent(board, this);
+                break;
+
+            case TURN_LEFT:
+                this.rotate(false);
+                EventHandler.handleEvent(board, this);
+                break;
+
+            case TURN_U:
+                this.rotate180();
+                EventHandler.handleEvent(board, this);
+                break;
+
+            case BACKUP:
+                this.move(board, this.getOppositeDir(), 1);
+                EventHandler.handleEvent(board, this);
+                break;
+
+            case MOVE1:
+                this.move(board, this.getDir(), 1);
+                EventHandler.handleEvent(board, this);
+                break;
+
+            case MOVE2:
+                this.move(board, this.getDir(), 1);
+                EventHandler.handleEvent(board, this);
+                this.move(board, this.getDir(), 1);
+                EventHandler.handleEvent(board, this);
+                break;
+
+            case MOVE3:
+                this.move(board, this.getDir(), 1);
+                EventHandler.handleEvent(board, this);
+                this.move(board, this.getDir(), 1);
+                EventHandler.handleEvent(board, this);
+                this.move(board, this.getDir(), 1);
+                EventHandler.handleEvent(board, this);
+                break;
+
+            default:
+                System.err.println("Unknown type of ProgramCard.");
         }
     }
 }

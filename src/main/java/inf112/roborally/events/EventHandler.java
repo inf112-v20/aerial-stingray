@@ -139,7 +139,6 @@ public class EventHandler {
         }
 
         String events = getTileType(board, "OEvents", player.getPos());
-
         switch (events) {
 
             case "Hole":
@@ -186,7 +185,6 @@ public class EventHandler {
         }
 
         String lasers = getTileType(board, "OLasers", player.getPos());
-
         switch (lasers) {
             case "Laser":
                 player.takeDamage();
@@ -197,12 +195,17 @@ public class EventHandler {
                 player.takeDamage();
                 break;
         }
+
+        if (EventHandler.outOfBounds(player)) {
+            player.subtractLife();
+            player.respawn();
+        }
     }
 
     public static boolean outOfBounds(Player player) {
         if (player.getPos().x < 0 || player.getPos().y < 0)
             return true;
-        return (player.getPos().x >= (Main.WIDTH / TILE_SIZE)) || (player.getPos().y >= (Main.HEIGHT / TILE_SIZE));
+        return (player.getPos().x >= (float) (Main.WIDTH / TILE_SIZE)) || (player.getPos().y >= (float) (Main.HEIGHT / TILE_SIZE));
     }
 
     /**
