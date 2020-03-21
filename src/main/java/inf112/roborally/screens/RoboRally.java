@@ -142,7 +142,7 @@ public class RoboRally extends InputAdapter implements Screen {
             cardsToChoseFrom[i] = card;
 
             ImageButton btn = card.getImageButton();
-            btn.setPosition(i * margin + 21, 0);
+            btn.setPosition(i * margin + startX, 0);
             btn.setSize(140, 200);
             btn.setDebug(true);
             btn.addListener(new ClickListener() {
