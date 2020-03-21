@@ -5,7 +5,7 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import inf112.roborally.Main;
-import inf112.roborally.entities.Directions;
+import inf112.roborally.entities.Direction;
 import inf112.roborally.entities.Player;
 import inf112.roborally.ui.Board;
 
@@ -36,110 +36,109 @@ public class EventHandler {
         switch (movers) {
 
             case "Normal_Conveyor_North":
-                player.move(board, Directions.NORTH, 1);
+                player.move(board, Direction.NORTH, 1);
                 fromConveyor = true;
                 break;
 
             case "Normal_Conveyor_East":
-                player.move(board, Directions.EAST, 1);
+                player.move(board, Direction.EAST, 1);
                 fromConveyor = true;
                 break;
 
             case "Normal_Conveyor_South":
-                player.move(board, Directions.SOUTH, 1);
+                player.move(board, Direction.SOUTH, 1);
                 fromConveyor = true;
                 break;
 
             case "Normal_Conveyor_West":
-                player.move(board, Directions.WEST, 1);
+                player.move(board, Direction.WEST, 1);
                 fromConveyor = true;
                 break;
 
             case "Normal_Conveyor_EastNorth":
                 if (fromConveyor)
                     player.rotate(false);
-                player.move(board, Directions.NORTH, 1);
+                player.move(board, Direction.NORTH, 1);
                 fromConveyor = true;
                 break;
 
             case "Normal_Conveyor_NorthEast":
                 if (fromConveyor)
-                player.move(board, Directions.EAST, 1);
+                    player.move(board, Direction.EAST, 1);
                 fromConveyor = true;
                 break;
 
             case "Normal_Conveyor_EastSouth":
                 if (fromConveyor)
                     player.rotate(true);
-                player.move(board, Directions.SOUTH, 1);
+                player.move(board, Direction.SOUTH, 1);
                 fromConveyor = true;
                 break;
 
             case "Normal_Conveyor_SouthEast":
                 if (fromConveyor)
                     player.rotate(false);
-                player.move(board, Directions.EAST, 1);
+                player.move(board, Direction.EAST, 1);
                 fromConveyor = true;
                 break;
 
             case "Express_Conveyor_North":
-                player.move(board, Directions.NORTH, 2);
+                player.move(board, Direction.NORTH, 2);
                 fromConveyor = true;
                 break;
 
             case "Express_Conveyor_West":
-                player.move(board, Directions.WEST, 2);
+                player.move(board, Direction.WEST, 2);
                 fromConveyor = true;
                 break;
 
             case "Express_Conveyor_South":
-                player.move(board, Directions.SOUTH, 2);
+                player.move(board, Direction.SOUTH, 2);
                 fromConveyor = true;
                 break;
 
             case "Express_Conveyor_East":
-                player.move(board, Directions.EAST, 2);
+                player.move(board, Direction.EAST, 2);
                 fromConveyor = true;
                 break;
 
             case "Express_Conveyor_EastNorth":
                 if (fromConveyor)
                     player.rotate(false);
-                player.move(board, Directions.NORTH, 2);
+                player.move(board, Direction.NORTH, 2);
                 fromConveyor = true;
                 break;
 
             case "Express_Conveyor_NorthEast":
                 if (fromConveyor)
                     player.rotate(true);
-                player.move(board, Directions.EAST, 2);
+                player.move(board, Direction.EAST, 2);
                 fromConveyor = true;
                 break;
 
             case "Express_Conveyor_EastSouth":
                 if (fromConveyor)
                     player.rotate(true);
-                player.move(board, Directions.SOUTH, 2);
+                player.move(board, Direction.SOUTH, 2);
                 fromConveyor = true;
                 break;
 
             case "Express_Conveyor_SouthWest":
                 if (fromConveyor)
                     player.rotate(true);
-                player.move(board, Directions.WEST, 2);
+                player.move(board, Direction.WEST, 2);
                 fromConveyor = true;
                 break;
 
             case "Express_Conveyor_WestNorth":
                 if (fromConveyor)
                     player.rotate(true);
-                player.move(board, Directions.NORTH, 2);
+                player.move(board, Direction.NORTH, 2);
                 fromConveyor = true;
                 break;
         }
 
         String events = getTileType(board, "OEvents", player.getPos());
-
         switch (events) {
 
             case "Hole":
@@ -200,7 +199,6 @@ public class EventHandler {
         }
 
         String lasers = getTileType(board, "OLasers", player.getPos());
-
         switch (lasers) {
             case "Laser":
                 player.takeDamage();
@@ -211,12 +209,17 @@ public class EventHandler {
                 player.takeDamage();
                 break;
         }
+
+        if (EventHandler.outOfBounds(player)) {
+            player.subtractLife();
+            player.respawn();
+        }
     }
 
     public static boolean outOfBounds(Player player) {
         if (player.getPos().x < 0 || player.getPos().y < 0)
             return true;
-        return (player.getPos().x >= (Main.WIDTH / TILE_SIZE)) || (player.getPos().y >= (Main.HEIGHT / TILE_SIZE));
+        return (player.getPos().x >= (float) (Main.WIDTH / TILE_SIZE)) || (player.getPos().y >= (float) (Main.HEIGHT / TILE_SIZE));
     }
 
     /**
@@ -228,14 +231,14 @@ public class EventHandler {
      * @param player Representing player, with it's direction
      * @return A boolean true if you can go in a specific direction
      */
-    public static boolean canGo(Board board, Player player, Directions dir, int steps) {
+    public static boolean canGo(Board board, Player player, Direction dir, int steps) {
         // Getting position of player
         Vector2 nextPos;
-        if (dir == Directions.NORTH)
+        if (dir == Direction.NORTH)
             nextPos = new Vector2(player.getPos().x, player.getPos().y + steps);
-        else if (dir == Directions.SOUTH)
+        else if (dir == Direction.SOUTH)
             nextPos = new Vector2(player.getPos().x, player.getPos().y - steps);
-        else if (dir == Directions.EAST)
+        else if (dir == Direction.EAST)
             nextPos = new Vector2(player.getPos().x + steps, player.getPos().y);
         else
             nextPos = new Vector2(player.getPos().x - steps, player.getPos().y);
@@ -245,22 +248,22 @@ public class EventHandler {
         if (wallType != null) {
             switch (wallType) {
                 case "Wall_North":
-                    if (dir == Directions.NORTH)
+                    if (dir == Direction.NORTH)
                         return false;
                     break;
 
                 case "Wall_South":
-                    if (dir == Directions.SOUTH)
+                    if (dir == Direction.SOUTH)
                         return false;
                     break;
 
                 case "Wall_East":
-                    if (dir == Directions.EAST)
+                    if (dir == Direction.EAST)
                         return false;
                     break;
 
                 case "Wall_West":
-                    if (dir == Directions.WEST)
+                    if (dir == Direction.WEST)
                         return false;
                     break;
             }
@@ -271,22 +274,22 @@ public class EventHandler {
         if (wallType != null) {
             switch (wallType) {
                 case "Wall_North":
-                    if (dir == Directions.SOUTH)
+                    if (dir == Direction.SOUTH)
                         return false;
                     break;
 
                 case "Wall_South":
-                    if (dir == Directions.NORTH)
+                    if (dir == Direction.NORTH)
                         return false;
                     break;
 
                 case "Wall_East":
-                    if (dir == Directions.WEST)
+                    if (dir == Direction.WEST)
                         return false;
                     break;
 
                 case "Wall_West":
-                    if (dir == Directions.EAST)
+                    if (dir == Direction.EAST)
                         return false;
                     break;
             }

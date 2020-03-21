@@ -5,9 +5,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
-import inf112.roborally.RoboRally;
+import inf112.roborally.cards.ProgramCard;
 import inf112.roborally.events.EventHandler;
 import inf112.roborally.screens.LoseScreen;
+import inf112.roborally.screens.ScreenManager;
 import inf112.roborally.screens.WinScreen;
 import inf112.roborally.ui.Board;
 
@@ -15,12 +16,10 @@ import inf112.roborally.ui.Board;
  * Represents the "robot"/playing piece the human player is associated with.
  */
 public class Player {
-    private RoboRally parent;
 
     /**
      * Graphics
      */
-    private final String PLAYER_PATH = "player.png";
     private Vector2 backup;
 
     /**
@@ -32,7 +31,6 @@ public class Player {
      * Coordinates
      */
     private Vector2 pos;
-    private TiledMapTileLayer.Cell playerIcon;
 
     /**
      * Life, damage & flags
@@ -44,7 +42,7 @@ public class Player {
     /**
      * Direction
      */
-    private Directions dir = Directions.NORTH;
+    private Direction dir = Direction.NORTH;
 
     /**
      * Current rotation
@@ -55,14 +53,10 @@ public class Player {
      */
     private int currentRotation = 2;
 
-    public Player(Vector2 pos, RoboRally parent, Color color) {
-        this.parent = parent;
-
+    public Player(Vector2 pos, Color color) {
         this.pos = pos;
-        this.backup = new Vector2(pos.x,pos.y);
-
+        this.backup = new Vector2(pos.x, pos.y);
         this.color = color;
-
     }
 
     /**
@@ -93,24 +87,24 @@ public class Player {
      * @param dir   The direction to move 1 step towards
      * @param steps Number of steps to take
      */
-    public void move(Board board, Directions dir, int steps) {
+    public void move(Board board, Direction dir, int steps) {
         for (int i = 0; i < steps; i++) {
             switch (dir) {
                 case NORTH:
-                    if (EventHandler.canGo(board, this, Directions.NORTH, 1))
+                    if (EventHandler.canGo(board, this, Direction.NORTH, 1))
                         getPos().y++;
                     break;
                 case EAST:
-                    if (EventHandler.canGo(board, this, Directions.EAST, 1))
+                    if (EventHandler.canGo(board, this, Direction.EAST, 1))
                         getPos().x++;
                     break;
                 case SOUTH:
-                    if (EventHandler.canGo(board, this, Directions.SOUTH, 1))
+                    if (EventHandler.canGo(board, this, Direction.SOUTH, 1))
                         getPos().y--;
                     break;
 
                 case WEST:
-                    if (EventHandler.canGo(board, this, Directions.WEST, 1))
+                    if (EventHandler.canGo(board, this, Direction.WEST, 1))
                         getPos().x--;
                     break;
 
@@ -121,19 +115,19 @@ public class Player {
         }
     }
 
-    public Directions getDir() {
+    public Direction getDir() {
         return dir;
     }
 
-    public Directions getOppositeDir() {
-        if (dir == Directions.NORTH)
-            return Directions.SOUTH;
-        else if (dir == Directions.EAST)
-            return Directions.WEST;
-        else if (dir == Directions.SOUTH)
-            return Directions.NORTH;
+    public Direction getOppositeDir() {
+        if (dir == Direction.NORTH)
+            return Direction.SOUTH;
+        else if (dir == Direction.EAST)
+            return Direction.WEST;
+        else if (dir == Direction.SOUTH)
+            return Direction.NORTH;
         else
-            return Directions.EAST;
+            return Direction.EAST;
     }
 
     /**
@@ -141,7 +135,7 @@ public class Player {
      */
     public TiledMapTileLayer.Cell getPlayerNormalCell() {
         TextureRegion textureRegion = getNorthTextureRegion();
-        switch (dir){
+        switch (dir) {
             case NORTH:
                 textureRegion = getNorthTextureRegion();
                 break;
@@ -158,8 +152,10 @@ public class Player {
                 System.err.println("Non-valid direction!");
                 break;
         }
-        return new TiledMapTileLayer.Cell().setTile(new StaticTiledMapTile(textureRegion));
+        TiledMapTileLayer.Cell tileCell = new TiledMapTileLayer.Cell();
+        tileCell.setTile(new StaticTiledMapTile(textureRegion));
 
+        return tileCell;
     }
 
 
@@ -175,16 +171,16 @@ public class Player {
 
         switch (currentRotation) {
             case 0:
-                dir = Directions.SOUTH;
+                dir = Direction.SOUTH;
                 break;
             case 1:
-                dir = Directions.EAST;
+                dir = Direction.EAST;
                 break;
             case 2:
-                dir = Directions.NORTH;
+                dir = Direction.NORTH;
                 break;
             case 3:
-                dir = Directions.WEST;
+                dir = Direction.WEST;
                 break;
             default:
                 System.err.println("Non-valid rotation!");
@@ -207,8 +203,6 @@ public class Player {
     public void respawn() {
         setPos(new Vector2(backup.x, backup.y));
         System.out.println(backup);
-        playerIcon = getPlayerNormalCell();
-        damage = 0;
     }
 
     /**
@@ -216,9 +210,10 @@ public class Player {
      */
     public void subtractLife() {
         life--;
+        damage = 0;
         respawn();
         if (life <= 0){
-            parent.setScreen(new LoseScreen(parent));
+            ScreenManager.getInstance().setScreen(new LoseScreen());
         }
     }
 
@@ -229,15 +224,8 @@ public class Player {
         damage++;
         if (damage >= 10){
             subtractLife();
+            damage = 0;
         }
-    }
-    public void subtractDamage(){
-        if(damage > 0)
-            damage--;
-    }
-
-    public int getDamage(){
-        return this.damage;
     }
 
     public boolean[] getFlags() {
@@ -260,6 +248,14 @@ public class Player {
     }
 
     /**
+     * Rotates 2 x 90 degrees to the right= 180 degrees
+     */
+    public void rotate180() {
+        this.rotate(true);
+        this.rotate(true);
+    }
+
+    /**
      * Adds a flag to the player inventory.
      *
      * @param flagNum Flag number to add
@@ -272,9 +268,61 @@ public class Player {
         flags[flagNum - 1] = true;
     }
 
-    public void winCondition() {
-        if (flags[3]){
-            parent.setScreen(new WinScreen(parent));
+    /**
+     * Checks if the player has won.
+     * If the player has won, set screen to the WinScreen.
+     */
+    public void checkIfWon() {
+        if (flags[3]) {
+            ScreenManager.getInstance().setScreen(new WinScreen());
+        }
+    }
+
+    public void executeCard(Board board, ProgramCard card) {
+        switch (card.getType()) {
+            case TURN_RIGHT:
+                this.rotate(true);
+                EventHandler.handleEvent(board, this);
+                break;
+
+            case TURN_LEFT:
+                this.rotate(false);
+                EventHandler.handleEvent(board, this);
+                break;
+
+            case TURN_U:
+                this.rotate180();
+                EventHandler.handleEvent(board, this);
+                break;
+
+            case BACKUP:
+                this.move(board, this.getOppositeDir(), 1);
+                EventHandler.handleEvent(board, this);
+                break;
+
+            case MOVE1:
+                this.move(board, this.getDir(), 1);
+                EventHandler.handleEvent(board, this);
+                break;
+
+            case MOVE2:
+                this.move(board, this.getDir(), 1);
+                EventHandler.handleEvent(board, this);
+                this.move(board, this.getDir(), 1);
+                EventHandler.handleEvent(board, this);
+                break;
+
+            case MOVE3:
+                this.move(board, this.getDir(), 1);
+                EventHandler.handleEvent(board, this);
+                this.move(board, this.getDir(), 1);
+                EventHandler.handleEvent(board, this);
+                this.move(board, this.getDir(), 1);
+                EventHandler.handleEvent(board, this);
+                break;
+
+            default:
+                System.err.println("Unknown type of ProgramCard.");
         }
     }
 }

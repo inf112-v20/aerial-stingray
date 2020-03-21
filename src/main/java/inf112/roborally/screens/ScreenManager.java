@@ -1,21 +1,36 @@
-package inf112.roborally;
+package inf112.roborally.screens;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import inf112.roborally.screens.MenuScreen;
 
 /**
- * Main class for RoboRally.
- * <p>
- * Contains logic & main-loop for the game.
+ * Singleton class for managing different screens.
  */
-public class RoboRally extends Game implements ApplicationListener {
+public class ScreenManager extends Game implements ApplicationListener {
+
+    private static ScreenManager screenManagerInstance = null;
+
+    private ScreenManager() {
+        super();
+    }
+
+    /**
+     * Retrieves the one instance of the ScreenManager.
+     *
+     * @return A ScreenManager-object
+     */
+    public static ScreenManager getInstance() {
+        if (screenManagerInstance == null)
+            screenManagerInstance = new ScreenManager();
+
+        return screenManagerInstance;
+    }
 
     @Override
     public void create() {
-        super.setScreen(new MenuScreen(this));  // Starting with menu
+        super.setScreen(new MenuScreen());  // Starting with menu
         super.getScreen().show();
     }
 

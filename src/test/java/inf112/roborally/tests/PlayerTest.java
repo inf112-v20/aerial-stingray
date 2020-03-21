@@ -2,7 +2,7 @@ package inf112.roborally.tests;
 
 import com.badlogic.gdx.math.Vector2;
 import inf112.roborally.entities.Color;
-import inf112.roborally.entities.Directions;
+import inf112.roborally.entities.Direction;
 import inf112.roborally.entities.Player;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +20,7 @@ public class PlayerTest {
     @Before
     public void initialize() {
         playerPos = new Vector2(10, 10);
-        player = new Player(playerPos, null, Color.GREEN);
+        player = new Player(playerPos, Color.GREEN);
     }
 
     @Test
@@ -35,23 +35,23 @@ public class PlayerTest {
 
     @Test
     public void testStartingDirectionNorth() {
-        assertEquals(this.player.getDir(), Directions.NORTH);
+        assertEquals(this.player.getDir(), Direction.NORTH);
     }
 
     @Test
     public void testRotateRight() {
-        Player player = new Player(new Vector2(0, 0), null, null);
+        Player player = new Player(new Vector2(0, 0), null);
         player.rotate(true);
 
-        assertEquals(player.getDir(), Directions.EAST);
+        assertEquals(player.getDir(), Direction.EAST);
     }
 
     @Test
     public void testRotateLeft() {
-        Player player = new Player(new Vector2(0, 0), null, null);
+        Player player = new Player(new Vector2(0, 0), null);
         player.rotate(false);
 
-        assertEquals(player.getDir(), Directions.WEST);
+        assertEquals(player.getDir(), Direction.WEST);
     }
 
     @Test
@@ -62,7 +62,7 @@ public class PlayerTest {
 
     @Test
     public void testHasAllFlagsIsTrue() {
-        Player localPlayer = new Player(new Vector2(0, 0), null, null);
+        Player localPlayer = new Player(new Vector2(0, 0), null);
         localPlayer.addFlag(1);
         localPlayer.addFlag(2);
         localPlayer.addFlag(3);

@@ -2,6 +2,7 @@ package inf112.roborally;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import inf112.roborally.screens.ScreenManager;
 
 public class Main {
 
@@ -21,6 +22,6 @@ public class Main {
         cfg.width = WIDTH;
         cfg.height = HEIGHT;
 
-        new LwjglApplication(new RoboRally(), cfg);
+        new LwjglApplication(ScreenManager.getInstance(), cfg);
     }
 }
