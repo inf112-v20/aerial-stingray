@@ -118,6 +118,9 @@ public class Player {
     public Direction getDir() {
         return dir;
     }
+    public void setDir(Direction direction){
+        this.dir = direction;
+    }
 
     public Direction getOppositeDir() {
         if (dir == Direction.NORTH)
