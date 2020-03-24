@@ -38,7 +38,7 @@ public class MenuScreen implements Screen {
         start.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
-                new RoboRally(1);
+                new RoboRally(4);
             }
         });
 

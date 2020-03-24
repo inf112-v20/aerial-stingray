@@ -379,7 +379,10 @@ public class RoboRally extends InputAdapter implements Screen {
      * Draws player on the map.
      */
     public void drawPlayer() {
-        board.getPlayerLayer().setCell((int) thisPlayer.getPos().x, (int) thisPlayer.getPos().y, thisPlayer.getPlayerIcon());
+        //board.getPlayerLayer().setCell((int) thisPlayer.getPos().x, (int) thisPlayer.getPos().y, thisPlayer.getPlayerIcon());
+        for (Player player : this.players){
+            board.getPlayerLayer().setCell((int) player.getPos().x, (int) player.getPos().y, player.getPlayerIcon());
+        }
     }
 
     /**
