@@ -184,14 +184,14 @@ public class EventHandler {
 
             case "Single_Wrench":
                 if(player.getDamage() > 0)
-                    player.takeDamage();
+                    player.healDamage();
                 fromConveyor = false;
                 break;
 
             case "Hammer_Wrench":
                 //Also need to give an option card
                 if(player.getDamage() > 0) {
-                    player.takeDamage();
+                    player.healDamage();
                 }
                 fromConveyor = false;
                 break;

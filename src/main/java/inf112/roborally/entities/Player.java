@@ -234,6 +234,14 @@ public class Player {
             damage = 0;
         }
     }
+    /**
+     * remove one damage
+     */
+    public void healDamage() {
+        if (damage > 0){
+            damage--;
+        }
+    }
 
     public boolean[] getFlags() {
         return flags;
