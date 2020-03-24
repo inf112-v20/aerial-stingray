@@ -17,11 +17,11 @@ import inf112.roborally.screens.WinScreen;
 import inf112.roborally.ui.Board;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+//import org.mockito.Mock;
+//import org.mockito.Mockito;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+//import static org.mockito.Mockito.*;
 
 public class PlayerTest {
 
@@ -32,8 +32,8 @@ public class PlayerTest {
     private Vector2 alternativePos;
     private Player player;
     private boolean[] flags;
-    private Board board = Mockito.mock(Board.class);
-    private RectangleMapObject tile = Mockito.mock(RectangleMapObject.class);
+    //private Board board = Mockito.mock(Board.class);
+    //private RectangleMapObject tile = Mockito.mock(RectangleMapObject.class);
 
 
     @Before
