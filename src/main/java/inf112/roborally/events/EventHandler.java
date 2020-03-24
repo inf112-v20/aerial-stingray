@@ -158,18 +158,23 @@ public class EventHandler {
 
             case "Flag1":
                 player.addFlag(1);
+                player.setBackup(new Vector2(player.getPos()));
                 fromConveyor = false;
                 break;
 
             case "Flag2":
-                if (player.getFlags()[0])
+                if (player.getFlags()[0]) {
                     player.addFlag(2);
+                    player.setBackup(new Vector2(player.getPos()));
+                }
                 fromConveyor = false;
                 break;
 
             case "Flag3":
-                if (player.getFlags()[0] && player.getFlags()[1])
+                if (player.getFlags()[0] && player.getFlags()[1]) {
                     player.addFlag(3);
+                    player.setBackup(new Vector2(player.getPos()));
+                }
                 fromConveyor = false;
                 break;
 
