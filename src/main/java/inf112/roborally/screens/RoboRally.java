@@ -80,9 +80,9 @@ public class RoboRally extends InputAdapter implements Screen {
     private ImageButton[] cardButtons;
 
 
-    public RoboRally() {
+    public RoboRally(int numPlayers) {
         setupGameComponents();
-        setupPlayers();
+        setupPlayers(numPlayers);
         setupRendering();
         setupUI();
         setupInput();
@@ -95,7 +95,7 @@ public class RoboRally extends InputAdapter implements Screen {
         cardButtons = new ImageButton[NUM_CARDS_SERVED];
     }
 
-    private void setupPlayers() {
+    private void setupPlayers(int numPlayers) {
         players = new ArrayList<>();
         cardsChosen = new LinkedList<>();
         Color[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.PINK};
