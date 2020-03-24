@@ -232,6 +232,11 @@ public class Player {
         }
     }
 
+    public void healDamage() {
+        if (damage != 0)
+            damage--;
+    }
+
     public boolean[] getFlags() {
         return flags;
     }
