@@ -101,8 +101,11 @@ public class RoboRally extends InputAdapter implements Screen {
         Color[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.PINK};
         Vector2[] startPos = {new Vector2(6,1), new Vector2(9,1), new Vector2(13,1), new Vector2(16,1)};
 
-        Player p1 = new Player(startPos[0], colors[0]);
-        players.add(p1);
+        for (int i = 0; i < numPlayers; i++) {
+            players.add(new Player(startPos[i], colors[i]));
+        }
+        // Player p1 = new Player(startPos[0], colors[0]);
+        // players.add(p1);
 
         thisPlayer = players.get(0);
     }
