@@ -1,26 +1,15 @@
 package inf112.roborally.tests;
 
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
-import inf112.roborally.cards.CardType;
-import inf112.roborally.cards.ProgramCard;
 import inf112.roborally.entities.Color;
-import inf112.roborally.entities.Direction;
 import inf112.roborally.entities.Player;
-import inf112.roborally.events.EventHandler;
-import inf112.roborally.screens.ScreenManager;
-import inf112.roborally.screens.WinScreen;
-import inf112.roborally.ui.Board;
 import org.junit.Before;
 import org.junit.Test;
-//import org.mockito.Mock;
-//import org.mockito.Mockito;
 
 import static org.junit.Assert.*;
+
+//import org.mockito.Mock;
+//import org.mockito.Mockito;
 //import static org.mockito.Mockito.*;
 
 public class PlayerTest {
