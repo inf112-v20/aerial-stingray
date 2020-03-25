@@ -199,6 +199,8 @@ public class Player {
         this.pos = pos;
     }
 
+    public void setBackup(Vector2 backup) { this.backup = backup; }
+
     /**
      * Changes position to backup-pos.
      * Also sets player icon to normal-mode.
@@ -241,6 +243,11 @@ public class Player {
         if (damage > 0){
             damage--;
         }
+    }
+
+    public void healDamage() {
+        if (damage != 0)
+            damage--;
     }
 
     public boolean[] getFlags() {

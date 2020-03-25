@@ -64,7 +64,8 @@ public class EventHandler {
 
             case "Normal_Conveyor_NorthEast":
                 if (fromConveyor)
-                    player.move(board, Direction.EAST, 1);
+                    player.rotate(true);
+                player.move(board, Direction.EAST, 1);
                 fromConveyor = true;
                 break;
 
@@ -184,7 +185,7 @@ public class EventHandler {
 
             case "Single_Wrench":
                 if(player.getDamage() > 0)
-                    player.healDamage();
+                    player.takeDamage();
                 fromConveyor = false;
                 break;
 

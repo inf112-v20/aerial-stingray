@@ -210,7 +210,7 @@
   <object id="167" type="Normal_Conveyor_East" x="840" y="180" width="60" height="60"/>
   <object id="166" type="Normal_Conveyor_East" x="780" y="180" width="60" height="60"/>
   <object id="165" type="Normal_Conveyor_East" x="720" y="180" width="60" height="60"/>
-  <object id="164" type="Normal_Conveyor_East" x="657.5" y="180" width="60" height="60"/>
+  <object id="164" type="Normal_Conveyor_East" x="660" y="180" width="60" height="60"/>
   <object id="175" type="Normal_Conveyor_West" x="660" y="240" width="60" height="60"/>
   <object id="176" type="Normal_Conveyor_West" x="720" y="240" width="60" height="60"/>
   <object id="177" type="Normal_Conveyor_West" x="780" y="240" width="60" height="60"/>
