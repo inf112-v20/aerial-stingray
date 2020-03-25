@@ -33,8 +33,7 @@ There are currently three test classes.
     * The number of directions is 4.
 
 ## ER diagram for overview over essential classes
-(This diagram has changed slightly in-code. `GameScreen` is not longer a class, and the rendering is now directly below `RoboRally`)
-![ER](assets/ER.png)
+![ER](Deliverables/Overview_Classes.png)
 
 ## Thanks to :heart:
 * [gdx-skins](https://github.com/czyzby/gdx-skins) by czyzby for allowing us to use cool component-skins.
