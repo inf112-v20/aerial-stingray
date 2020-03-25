@@ -1,12 +1,12 @@
-#Manual Tests
+# Manual Tests
 
-##Control Panel
+## Control Panel
 * Clicking a card should highlight it with green, and re-clicking should remove the green.
 * Attempting to choose a sixth card should not leave it highlighted.
 * Clicking "Lock in cards" should make the robot perform the moves in chronological order.
 * Clicking "Lock in cards" when less than 5 cards are chosen should result in no movement.
 
-##Tile functionality
+## Tile functionality
 * Conveyors
     * A normal conveyor should move the player 1 step in the direction the conveyor is pointed.
     * An express conveyor should move the player 2 steps in the direction it's pointed.
