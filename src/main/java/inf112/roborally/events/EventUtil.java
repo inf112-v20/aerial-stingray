@@ -14,7 +14,7 @@ import static inf112.roborally.ui.Board.TILE_SIZE;
 /**
  * Provides static methods for dealing with tile-events.
  */
-public class EventHandler {
+public class EventUtil {
 
     private static boolean fromConveyor;
 
@@ -215,7 +215,7 @@ public class EventHandler {
                 break;
         }
 
-        if (EventHandler.outOfBounds(player)) {
+        if (EventUtil.outOfBounds(player)) {
             player.subtractLife();
             player.respawn();
         }

@@ -19,7 +19,7 @@ import inf112.roborally.cards.Deck;
 import inf112.roborally.cards.ProgramCard;
 import inf112.roborally.entities.Color;
 import inf112.roborally.entities.Player;
-import inf112.roborally.events.EventHandler;
+import inf112.roborally.events.EventUtil;
 import inf112.roborally.ui.Board;
 
 import java.util.ArrayList;
@@ -359,7 +359,7 @@ public class RoboRally extends InputAdapter implements Screen {
         if (moved) {
             board.getPlayerLayer().setCell(x, y, null);
             System.out.println(thisPlayer.showStatus());
-            EventHandler.handleEvent(board, thisPlayer);
+            EventUtil.handleEvent(board, thisPlayer);
         }
 
         return moved;

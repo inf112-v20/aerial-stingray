@@ -6,7 +6,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
 import inf112.roborally.cards.ProgramCard;
-import inf112.roborally.events.EventHandler;
+import inf112.roborally.events.EventUtil;
 import inf112.roborally.screens.LoseScreen;
 import inf112.roborally.screens.ScreenManager;
 import inf112.roborally.screens.WinScreen;
@@ -91,20 +91,20 @@ public class Player {
         for (int i = 0; i < steps; i++) {
             switch (dir) {
                 case NORTH:
-                    if (EventHandler.canGo(board, this, Direction.NORTH, 1))
+                    if (EventUtil.canGo(board, this, Direction.NORTH, 1))
                         getPos().y++;
                     break;
                 case EAST:
-                    if (EventHandler.canGo(board, this, Direction.EAST, 1))
+                    if (EventUtil.canGo(board, this, Direction.EAST, 1))
                         getPos().x++;
                     break;
                 case SOUTH:
-                    if (EventHandler.canGo(board, this, Direction.SOUTH, 1))
+                    if (EventUtil.canGo(board, this, Direction.SOUTH, 1))
                         getPos().y--;
                     break;
 
                 case WEST:
-                    if (EventHandler.canGo(board, this, Direction.WEST, 1))
+                    if (EventUtil.canGo(board, this, Direction.WEST, 1))
                         getPos().x--;
                     break;
 
@@ -301,43 +301,43 @@ public class Player {
         switch (card.getType()) {
             case TURN_RIGHT:
                 this.rotate(true);
-                EventHandler.handleEvent(board, this);
+                EventUtil.handleEvent(board, this);
                 break;
 
             case TURN_LEFT:
                 this.rotate(false);
-                EventHandler.handleEvent(board, this);
+                EventUtil.handleEvent(board, this);
                 break;
 
             case TURN_U:
                 this.rotate180();
-                EventHandler.handleEvent(board, this);
+                EventUtil.handleEvent(board, this);
                 break;
 
             case BACKUP:
                 this.move(board, this.getOppositeDir(), 1);
-                EventHandler.handleEvent(board, this);
+                EventUtil.handleEvent(board, this);
                 break;
 
             case MOVE1:
                 this.move(board, this.getDir(), 1);
-                EventHandler.handleEvent(board, this);
+                EventUtil.handleEvent(board, this);
                 break;
 
             case MOVE2:
                 this.move(board, this.getDir(), 1);
-                EventHandler.handleEvent(board, this);
+                EventUtil.handleEvent(board, this);
                 this.move(board, this.getDir(), 1);
-                EventHandler.handleEvent(board, this);
+                EventUtil.handleEvent(board, this);
                 break;
 
             case MOVE3:
                 this.move(board, this.getDir(), 1);
-                EventHandler.handleEvent(board, this);
+                EventUtil.handleEvent(board, this);
                 this.move(board, this.getDir(), 1);
-                EventHandler.handleEvent(board, this);
+                EventUtil.handleEvent(board, this);
                 this.move(board, this.getDir(), 1);
-                EventHandler.handleEvent(board, this);
+                EventUtil.handleEvent(board, this);
                 break;
 
             default:
