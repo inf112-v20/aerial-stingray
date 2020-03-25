@@ -185,7 +185,7 @@ public class EventHandler {
 
             case "Single_Wrench":
                 if(player.getDamage() > 0)
-                    player.takeDamage();
+                    player.healDamage();
                 fromConveyor = false;
                 break;
 
