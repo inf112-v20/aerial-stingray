@@ -204,6 +204,8 @@ public class Player {
      * Also sets player icon to normal-mode.
      */
     public void respawn() {
+        this.currentRotation = 2;
+        this.dir = Direction.NORTH;
         setPos(new Vector2(backup.x, backup.y));
         System.out.println(backup);
     }
@@ -238,7 +240,7 @@ public class Player {
      * remove one damage
      */
     public void healDamage() {
-        if (damage > 0){
+        if (damage > 0 ){
             damage--;
         }
     }
