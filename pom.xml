@@ -26,7 +26,15 @@
       <version>1.9.9</version>
     </dependency>
 
-    <dependency>
+      <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-all</artifactId>
+        <version>4.1.48.Final</version>
+      </dependency>
+
+
+      <dependency>
       <groupId>com.badlogicgames.gdx</groupId>
       <artifactId>gdx-backend-lwjgl</artifactId>
       <version>1.9.9</version>
