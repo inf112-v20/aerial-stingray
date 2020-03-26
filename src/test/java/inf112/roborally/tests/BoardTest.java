@@ -14,8 +14,5 @@ public class BoardTest {
         assertEquals(Board.TILE_SIZE, 60);
     }
 
-
-
-
 }
 

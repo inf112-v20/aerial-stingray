@@ -41,6 +41,5 @@ public class ProgramCardTest {
 
         card = new ProgramCard(CardType.MOVE1, 10);
         assertEquals(card.getPriority(), 10);
-
     }
 }

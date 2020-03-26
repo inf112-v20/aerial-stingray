@@ -2,15 +2,12 @@ package inf112.roborally.tests;
 
 import com.badlogic.gdx.math.Vector2;
 import inf112.roborally.entities.Color;
+import inf112.roborally.entities.Direction;
 import inf112.roborally.entities.Player;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-
-//import org.mockito.Mock;
-//import org.mockito.Mockito;
-//import static org.mockito.Mockito.*;
 
 public class PlayerTest {
 
@@ -20,14 +17,9 @@ public class PlayerTest {
     private Vector2 playerPos;
     private Vector2 alternativePos;
     private Player player;
-    private boolean[] flags;
-    //private Board board = Mockito.mock(Board.class);
-    //private RectangleMapObject tile = Mockito.mock(RectangleMapObject.class);
-
 
     @Before
     public void initialize() {
-        flags = new boolean[]{false, false, false, false};
         playerPos = new Vector2(0, 0);
         alternativePos = new Vector2(10, 10);
         player = new Player(playerPos, Color.GREEN);
@@ -44,8 +36,54 @@ public class PlayerTest {
         player.setPos(alternativePos);
         assertEquals(player.getPos(), alternativePos);
     }
+
     @Test
-    public void testAddAndGetFlag(){
+    public void testOppositeDir() {
+        player.setDir(Direction.NORTH);
+        assertEquals(Direction.SOUTH, player.getOppositeDir());
+        assertNotEquals(Direction.NORTH, player.getOppositeDir());
+
+        player.rotate(true);
+        assertEquals(Direction.WEST, player.getOppositeDir());
+        assertNotEquals(Direction.EAST, player.getOppositeDir());
+
+        player.rotate(true);
+        assertEquals(Direction.NORTH, player.getOppositeDir());
+        assertNotEquals(Direction.WEST, player.getOppositeDir());
+
+        player.rotate(true);
+        assertEquals(Direction.EAST, player.getOppositeDir());
+        assertNotEquals(Direction.SOUTH, player.getOppositeDir());
+    }
+
+    @Test
+    public void testRotateLeft() {
+        player.setDir(Direction.NORTH);
+        player.rotate(false);
+
+        assertEquals(Direction.WEST, player.getDir());
+    }
+
+    @Test
+    public void testRotateRight() {
+        player.setDir(Direction.NORTH);
+        player.rotate(true);
+
+        assertEquals(Direction.EAST, player.getDir());
+    }
+
+    @Test
+    public void testRotate180Degree() {
+        player.setDir(Direction.NORTH);
+        player.rotate180();
+        assertEquals(Direction.SOUTH, player.getDir());
+
+        player.rotate180();
+        assertEquals(Direction.NORTH, player.getDir());
+    }
+
+    @Test
+    public void testAddAndGetFlag() {
         player.addFlag(1);
         assertTrue(player.getFlags()[0]);
         assertFalse(player.getFlags()[1]);
@@ -62,6 +100,17 @@ public class PlayerTest {
         assertTrue(player.getFlags()[3]);
     }
 
+    @Test
+    public void testSetAndGetDir() {
+        player.setDir(Direction.EAST);
+        assertEquals(Direction.EAST, player.getDir());
+    }
+
+
+    @Test
+    public void testStartingDirectionNorth() {
+        assertEquals(player.getDir(), Direction.NORTH);
+    }
 
     @Test
     public void testHasAllFlagsIsTrue() {
@@ -88,30 +137,4 @@ public class PlayerTest {
         player.subtractLife();
         assertEquals(player.showStatus(), "Life: 1, Damage: 0");
     }
-
-
-  /*  @Test
-    public void testExecuteCardTurnLeft(){
-        ProgramCard card = Mockito.mock(ProgramCard.class);
-        doReturn(CardType.TURN_LEFT).when(card.getType());
-        player.executeCard(board, card);
-        assertEquals(Direction.EAST, player.getDir());
-
-
-    }*/
-
-//Need to find a way to test this without the static method EventHandler
- /*   @Test
-    public void testMove1Step() {
-        String layer = (String) tile.getProperties().get("type");
-        Vector2 pos = new Vector2(0, 0);
-
-        when(EventHandler.getTileType(board, layer, pos)).getMock();
-
-
-        player.move(board, Direction.NORTH, 1);
-        assertEquals(player.getPos(), new Vector2(0, 1));
-
-    }
-*/
 }
