@@ -51,6 +51,12 @@ public class Client implements Runnable {
             }
 
             channel.writeAndFlush("HANDSHAKE" + " " + name);
+
+            //prevents the client from shutting down. Gets shut down manually
+            while (true) {
+
+            }
+
         } finally {
             workerGroup.shutdownGracefully();
         }
