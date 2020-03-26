@@ -413,6 +413,9 @@ public class RoboRally extends InputAdapter implements Screen {
         font.dispose();
     }
 
+    /**
+     * Non-finished method implemented from Screen.
+     */
     @Override
     public void show() {
     }
@@ -422,16 +425,24 @@ public class RoboRally extends InputAdapter implements Screen {
         Gdx.graphics.setWindowedMode(width, height);
     }
 
+    /**
+     * Non-finished method implemented from Screen.
+     */
     @Override
     public void pause() {
     }
 
+    /**
+     * Non-finished method implemented from Screen.
+     */
     @Override
     public void resume() {
     }
 
+    /**
+     * Non-finished method implemented from Screen.
+     */
     @Override
     public void hide() {
-
     }
 }
