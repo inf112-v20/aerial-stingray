@@ -9,10 +9,11 @@
 This repo is going to re-create the game RoboRally.
 
 ## How to play
-Start by running Main. As of now, the player moves in the direction of it's feet when the up-arrow is pressed, backwards
-when the down-arrow is pressed, and rotates in right or left based on whether the right or left arrow is pressed. Walk 
-to the flags in order 1-4 to win the game. It will tell you in console how many flags you have, and also how many lives 
-you have left.
+1. Start by running Main.java
+    - Can also run jar-file found in [releases](https://github.com/inf112-v20/aerial-stingray/releases) from terminal: `java -jar RoboRally.jar`
+2. When the menu screen shows up, press 'Start game'
+3. Move your robot by assigning 5 cards to it, and then press 'Lock in cards'
+4. Win by collecting all 4 flags in the correct order
 
 ## Tests
 We have [manual tests](Deliverables/ManualTests.md) as well as JUnit-tests.
@@ -24,3 +25,4 @@ We have [manual tests](Deliverables/ManualTests.md) as well as JUnit-tests.
 * [gdx-skins](https://github.com/czyzby/gdx-skins) by czyzby for allowing us to use cool component-skins.
     * We used the "Rusty Robot UI" created by [Raymond "Raeleus" Buckley](https://ray3k.wordpress.com/software/skin-composer-for-libgdx/)
 * <a href="https://www.freepik.com/free-photos-vectors/infographic">Infographic vector created by freepik - www.freepik.com</a> (arrow graphics)
+
