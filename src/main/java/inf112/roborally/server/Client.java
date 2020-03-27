@@ -58,6 +58,7 @@ public class Client implements Runnable {
             }
 
         } finally {
+            // Shut down application without making any troubles
             workerGroup.shutdownGracefully();
         }
     }
