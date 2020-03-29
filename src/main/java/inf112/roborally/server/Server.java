@@ -41,11 +41,14 @@ public class Server {
                     .childHandler(new ServerInit(game)).childOption(ChannelOption.AUTO_READ, true);
 
             try {
+                // Bind and start to accept incoming connections.
                 bootstrap.bind(port).sync().channel().closeFuture().sync();
+            // A mandatory catch function to catch any exceptions caused by .sync()
             } catch (InterruptedException exception) {
                 exception.printStackTrace();
             }
         } finally {
+            // Shut down server without causing errors.
             System.out.println("Shutting down game server...");
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
