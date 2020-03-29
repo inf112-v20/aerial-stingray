@@ -27,7 +27,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
      */
 
     @Override
-    public void channelRead(ChannelHandlerContext context, Object message) throws Exception {
+    public void channelRead(ChannelHandlerContext context, Object message) {
         String data = message.toString();
         String[] split = data.split(" ");
         String header = split[0];
@@ -54,6 +54,8 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
                 game.playersInGame = game.playerNames.size();
 
                 break;
+
+            // TODO: add cases for map, cards and several events
         }
 
     }

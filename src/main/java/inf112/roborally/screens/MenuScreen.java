@@ -31,6 +31,7 @@ public class MenuScreen implements Screen {
         TextField textField = new TextField("RoboRally", menuSkin);
         textField.setDisabled(true);
         textField.setAlignment(Align.center);
+        TextButton multiplayer = new TextButton("Multiplayer", menuSkin);
         TextButton start = new TextButton("Start Game", menuSkin);
         TextButton settings = new TextButton("Settings", menuSkin);
         TextButton exit = new TextButton("Exit", menuSkin);
@@ -51,6 +52,7 @@ public class MenuScreen implements Screen {
 
         menuComponents.add(textField).size(200, 75).expandX().padBottom(20);
         menuComponents.row();
+        menuComponents.add(multiplayer).size(300, 120).expandX().padBottom(20);
         menuComponents.add(start).size(300, 120).expandX();
         menuComponents.row();
         menuComponents.add(settings).size(300, 120).expandX();
