@@ -177,6 +177,13 @@ public class RoboRally extends InputAdapter implements Screen {
         Gdx.input.setInputProcessor(im);
     }
 
+    private void run(){
+        for (Player player : players) {
+            EventUtil.handleEvent(board, player, players);
+
+        }
+    }
+
     /**
      * Locks in the selected cards and furthers the process
      * of executing them.

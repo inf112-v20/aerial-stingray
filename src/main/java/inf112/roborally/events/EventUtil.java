@@ -222,6 +222,10 @@ public class EventUtil {
         }
     }
 
+    /**
+     * @param player The player who stands on the tile
+     * @return true/false if player is outside the board
+     */
     public static boolean outOfBounds(Player player) {
         if (player.getPos().x < 0 || player.getPos().y < 0)
             return true;
@@ -254,7 +258,17 @@ public class EventUtil {
         if (!(pushPlayer(board, dir, players, (int) nextPos.x, (int) nextPos.y)))
             return false;
 
-        // Can go from current tile
+        return canGoFromTile(board, player, dir) && canGoToTile(board, dir, nextPos);
+    }
+
+    /**
+     * Checks if the player can move / be pushed in a certain direction from the current tile.
+     *
+     * @param board  The current Board which holds all tiles
+     * @param player Representing player, with it's direction
+     * @return A boolean true if you can go in a specific direction
+     */
+    public static boolean canGoFromTile(Board board, Player player, Direction dir) {
         String wallType = getTileType(board, "OWalls", player.getPos());
         if (wallType != null) {
             switch (wallType) {
@@ -279,9 +293,17 @@ public class EventUtil {
                     break;
             }
         }
+        return true;
+    }
 
-        // Can go to next tile
-        wallType = getTileType(board, "OWalls", nextPos);
+    /**
+     * Checks if the player can move / be pushed to a current tile.
+     *
+     * @param board  The current Board which holds all tiles
+     * @return A boolean true if you can go in a specific direction
+     */
+    public static boolean canGoToTile(Board board, Direction dir, Vector2 nextPos) {
+        String wallType = getTileType(board, "OWalls", nextPos);
         if (wallType != null) {
             switch (wallType) {
                 case "Wall_North":
@@ -305,7 +327,6 @@ public class EventUtil {
                     break;
             }
         }
-
         return true;
     }
 
@@ -335,7 +356,7 @@ public class EventUtil {
     /**
      *
      * @param board The current board
-     * @param dir The diraction of the player that is moving
+     * @param dir The direction of the player that is moving
      * @param players The other robots in the game
      * @param x x-coordinate
      * @param y y-coordinate
