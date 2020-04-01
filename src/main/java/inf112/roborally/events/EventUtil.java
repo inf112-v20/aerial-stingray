@@ -39,11 +39,6 @@ public class EventUtil {
 
         String events = getTileType(board, "OEvents", player.getPos());
         switch (events) {
-            case "Hole":
-                player.subtractLife();
-                fromConveyor = false;
-                break;
-
             case "RotateLeft":
                 player.rotate(false);
                 fromConveyor = false;
@@ -116,6 +111,17 @@ public class EventUtil {
         if (EventUtil.outOfBounds(player)) {
             player.subtractLife();
             player.respawn();
+        }
+    }
+    /**
+     * If player is on a hole, subtract one life and set player.robotAlive to false
+     *  @param board  The current Board which holds all tiles
+     * @param player The player who stands on the tile
+     */
+    public static void hole(Board board, Player player){
+        if (getTileType(board, "OEvents", player.getPos()).equals("Hole")){
+            player.subtractLife();
+            player.setRobotAlive(false);
         }
     }
 

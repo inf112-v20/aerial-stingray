@@ -25,6 +25,11 @@ public class Player {
     private int id;
 
     /**
+     * Robot alive or dead
+     */
+    boolean robotAlive = true;
+
+    /**
      * Graphics
      */
     private Vector2 backup;
@@ -74,6 +79,13 @@ public class Player {
         return id;
     }
 
+    public boolean getRobotAlive(){
+        return robotAlive;
+    }
+
+    public void setRobotAlive(boolean state){
+        robotAlive = state;
+    }
     /**
      * @return player direction icon
      */
