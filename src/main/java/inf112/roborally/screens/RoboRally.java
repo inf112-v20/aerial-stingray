@@ -102,7 +102,7 @@ public class RoboRally extends InputAdapter implements Screen {
         Vector2[] startPos = {new Vector2(6,1), new Vector2(9,1), new Vector2(13,1), new Vector2(16,1)};
 
         for (int i = 0; i < numPlayers; i++) {
-            players.add(new Player(startPos[i], colors[i]));
+            players.add(new Player(startPos[i], colors[i], i));
         }
         // Player p1 = new Player(startPos[0], colors[0]);
         // players.add(p1);
@@ -204,7 +204,7 @@ public class RoboRally extends InputAdapter implements Screen {
             Vector2 oldPos = thisPlayer.getPos();
             setCellToNull(oldPos);
 
-            thisPlayer.executeCard(board, currentCard);
+            thisPlayer.executeCard(board, currentCard, players);
             System.out.println(thisPlayer.showStatus());
         }
 
@@ -343,10 +343,10 @@ public class RoboRally extends InputAdapter implements Screen {
         int y = (int) thisPlayer.getPos().y;
 
         if (keycode == Input.Keys.UP) {
-            thisPlayer.move(board, thisPlayer.getDir(), 1);
+            thisPlayer.move(board, thisPlayer.getDir(), 1, players);
             moved = true;
         } else if (keycode == Input.Keys.DOWN) {
-            thisPlayer.move(board, thisPlayer.getOppositeDir(), 1);
+            thisPlayer.move(board, thisPlayer.getOppositeDir(), 1, players);
             moved = true;
         } else if (keycode == Input.Keys.LEFT) {
             thisPlayer.rotate(false);
@@ -359,7 +359,7 @@ public class RoboRally extends InputAdapter implements Screen {
         if (moved) {
             board.getPlayerLayer().setCell(x, y, null);
             System.out.println(thisPlayer.showStatus());
-            EventUtil.handleEvent(board, thisPlayer);
+            EventUtil.handleEvent(board, thisPlayer, players);
         }
 
         return moved;
@@ -379,9 +379,12 @@ public class RoboRally extends InputAdapter implements Screen {
      * Draws player on the map.
      */
     public void drawPlayer() {
-        //board.getPlayerLayer().setCell((int) thisPlayer.getPos().x, (int) thisPlayer.getPos().y, thisPlayer.getPlayerIcon());
+        int i = 0;
         for (Player player : this.players){
             board.getPlayerLayer().setCell((int) player.getPos().x, (int) player.getPos().y, player.getPlayerIcon());
+            board.getPlayerLayer().getCell((int) player.getPos().x, (int) player.getPos().y).getTile().setId(i);
+            i++;
+
         }
     }
 

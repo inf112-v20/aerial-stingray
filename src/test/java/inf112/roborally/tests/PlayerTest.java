@@ -22,7 +22,7 @@ public class PlayerTest {
     public void initialize() {
         playerPos = new Vector2(0, 0);
         alternativePos = new Vector2(10, 10);
-        player = new Player(playerPos, Color.GREEN);
+        player = new Player(playerPos, Color.GREEN, 0);
     }
 
     @Test
