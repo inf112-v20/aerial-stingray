@@ -35,9 +35,6 @@ public class EventUtil {
 
         expressConveyor(board, player, players);
         normalConveyor(board, player, players);
-
-        if (getTileType(board, "OEvents", player.getPos()).equals("Floor")) { return; }
-
         rotators(board, player);
 
         lasers(board, player);
@@ -49,17 +46,10 @@ public class EventUtil {
         hole(board, player);
 
 
-
-
-
-        if (EventUtil.outOfBounds(player)) {
-            player.subtractLife();
-            player.respawn();
-        }
     }
 
     /**
-     * If player is on a hole, subtract one life and set player.robotAlive to false
+     * If player is on a hole or outside the boar, subtract one life and set player.robotAlive to false
      *  @param board  The current Board which holds all tiles
      * @param player The player who stands on the tile
      */
@@ -67,6 +57,11 @@ public class EventUtil {
         if (getTileType(board, "OEvents", player.getPos()).equals("Hole")){
             player.subtractLife();
             player.setRobotAlive(false);
+        } else if (EventUtil.outOfBounds(player)) {
+            player.subtractLife();
+            player.setRobotAlive(false);
+            //Remove later when a fase is in place
+            player.respawn();
         }
     }
 
@@ -207,6 +202,9 @@ public class EventUtil {
     private static void rotators(Board board, Player player){
         String events = getTileType(board, "OEvents", player.getPos());
         switch (events) {
+            case "Floor":
+                break;
+
             case "RotateLeft":
                 player.rotate(false);
                 fromConveyor = false;
@@ -246,6 +244,9 @@ public class EventUtil {
     private static void flags(Board board, Player player){
         String events = getTileType(board, "OEvents", player.getPos());
         switch (events) {
+            case "Floor":
+                break;
+
             case "Flag1":
                 player.addFlag(1);
                 player.setBackup(new Vector2(player.getPos()));
@@ -284,6 +285,9 @@ public class EventUtil {
     private static void repairs(Board board, Player player){
         String events = getTileType(board, "OEvents", player.getPos());
         switch (events) {
+            case "Floor":
+                break;
+
             case "Single_Wrench":
                 if(player.getDamage() > 0)
                     player.healDamage();
