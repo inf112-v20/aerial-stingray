@@ -34,111 +34,8 @@ public class EventUtil {
     public static void handleEvent(Board board, Player player, ArrayList<Player> players) {
         String movers = getTileType(board, "OMovers", player.getPos());
 
-        switch (movers) {
-
-            case "Normal_Conveyor_North":
-                player.move(board, Direction.NORTH, 1, players);
-                fromConveyor = true;
-                break;
-
-            case "Normal_Conveyor_East":
-                player.move(board, Direction.EAST, 1, players);
-                fromConveyor = true;
-                break;
-
-            case "Normal_Conveyor_South":
-                player.move(board, Direction.SOUTH, 1, players);
-                fromConveyor = true;
-                break;
-
-            case "Normal_Conveyor_West":
-                player.move(board, Direction.WEST, 1, players);
-                fromConveyor = true;
-                break;
-
-            case "Normal_Conveyor_EastNorth":
-                if (fromConveyor)
-                    player.rotate(false);
-                player.move(board, Direction.NORTH, 1, players);
-                fromConveyor = true;
-                break;
-
-            case "Normal_Conveyor_NorthEast":
-                if (fromConveyor)
-                    player.rotate(true);
-                player.move(board, Direction.EAST, 1, players);
-                fromConveyor = true;
-                break;
-
-            case "Normal_Conveyor_EastSouth":
-                if (fromConveyor)
-                    player.rotate(true);
-                player.move(board, Direction.SOUTH, 1, players);
-                fromConveyor = true;
-                break;
-
-            case "Normal_Conveyor_SouthEast":
-                if (fromConveyor)
-                    player.rotate(false);
-                player.move(board, Direction.EAST, 1, players);
-                fromConveyor = true;
-                break;
-
-            case "Express_Conveyor_North":
-                player.move(board, Direction.NORTH, 2, players);
-                fromConveyor = true;
-                break;
-
-            case "Express_Conveyor_West":
-                player.move(board, Direction.WEST, 2, players);
-                fromConveyor = true;
-                break;
-
-            case "Express_Conveyor_South":
-                player.move(board, Direction.SOUTH, 2, players);
-                fromConveyor = true;
-                break;
-
-            case "Express_Conveyor_East":
-                player.move(board, Direction.EAST, 2, players);
-                fromConveyor = true;
-                break;
-
-            case "Express_Conveyor_EastNorth":
-                if (fromConveyor)
-                    player.rotate(false);
-                player.move(board, Direction.NORTH, 2, players);
-                fromConveyor = true;
-                break;
-
-            case "Express_Conveyor_NorthEast":
-                if (fromConveyor)
-                    player.rotate(true);
-                player.move(board, Direction.EAST, 2, players);
-                fromConveyor = true;
-                break;
-
-            case "Express_Conveyor_EastSouth":
-                if (fromConveyor)
-                    player.rotate(true);
-                player.move(board, Direction.SOUTH, 2, players);
-                fromConveyor = true;
-                break;
-
-            case "Express_Conveyor_SouthWest":
-                if (fromConveyor)
-                    player.rotate(true);
-                player.move(board, Direction.WEST, 2, players);
-                fromConveyor = true;
-                break;
-
-            case "Express_Conveyor_WestNorth":
-                if (fromConveyor)
-                    player.rotate(true);
-                player.move(board, Direction.NORTH, 2, players);
-                fromConveyor = true;
-                break;
-        }
+        expressConveyor(board, player, players);
+        normalConveyor(board, player, players);
 
         String events = getTileType(board, "OEvents", player.getPos());
         switch (events) {
@@ -219,6 +116,135 @@ public class EventUtil {
         if (EventUtil.outOfBounds(player)) {
             player.subtractLife();
             player.respawn();
+        }
+    }
+
+    /**
+     * If player is on a express conveyor it moves player one step in the direction of the conveyor
+     *  @param board  The current Board which holds all tiles
+     * @param player The player who stands on the tile
+     * @param players The other robots in the game
+     */
+    private static void expressConveyor(Board board, Player player, ArrayList<Player> players){
+        String movers = getTileType(board, "OMovers", player.getPos());
+
+        switch (movers) {
+            case "Express_Conveyor_North":
+                player.move(board, Direction.NORTH, 2, players);
+                fromConveyor = true;
+                break;
+
+            case "Express_Conveyor_West":
+                player.move(board, Direction.WEST, 2, players);
+                fromConveyor = true;
+                break;
+
+            case "Express_Conveyor_South":
+                player.move(board, Direction.SOUTH, 2, players);
+                fromConveyor = true;
+                break;
+
+            case "Express_Conveyor_East":
+                player.move(board, Direction.EAST, 2, players);
+                fromConveyor = true;
+                break;
+
+            case "Express_Conveyor_EastNorth":
+                if (fromConveyor)
+                    player.rotate(false);
+                player.move(board, Direction.NORTH, 2, players);
+                fromConveyor = true;
+                break;
+
+            case "Express_Conveyor_NorthEast":
+                if (fromConveyor)
+                    player.rotate(true);
+                player.move(board, Direction.EAST, 2, players);
+                fromConveyor = true;
+                break;
+
+            case "Express_Conveyor_EastSouth":
+                if (fromConveyor)
+                    player.rotate(true);
+                player.move(board, Direction.SOUTH, 2, players);
+                fromConveyor = true;
+                break;
+
+            case "Express_Conveyor_SouthWest":
+                if (fromConveyor)
+                    player.rotate(true);
+                player.move(board, Direction.WEST, 2, players);
+                fromConveyor = true;
+                break;
+
+            case "Express_Conveyor_WestNorth":
+                if (fromConveyor)
+                    player.rotate(true);
+                player.move(board, Direction.NORTH, 2, players);
+                fromConveyor = true;
+                break;
+        }
+    }
+
+    /**
+     * If player is on a normal conveyor it moves player one step in the direction of the conveyor
+     *  @param board  The current Board which holds all tiles
+     * @param player The player who stands on the tile
+     * @param players The other robots in the game
+     */
+    private static void normalConveyor(Board board, Player player, ArrayList<Player> players) {
+        String movers = getTileType(board, "OMovers", player.getPos());
+
+        switch (movers) {
+            case "Normal_Conveyor_North":
+            //case "Express_Conveyor_North":
+                player.move(board, Direction.NORTH, 1, players);
+                fromConveyor = true;
+                break;
+
+            case "Normal_Conveyor_East":
+                player.move(board, Direction.EAST, 1, players);
+                fromConveyor = true;
+                break;
+
+            case "Normal_Conveyor_South":
+                player.move(board, Direction.SOUTH, 1, players);
+                fromConveyor = true;
+                break;
+
+            case "Normal_Conveyor_West":
+                player.move(board, Direction.WEST, 1, players);
+                fromConveyor = true;
+                break;
+
+            case "Normal_Conveyor_EastNorth":
+                if (fromConveyor)
+                    player.rotate(false);
+                player.move(board, Direction.NORTH, 1, players);
+                fromConveyor = true;
+                break;
+
+            case "Normal_Conveyor_NorthEast":
+                if (fromConveyor)
+                    player.rotate(true);
+                player.move(board, Direction.EAST, 1, players);
+                fromConveyor = true;
+                break;
+
+            case "Normal_Conveyor_EastSouth":
+                if (fromConveyor)
+                    player.rotate(true);
+                player.move(board, Direction.SOUTH, 1, players);
+                fromConveyor = true;
+                break;
+
+            case "Normal_Conveyor_SouthEast":
+                if (fromConveyor)
+                    player.rotate(false);
+                player.move(board, Direction.EAST, 1, players);
+                fromConveyor = true;
+                break;
+
         }
     }
 
