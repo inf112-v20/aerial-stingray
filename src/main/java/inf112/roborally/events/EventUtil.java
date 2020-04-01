@@ -38,39 +38,15 @@ public class EventUtil {
 
         rotators(board, player);
 
+        //laser
+
+        flags(board, player);
+
+        //should be called for each step the robot makes
         hole(board, player);
 
         String events = getTileType(board, "OEvents", player.getPos());
         switch (events) {
-
-            case "Flag1":
-                player.addFlag(1);
-                player.setBackup(new Vector2(player.getPos()));
-                fromConveyor = false;
-                break;
-
-            case "Flag2":
-                if (player.getFlags()[0]) {
-                    player.addFlag(2);
-                    player.setBackup(new Vector2(player.getPos()));
-                }
-                fromConveyor = false;
-                break;
-
-            case "Flag3":
-                if (player.getFlags()[0] && player.getFlags()[1]) {
-                    player.addFlag(3);
-                    player.setBackup(new Vector2(player.getPos()));
-                }
-                fromConveyor = false;
-                break;
-
-            case "Flag4":
-                if (player.getFlags()[0] && player.getFlags()[1] && player.getFlags()[2])
-                    player.addFlag(4);
-                fromConveyor = false;
-                break;
-
             case "Floor":
                 fromConveyor = false;
                 break;
@@ -264,6 +240,44 @@ public class EventUtil {
 
             case "RotateRight":
                 player.rotate(true);
+                fromConveyor = false;
+                break;
+        }
+    }
+
+    /**
+     * If player is on a flag and it is the right one, it "picks" it up
+     *  @param board  The current Board which holds all tiles
+     * @param player The player who stands on the tile
+     */
+    private static void flags(Board board, Player player){
+        String events = getTileType(board, "OEvents", player.getPos());
+        switch (events) {
+            case "Flag1":
+                player.addFlag(1);
+                player.setBackup(new Vector2(player.getPos()));
+                fromConveyor = false;
+                break;
+
+            case "Flag2":
+                if (player.getFlags()[0]) {
+                    player.addFlag(2);
+                    player.setBackup(new Vector2(player.getPos()));
+                }
+                fromConveyor = false;
+                break;
+
+            case "Flag3":
+                if (player.getFlags()[0] && player.getFlags()[1]) {
+                    player.addFlag(3);
+                    player.setBackup(new Vector2(player.getPos()));
+                }
+                fromConveyor = false;
+                break;
+
+            case "Flag4":
+                if (player.getFlags()[0] && player.getFlags()[1] && player.getFlags()[2])
+                    player.addFlag(4);
                 fromConveyor = false;
                 break;
         }
