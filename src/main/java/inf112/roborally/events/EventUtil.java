@@ -36,47 +36,21 @@ public class EventUtil {
         expressConveyor(board, player, players);
         normalConveyor(board, player, players);
 
+        if (getTileType(board, "OEvents", player.getPos()).equals("Floor")) { return; }
+
         rotators(board, player);
 
-        //laser
-
+        lasers(board, player);
         flags(board, player);
+        repairs(board, player);
+
 
         //should be called for each step the robot makes
         hole(board, player);
 
-        String events = getTileType(board, "OEvents", player.getPos());
-        switch (events) {
-            case "Floor":
-                fromConveyor = false;
-                break;
 
-            case "Single_Wrench":
-                if(player.getDamage() > 0)
-                    player.healDamage();
-                fromConveyor = false;
-                break;
 
-            case "Hammer_Wrench":
-                //Also need to give an option card
-                if(player.getDamage() > 0) {
-                    player.healDamage();
-                }
-                fromConveyor = false;
-                break;
-        }
 
-        String lasers = getTileType(board, "OLasers", player.getPos());
-        switch (lasers) {
-            case "Laser":
-                player.takeDamage();
-                break;
-
-            case "Laser_2x":
-                player.takeDamage();
-                player.takeDamage();
-                break;
-        }
 
         if (EventUtil.outOfBounds(player)) {
             player.subtractLife();
@@ -250,6 +224,25 @@ public class EventUtil {
      *  @param board  The current Board which holds all tiles
      * @param player The player who stands on the tile
      */
+    private static void lasers(Board board, Player player){
+        String lasers = getTileType(board, "OLasers", player.getPos());
+        switch (lasers) {
+            case "Laser":
+                player.takeDamage();
+                break;
+
+            case "Laser_2x":
+                player.takeDamage();
+                player.takeDamage();
+                break;
+        }
+    }
+
+    /**
+     * If player is on a flag and it is the right one, it "picks" it up
+     *  @param board  The current Board which holds all tiles
+     * @param player The player who stands on the tile
+     */
     private static void flags(Board board, Player player){
         String events = getTileType(board, "OEvents", player.getPos());
         switch (events) {
@@ -278,6 +271,30 @@ public class EventUtil {
             case "Flag4":
                 if (player.getFlags()[0] && player.getFlags()[1] && player.getFlags()[2])
                     player.addFlag(4);
+                fromConveyor = false;
+                break;
+        }
+    }
+
+    /**
+     * If player is on a flag and it is the right one, it "picks" it up
+     *  @param board  The current Board which holds all tiles
+     * @param player The player who stands on the tile
+     */
+    private static void repairs(Board board, Player player){
+        String events = getTileType(board, "OEvents", player.getPos());
+        switch (events) {
+            case "Single_Wrench":
+                if(player.getDamage() > 0)
+                    player.healDamage();
+                fromConveyor = false;
+                break;
+
+            case "Hammer_Wrench":
+                //Also need to give an option card
+                if(player.getDamage() > 0) {
+                    player.healDamage();
+                }
                 fromConveyor = false;
                 break;
         }
