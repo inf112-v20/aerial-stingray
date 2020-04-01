@@ -28,7 +28,6 @@ public class EventUtil {
      *               <p>
      *               Temporary implementation for conveyors with two directions
      *               <p>
-     *               Known bug: Express_Conveyor_SouthWest case calls on Express_Conveyor_South
      * @param players The other robots in the game
      */
     public static void handleEvent(Board board, Player player, ArrayList<Player> players) {
@@ -37,17 +36,12 @@ public class EventUtil {
         expressConveyor(board, player, players);
         normalConveyor(board, player, players);
 
+        rotators(board, player);
+
+        hole(board, player);
+
         String events = getTileType(board, "OEvents", player.getPos());
         switch (events) {
-            case "RotateLeft":
-                player.rotate(false);
-                fromConveyor = false;
-                break;
-
-            case "RotateRight":
-                player.rotate(true);
-                fromConveyor = false;
-                break;
 
             case "Flag1":
                 player.addFlag(1);
@@ -113,6 +107,7 @@ public class EventUtil {
             player.respawn();
         }
     }
+
     /**
      * If player is on a hole, subtract one life and set player.robotAlive to false
      *  @param board  The current Board which holds all tiles
@@ -251,6 +246,26 @@ public class EventUtil {
                 fromConveyor = true;
                 break;
 
+        }
+    }
+
+    /**
+     * If player is on a gear it rotates the player 90 degrees in the direction of the gear
+     *  @param board  The current Board which holds all tiles
+     * @param player The player who stands on the tile
+     */
+    private static void rotators(Board board, Player player){
+        String events = getTileType(board, "OEvents", player.getPos());
+        switch (events) {
+            case "RotateLeft":
+                player.rotate(false);
+                fromConveyor = false;
+                break;
+
+            case "RotateRight":
+                player.rotate(true);
+                fromConveyor = false;
+                break;
         }
     }
 
