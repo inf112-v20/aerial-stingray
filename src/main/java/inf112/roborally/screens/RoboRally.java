@@ -1,6 +1,7 @@
 package inf112.roborally.screens;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -19,7 +20,6 @@ import inf112.roborally.cards.Deck;
 import inf112.roborally.cards.ProgramCard;
 import inf112.roborally.entities.Color;
 import inf112.roborally.entities.Player;
-import inf112.roborally.events.EventUtil;
 import inf112.roborally.ui.Board;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ import java.util.Queue;
 /**
  * Handles logic of game & controlling players.
  */
-public class RoboRally extends InputAdapter implements Screen {
+public class RoboRally implements Screen {
 
     /**
      * Const.
@@ -62,13 +62,13 @@ public class RoboRally extends InputAdapter implements Screen {
     private Deck deck;
 
     /**
-     * Players on the board
+     * All players on board.
      */
     private ArrayList<Player> players;
 
     /**
      * As of now, only handle one player.
-     * Reference to the player associated with this instance of RoboRally
+     * Reference to the player associated with this instance of RoboRally.
      */
     private Player thisPlayer;
 
@@ -104,8 +104,6 @@ public class RoboRally extends InputAdapter implements Screen {
         for (int i = 0; i < numPlayers; i++) {
             players.add(new Player(startPos[i], colors[i], i));
         }
-        // Player p1 = new Player(startPos[0], colors[0]);
-        // players.add(p1);
 
         thisPlayer = players.get(0);
     }
@@ -125,6 +123,17 @@ public class RoboRally extends InputAdapter implements Screen {
     private void setupUI() {
         stage = new Stage();
 
+        setupButtons();
+        setupCards();
+
+        ScreenManager.getInstance().setScreen(this);
+    }
+
+    /**
+     * Adds necessary buttons to the screen.
+     * As of now, only one button.
+     */
+    private void setupButtons() {
         Skin skin = new Skin(Gdx.files.internal("rusty-robot/skin/rusty-robot-ui.json"));
         TextButton submitCards = new TextButton("Lock in cards!", skin);
         submitCards.setSize(200, 80);
@@ -136,7 +145,12 @@ public class RoboRally extends InputAdapter implements Screen {
             }
         });
         stage.addActor(submitCards);
+    }
 
+    /**
+     * Adds the programming cards to the screen.
+     */
+    private void setupCards() {
         int startX = 21;
         int margin = 155;
         for (int i = 0; i < NUM_CARDS_SERVED; i++) {
@@ -165,16 +179,13 @@ public class RoboRally extends InputAdapter implements Screen {
 
             stage.addActor(btn);
         }
-
-        ScreenManager.getInstance().setScreen(this);
     }
 
+    /**
+     * Sets up input processor.
+     */
     private void setupInput() {
-        // Input - both for controlling player and selecting cards
-        InputMultiplexer im = new InputMultiplexer();
-        im.addProcessor(this);
-        im.addProcessor(stage);
-        Gdx.input.setInputProcessor(im);
+        Gdx.input.setInputProcessor(stage);
     }
 
     /**
@@ -212,7 +223,7 @@ public class RoboRally extends InputAdapter implements Screen {
     }
 
     /**
-     * Sets the cell in the player layer at a certain pos to null.
+     * Sets a cell in the player layer, at a certain position, to null.
      *
      * @param pos The position of the cell
      */
@@ -331,60 +342,25 @@ public class RoboRally extends InputAdapter implements Screen {
         }
     }
 
-    /**
-     * KeyListener for the robot - purely for debugging.
-     *
-     * @return true if the player moved, false otherwise
-     */
-    @Override
-    public boolean keyUp(int keycode) {
-        boolean moved = false;
-        int x = (int) thisPlayer.getPos().x;
-        int y = (int) thisPlayer.getPos().y;
-
-        if (keycode == Input.Keys.UP) {
-            thisPlayer.move(board, thisPlayer.getDir(), 1, players);
-            moved = true;
-        } else if (keycode == Input.Keys.DOWN) {
-            thisPlayer.move(board, thisPlayer.getOppositeDir(), 1, players);
-            moved = true;
-        } else if (keycode == Input.Keys.LEFT) {
-            thisPlayer.rotate(false);
-            moved = true;
-        } else if (keycode == Input.Keys.RIGHT) {
-            thisPlayer.rotate(true);
-            moved = true;
-        }
-
-        if (moved) {
-            board.getPlayerLayer().setCell(x, y, null);
-            System.out.println(thisPlayer.showStatus());
-            EventUtil.handleEvent(board, thisPlayer, players);
-        }
-
-        return moved;
-    }
-
     @Override
     public void render(float v) {
         clearScreen();
 
-        drawPlayer();
-        thisPlayer.checkIfWon();
-
+        actPlayers();
         actAndRender(Gdx.graphics.getDeltaTime());
     }
 
     /**
-     * Draws player on the map.
+     * Updates all players' position and if any won.
      */
-    public void drawPlayer() {
+    public void actPlayers() {
         int i = 0;
-        for (Player player : this.players){
+        for (Player player : this.players) {
             board.getPlayerLayer().setCell((int) player.getPos().x, (int) player.getPos().y, player.getPlayerIcon());
             board.getPlayerLayer().getCell((int) player.getPos().x, (int) player.getPos().y).getTile().setId(i);
             i++;
 
+            player.checkIfWon();
         }
     }
 
