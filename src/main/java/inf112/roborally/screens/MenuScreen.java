@@ -31,7 +31,7 @@ public class MenuScreen implements Screen {
         TextField textField = new TextField("RoboRally", menuSkin);
         textField.setDisabled(true);
         textField.setAlignment(Align.center);
-        TextButton start = new TextButton("Start Game", menuSkin);
+        TextButton start = new TextButton("Singleplayer", menuSkin);
         TextButton settings = new TextButton("Settings", menuSkin);
         TextButton exit = new TextButton("Exit", menuSkin);
 
