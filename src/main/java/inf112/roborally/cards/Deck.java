@@ -2,6 +2,7 @@ package inf112.roborally.cards;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Stack;
 
 public class Deck extends Stack<ProgramCard> {
@@ -55,13 +56,6 @@ public class Deck extends Stack<ProgramCard> {
     }
 
     /**
-     * Shuffles the deck. (pseudo-random)
-     */
-    public void shuffle() {
-        Collections.shuffle(this);
-    }
-
-    /**
      * Gets a list, which is equal in size as size of deck, with integers 10 to
      * deck.size()*10 in a randomized order.
      *
@@ -79,6 +73,28 @@ public class Deck extends Stack<ProgramCard> {
     }
 
     /**
+     * Shuffles the deck. (pseudo-random)
+     */
+    public void shuffle() {
+        Collections.shuffle(this);
+    }
+
+    /**
+     * Method for drawing specified amount of cards.
+     *
+     * @param amount Number of cards to draw
+     * @return An ArrayList<ProgramCard> with size 'amount'
+     */
+    public ArrayList<ProgramCard> take(int amount) {
+        ArrayList<ProgramCard> cardsToDraw = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            cardsToDraw.add(this.pop());
+        }
+
+        return cardsToDraw;
+    }
+
+    /**
      * Recycles the card given - puts it into the deck and shuffles the deck.
      *
      * @param card The card to recycle
@@ -86,5 +102,16 @@ public class Deck extends Stack<ProgramCard> {
     public void recycle(ProgramCard card) {
         this.add(card);
         shuffle();
+    }
+
+    /**
+     * Method for recycling a list of cards.
+     *
+     * @param cards The cards to recycle
+     */
+    public void recycleAll(List<ProgramCard> cards) {
+        for (ProgramCard card : cards) {
+            recycle(card);
+        }
     }
 }

@@ -5,6 +5,8 @@ import inf112.roborally.cards.ProgramCard;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.assertEquals;
 
 public class DeckTest {
@@ -28,5 +30,18 @@ public class DeckTest {
 
         deck.recycle(card);
         assertEquals(Deck.DECK_SIZE, deck.size());
+    }
+
+    @Test
+    public void testRecycleAllSizes() {
+        sizeTest();  // Before
+
+        ArrayList<ProgramCard> toBeRecycled = deck.take(5);
+        assertEquals(5, toBeRecycled.size());
+
+        assertEquals(Deck.DECK_SIZE - toBeRecycled.size(), deck.size());  // During
+
+        deck.recycleAll(toBeRecycled);
+        sizeTest();  // After
     }
 }
