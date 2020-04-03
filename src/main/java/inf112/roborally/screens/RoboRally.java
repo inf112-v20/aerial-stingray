@@ -91,6 +91,7 @@ public class RoboRally implements Screen {
      */
     private void dealCardsToAll() {
         // Deal initial cards - phase 1
+        System.out.println("[  PHASE 1  ] Dealing out cards to all");
         dealCards();
         refreshImageButtons();
     }
@@ -138,6 +139,7 @@ public class RoboRally implements Screen {
         dialog.text("Do you want to power down your robot next round?");
         dialog.button("Yes", "Power down");
         dialog.button("No", "Don't power down");
+        System.out.println("[  PHASE 3  ] Prompting for power down");
 
         dialog.show(stage);
     }
