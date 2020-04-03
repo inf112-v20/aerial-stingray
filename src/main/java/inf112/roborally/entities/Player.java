@@ -8,11 +8,13 @@ import com.badlogic.gdx.math.Vector2;
 import inf112.roborally.cards.ProgramCard;
 import inf112.roborally.events.EventUtil;
 import inf112.roborally.screens.LoseScreen;
+import inf112.roborally.screens.RoboRally;
 import inf112.roborally.screens.ScreenManager;
 import inf112.roborally.screens.WinScreen;
 import inf112.roborally.ui.Board;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Represents the "robot"/playing piece the human player is associated with.
@@ -20,20 +22,17 @@ import java.util.ArrayList;
 public class Player {
 
     /**
+     * Player color
+     */
+    public Color color;
+    /**
      * Player ID
      */
     private int id;
-
     /**
      * Graphics
      */
     private Vector2 backup;
-
-    /**
-     * Player color
-     */
-    public Color color;
-
     /**
      * Coordinates
      */
@@ -60,17 +59,52 @@ public class Player {
      */
     private int currentRotation = 2;
 
+    /**
+     * Holds references to current program cards this robot has.
+     */
+    private ProgramCard[] currentProgramCards;
+
+    private LinkedList<ProgramCard> chosenCards;
+
+    /**
+     * True if the player wants to power down.
+     */
+    private boolean powerDown = false;
+
     public Player(Vector2 pos, Color color, int id) {
         this.pos = pos;
         this.backup = new Vector2(pos.x, pos.y);
         this.color = color;
         this.id = id;
+
+        // Cards
+        this.currentProgramCards = new ProgramCard[RoboRally.NUM_CARDS_SERVED];
+        this.chosenCards = new LinkedList<>();
+    }
+
+    public boolean isPowerDown() {
+        return powerDown;
+    }
+
+    public void setPowerDown(boolean val) {
+        powerDown = val;
+    }
+
+    public LinkedList<ProgramCard> getChosenCards() {
+        return chosenCards;
+    }
+
+    /**
+     * @return All ProgramCard's this robot holds.
+     */
+    public ProgramCard[] getCards() {
+        return currentProgramCards;
     }
 
     /**
      * @return player ID
      */
-    public int getID(){
+    public int getID() {
         return id;
     }
 
@@ -312,6 +346,13 @@ public class Player {
         }
     }
 
+    /**
+     * Executes a Program Card.
+     *
+     * @param board   The board the robot is on
+     * @param card    The card to execute
+     * @param players Other players in the game
+     */
     public void executeCard(Board board, ProgramCard card, ArrayList<Player> players) {
         switch (card.getType()) {
             case TURN_RIGHT:
