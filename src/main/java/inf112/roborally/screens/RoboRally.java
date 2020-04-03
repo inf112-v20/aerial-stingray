@@ -11,10 +11,12 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import inf112.roborally.Main;
 import inf112.roborally.cards.Deck;
 import inf112.roborally.cards.ProgramCard;
@@ -88,6 +90,33 @@ public class RoboRally implements Screen {
         setupInput();
     }
 
+    /**
+     * Phase 3 - ask if player want to power down.
+     */
+    private void promptPowerDown() {
+        Skin skin = new Skin(Gdx.files.internal("rusty-robot/skin/rusty-robot-ui.json"));
+        Dialog dialog = new Dialog("Power Down", skin) {
+            @Override
+            protected void result(Object object) {
+                try {
+                    String str = (String) object;
+                    if (str.equals("Power down")) {
+                        System.out.println("Power down!");
+                    } else if (str.equals("Don't power down")) {
+                        System.out.println("Don't power down!");
+                    }
+                } catch (ClassCastException cce) {
+                    cce.printStackTrace();
+                }
+            }
+        };
+        dialog.text("Do you want to power down your robot next round?");
+        dialog.button("Yes", "Power down");
+        dialog.button("No", "Don't power down");
+
+        dialog.show(stage);
+    }
+
     private void setupGameComponents() {
         deck = new Deck();
         board = new Board();
@@ -121,7 +150,7 @@ public class RoboRally implements Screen {
     }
 
     private void setupUI() {
-        stage = new Stage();
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
         setupButtons();
         setupCards();
@@ -141,14 +170,17 @@ public class RoboRally implements Screen {
         submitCards.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                lockInCards();
+                // If player can successfully lock in cards, begin round
+                if (lockInCards())
+                    promptPowerDown();  // Not functional atm.
             }
         });
         stage.addActor(submitCards);
     }
 
     /**
-     * Adds the programming cards to the screen.
+     * Adds the programming cards (9 of them) to the screen.
+     * Init cards.
      */
     private void setupCards() {
         int startX = 21;
@@ -192,15 +224,18 @@ public class RoboRally implements Screen {
      * Locks in the selected cards and furthers the process
      * of executing them.
      */
-    public void lockInCards() {
+    public boolean lockInCards() {
         if (cardsChosen.size() == MAX_SELECTED_CARDS) {
             System.out.println("Locking in cards!");
             printChosenCards();
             executeCards(cardsChosen);
+            return true;
         } else if (cardsChosen.size() > MAX_SELECTED_CARDS)
             System.err.println("Too many cards to lock in.");
         else
             System.err.println("Too few cards to lock in.");
+
+        return false;
     }
 
     /**
@@ -378,12 +413,12 @@ public class RoboRally implements Screen {
      * @param v The delta-time used (usually Gdx.graphics.getDeltaTime())
      */
     public void actAndRender(float v) {
-        stage.act(v);
-        stage.draw();
-
         camera.update();
         mapRenderer.setView(camera);
         mapRenderer.render();
+
+        stage.act(v);
+        stage.draw();
     }
 
     @Override
