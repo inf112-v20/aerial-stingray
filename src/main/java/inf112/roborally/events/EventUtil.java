@@ -31,7 +31,6 @@ public class EventUtil {
      * @param players The other robots in the game
      */
     public static void handleEvent(Board board, Player player, ArrayList<Player> players) {
-        String movers = getTileType(board, "OMovers", player.getPos());
 
         expressConveyor(board, player, players);
         normalConveyor(board, player, players);
@@ -44,9 +43,8 @@ public class EventUtil {
 
         //should be called for each step the robot makes
         hole(board, player);
-
-
     }
+
 
     /**
      * If player is on a hole or outside the boar, subtract one life and set player.robotAlive to false
