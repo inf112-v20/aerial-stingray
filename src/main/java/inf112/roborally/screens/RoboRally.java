@@ -25,6 +25,7 @@ import inf112.roborally.entities.Player;
 import inf112.roborally.ui.Board;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -68,8 +69,10 @@ public class RoboRally implements Screen {
      */
     private ImageButton[] cardButtons;
 
+    private int numPlayers;
 
     public RoboRally(int numPlayers) {
+        this.numPlayers = numPlayers;
         setupGameComponents();
         setupPlayers(numPlayers);
         setupRendering();
@@ -164,12 +167,50 @@ public class RoboRally implements Screen {
      */
     private void executeRobotCards() {
         System.out.println("[  PHASE 4  ] Ready to execute cards!");
+        System.out.println("=======================================");
 
-        for (Player player : players) {
-            executeCards(player, player.getSelectedCards());
+        for (int i = 0; i < 5; i++) {  // 5 cards
+            LinkedList<Player> highestPriority = getPriorityList(i);  // List of players, the one with highest card this iteration is first
+
+            System.out.println("ITERATION = " + i);
+            for (Player player : highestPriority) {  // Each player in correct order
+                ProgramCard card = player.getSelectedCards().get(i);
+
+                String identifier;
+                if (player.equals(getThisPlayer())) identifier = "[  THIS_PLAYER  ]";
+                else identifier = "[  ROBOT_" + players.indexOf(player) + "  ]";
+                System.out.println(identifier + " Has card " + card.getType() + " with priority " + card.getPriority());
+                executeCard(player, player.getSelectedCards().get(i));
+            }
+            System.out.println("=======================================");
         }
 
         cleanUp();  // Next phase
+    }
+
+    /**
+     * Returns a sorted List of players, based on which card (at 'index') has highest priority.
+     *
+     * @param index Index of the card in selected cards - inventory
+     * @return A sorted list of players, based on priority cards
+     */
+    private LinkedList<Player> getPriorityList(int index) {
+        LinkedList<Player> copy = new LinkedList<>(players);
+
+        Collections.sort(copy, (player, t1) -> t1.getSelectedCards().get(index).getPriority() - player.getSelectedCards().get(index).getPriority());
+        return copy;
+    }
+
+    /**
+     * Executes a card
+     *
+     * @param selectedCard The card to execute
+     */
+    public void executeCard(Player player, ProgramCard selectedCard) {
+        Vector2 oldPos = player.getPos();
+        setCellToNull(oldPos);
+
+        player.executeCard(board, selectedCard, players);
     }
 
     /**
@@ -183,7 +224,11 @@ public class RoboRally implements Screen {
     }
 
     private Player getThisPlayer() {
-        return players.get(0);
+        for (Player player : players) {
+            if (!player.isAI()) return player;
+        }
+
+        throw new NullPointerException("\"This player\" could not be found!");
     }
 
     private void setupGameComponents() {
@@ -198,7 +243,10 @@ public class RoboRally implements Screen {
         Vector2[] startPos = {new Vector2(6, 1), new Vector2(9, 1), new Vector2(13, 1), new Vector2(16, 1)};
 
         for (int i = 0; i < numPlayers; i++) {
-            players.add(new Player(startPos[i], colors[i], i));
+            if (i == 0)
+                players.add(new Player(startPos[i], colors[i], i, false));  // Human
+            else
+                players.add(new Player(startPos[i], colors[i], i));
         }
     }
 
@@ -297,20 +345,6 @@ public class RoboRally implements Screen {
             System.err.println("Too few cards to lock in.");
 
         return false;
-    }
-
-    /**
-     * Executes a queue of cards
-     *
-     * @param selectedCards The cards to execute
-     */
-    public void executeCards(Player player, LinkedList<ProgramCard> selectedCards) {
-        for (ProgramCard card : selectedCards) {
-            Vector2 oldPos = player.getPos();
-            setCellToNull(oldPos);
-
-            player.executeCard(board, card, players);
-        }
     }
 
     /**

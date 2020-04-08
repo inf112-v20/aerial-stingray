@@ -70,8 +70,11 @@ public class Player {
      */
     private boolean powerDown = false;
 
+    private boolean AI;
+
 
     public Player(Vector2 pos, Color color, int id) {
+        this.AI = true;
         this.pos = pos;
         this.backup = new Vector2(pos.x, pos.y);
         this.color = color;
@@ -80,6 +83,22 @@ public class Player {
         // Cards
         this.availableCards = new ProgramCard[RoboRally.NUM_CARDS_SERVED];
         this.selectedCards = new LinkedList<>();
+    }
+
+    public Player(Vector2 pos, Color color, int id, boolean AI) {
+        this.AI = AI;
+        this.pos = pos;
+        this.backup = new Vector2(pos.x, pos.y);
+        this.color = color;
+        this.id = id;
+
+        // Cards
+        this.availableCards = new ProgramCard[RoboRally.NUM_CARDS_SERVED];
+        this.selectedCards = new LinkedList<>();
+    }
+
+    public boolean isAI() {
+        return this.AI;
     }
 
     /**
