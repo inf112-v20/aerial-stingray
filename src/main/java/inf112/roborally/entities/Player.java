@@ -62,14 +62,14 @@ public class Player {
     /**
      * Holds references to current program cards this robot has.
      */
-    private ProgramCard[] currentProgramCards;
-
-    private LinkedList<ProgramCard> chosenCards;
+    private ProgramCard[] availableCards;
+    private LinkedList<ProgramCard> selectedCards;
 
     /**
      * True if the player wants to power down.
      */
     private boolean powerDown = false;
+
 
     public Player(Vector2 pos, Color color, int id) {
         this.pos = pos;
@@ -78,8 +78,28 @@ public class Player {
         this.id = id;
 
         // Cards
-        this.currentProgramCards = new ProgramCard[RoboRally.NUM_CARDS_SERVED];
-        this.chosenCards = new LinkedList<>();
+        this.availableCards = new ProgramCard[RoboRally.NUM_CARDS_SERVED];
+        this.selectedCards = new LinkedList<>();
+    }
+
+    /**
+     * Moves card from available cards to selected cards.
+     *
+     * @param index Index of card in available cards
+     */
+    public void selectCard(int index) {
+        selectedCards.add(availableCards[index]);
+        availableCards[index] = null;
+    }
+
+    /**
+     * Moves card from selected cards to available cards.
+     *
+     * @param index Index of cards in selected cards
+     */
+    public void deselectCard(int index) {
+        availableCards[index] = selectedCards.get(index);
+        selectedCards.remove(index);
     }
 
     public boolean isPowerDown() {
@@ -90,15 +110,19 @@ public class Player {
         powerDown = val;
     }
 
-    public LinkedList<ProgramCard> getChosenCards() {
-        return chosenCards;
+    public LinkedList<ProgramCard> getSelectedCards() {
+        return selectedCards;
+    }
+
+    public void setSelectedCards(LinkedList<ProgramCard> selectedCards) {
+        this.selectedCards = selectedCards;
     }
 
     /**
      * @return All ProgramCard's this robot holds.
      */
-    public ProgramCard[] getCards() {
-        return currentProgramCards;
+    public ProgramCard[] getAvailableCards() {
+        return availableCards;
     }
 
     /**
@@ -167,6 +191,7 @@ public class Player {
     public Direction getDir() {
         return dir;
     }
+
     public void setDir(Direction direction){
         this.dir = direction;
     }
@@ -210,7 +235,6 @@ public class Player {
         return tileCell;
     }
 
-
     public boolean hasAllFlags() {
         return flags[0] && flags[1] && flags[2] && flags[3];
     }
@@ -240,6 +264,15 @@ public class Player {
         }
     }
 
+
+    /**
+     * Rotates 2 x 90 degrees to the right= 180 degrees
+     */
+    public void rotate180() {
+        this.rotate(true);
+        this.rotate(true);
+    }
+
     public Vector2 getPos() {
         return pos;
     }
@@ -248,7 +281,9 @@ public class Player {
         this.pos = pos;
     }
 
-    public void setBackup(Vector2 backup) { this.backup = backup; }
+    public void setBackup(Vector2 backup) {
+        this.backup = backup;
+    }
 
     /**
      * Changes position to backup-pos.
@@ -313,14 +348,6 @@ public class Player {
             str += "\n You have flag 1";
 
         return str;
-    }
-
-    /**
-     * Rotates 2 x 90 degrees to the right= 180 degrees
-     */
-    public void rotate180() {
-        this.rotate(true);
-        this.rotate(true);
     }
 
     /**

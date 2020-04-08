@@ -101,7 +101,6 @@ public class Deck extends Stack<ProgramCard> {
      */
     public void recycle(ProgramCard card) {
         this.add(card);
-        shuffle();
     }
 
     /**
@@ -111,7 +110,8 @@ public class Deck extends Stack<ProgramCard> {
      */
     public void recycleAll(List<ProgramCard> cards) {
         for (ProgramCard card : cards) {
-            recycle(card);
+            this.recycle(card);
         }
+        shuffle();
     }
 }

@@ -26,7 +26,6 @@ import inf112.roborally.ui.Board;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Random;
 
 /**
@@ -35,11 +34,11 @@ import java.util.Random;
 public class RoboRally implements Screen {
 
     /**
-     * Const.
+     * Constants
      */
-    private final int DECK_WINDOW_SIZE = 280;
-    private final int MAX_SELECTED_CARDS = 5;
     public final static int NUM_CARDS_SERVED = 9;
+    private final int MAX_SELECTED_CARDS = 5;
+    private final int DECK_WINDOW_SIZE = 280;
 
     /**
      * Rendering
@@ -48,10 +47,6 @@ public class RoboRally implements Screen {
     private BitmapFont font;
     private TiledMapRenderer mapRenderer;
     private OrthographicCamera camera;
-
-    /**
-     * Components are contained by stage.
-     */
     private Stage stage;
 
     /**
@@ -65,14 +60,12 @@ public class RoboRally implements Screen {
     private Deck deck;
 
     /**
-     * All players on board.
+     * All players in the game.
      */
     private ArrayList<Player> players;
 
     /**
-     * Storage for the cards displayed to player, and for the card held by player.
      */
-    private LinkedList<ProgramCard> cardsChosen;
     private ImageButton[] cardButtons;
 
 
@@ -83,21 +76,42 @@ public class RoboRally implements Screen {
         setupUI();
         setupInput();
 
-        dealCardsToAll();
+        dealCardsToAll();  // First phase
     }
 
     /**
      * Phase 1 - deal cards to all players.
      */
     private void dealCardsToAll() {
-        // Deal initial cards - phase 1
         System.out.println("[  PHASE 1  ] Dealing out cards to all");
-        dealCards();
+
+        refillCardsToAll();
         refreshImageButtons();
+        uncheckAllCards();
     }
 
-    private Player getThisPlayer() {
-        return players.get(0);
+    /**
+     * Fills in missing cards in in available cards.
+     */
+    private void refillCardsToAll() {
+        for (Player player : players) {
+            for (int i = 0; i < NUM_CARDS_SERVED; i++) {
+                if (player.getAvailableCards()[i] == null)
+                    player.getAvailableCards()[i] = deck.pop();
+            }
+        }
+    }
+
+    /**
+     * Phase 2 - called when player cards is selected.
+     */
+    private void selectCards() {
+        System.out.println("[  PHASE 2  ] Cards selected!");
+        printThisPlayerSelectedCards();
+
+        selectCardsForBots();
+
+        promptPowerDown();  // Next phase - Not functional atm.
     }
 
     /**
@@ -125,11 +139,11 @@ public class RoboRally implements Screen {
                     if (str.equals("Power down")) {
                         System.out.println("[  THIS_ROBOT  ] Power down");
                         getThisPlayer().setPowerDown(true);
-                        executeAllPlayerCards();
+                        executeRobotCards();  // Next phase
                     } else if (str.equals("Don't power down")) {
                         System.out.println("[  THIS_ROBOT  ] Don't power down");
                         getThisPlayer().setPowerDown(false);
-                        executeAllPlayerCards();
+                        executeRobotCards();  // Next phase
                     }
                 } catch (ClassCastException cce) {
                     cce.printStackTrace();
@@ -137,6 +151,7 @@ public class RoboRally implements Screen {
             }
         };
         dialog.text("Do you want to power down your robot next round?");
+
         dialog.button("Yes", "Power down");
         dialog.button("No", "Don't power down");
         System.out.println("[  PHASE 3  ] Prompting for power down");
@@ -147,8 +162,28 @@ public class RoboRally implements Screen {
     /**
      * Phase 4 - executes all player cards, in order, based on card power.
      */
-    private void executeAllPlayerCards() {
+    private void executeRobotCards() {
         System.out.println("[  PHASE 4  ] Ready to execute cards!");
+
+        for (Player player : players) {
+            executeCards(player, player.getSelectedCards());
+        }
+
+        cleanUp();  // Next phase
+    }
+
+    /**
+     * Phase 5 - ending round and cleaning up board.
+     */
+    private void cleanUp() {
+        System.out.println("[  PHASE 5  ] Ending round and cleaning up board.");
+
+        recycleCards();
+        dealCardsToAll();  // Starting back at phase 1
+    }
+
+    private Player getThisPlayer() {
+        return players.get(0);
     }
 
     private void setupGameComponents() {
@@ -159,15 +194,12 @@ public class RoboRally implements Screen {
 
     private void setupPlayers(int numPlayers) {
         players = new ArrayList<>();
-        cardsChosen = new LinkedList<>();
         Color[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.PINK};
-        Vector2[] startPos = {new Vector2(6,1), new Vector2(9,1), new Vector2(13,1), new Vector2(16,1)};
+        Vector2[] startPos = {new Vector2(6, 1), new Vector2(9, 1), new Vector2(13, 1), new Vector2(16, 1)};
 
         for (int i = 0; i < numPlayers; i++) {
             players.add(new Player(startPos[i], colors[i], i));
         }
-
-        //getThisPlayer() = getThisPlayer();
     }
 
     private void setupRendering() {
@@ -205,9 +237,8 @@ public class RoboRally implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // If player can successfully lock in cards, begin round
-                if (lockInCards()) {
-                    selectCardsToBots();
-                    promptPowerDown();  // Not functional atm.
+                if (canSelectCards()) {
+                    selectCards();
                 }
             }
         });
@@ -233,7 +264,7 @@ public class RoboRally implements Screen {
                     if (!btn.isChecked())
                         removeClickedCardFromStack(index_copy);
 
-                    if (cardsChosen.size() == MAX_SELECTED_CARDS) {
+                    if (getThisPlayer().getSelectedCards().size() == MAX_SELECTED_CARDS) {
                         btn.setChecked(false);
                         System.err.println("Can't choose more cards (MAX=5).");
                     } else if (btn.isChecked())
@@ -254,25 +285,13 @@ public class RoboRally implements Screen {
     }
 
     /**
-     * Deals as many cards as possible to each player.
-     */
-    private void dealCards() {
-        for (Player player : players) {
-            fillInNewCards(player.getCards());
-        }
-    }
-
-    /**
      * Locks in the selected cards and furthers the process
      * of executing them.
      */
-    public boolean lockInCards() {
-        if (cardsChosen.size() == MAX_SELECTED_CARDS) {
-            System.out.println("[  PHASE 2  ] Locking in cards!");
-            printChosenCards();
-            executeCards(cardsChosen);
+    public boolean canSelectCards() {
+        if (getThisPlayer().getSelectedCards().size() == MAX_SELECTED_CARDS) {
             return true;
-        } else if (cardsChosen.size() > MAX_SELECTED_CARDS)
+        } else if (getThisPlayer().getSelectedCards().size() > MAX_SELECTED_CARDS)
             System.err.println("Too many cards to lock in.");
         else
             System.err.println("Too few cards to lock in.");
@@ -281,21 +300,17 @@ public class RoboRally implements Screen {
     }
 
     /**
-     * Executes a stack of cards
+     * Executes a queue of cards
      *
-     * @param cardStack The cards to execute
+     * @param selectedCards The cards to execute
      */
-    public void executeCards(Queue<ProgramCard> cardStack) {
-        while (!cardStack.isEmpty()) {
-            ProgramCard currentCard = cardStack.poll();
-
-            Vector2 oldPos = getThisPlayer().getPos();
+    public void executeCards(Player player, LinkedList<ProgramCard> selectedCards) {
+        for (ProgramCard card : selectedCards) {
+            Vector2 oldPos = player.getPos();
             setCellToNull(oldPos);
 
-            getThisPlayer().executeCard(board, currentCard, players);
+            player.executeCard(board, card, players);
         }
-
-        recycleAndDisplayNewCards();
     }
 
     /**
@@ -308,70 +323,39 @@ public class RoboRally implements Screen {
     }
 
     /**
-     * Wrapper method for:
-     * - recycling selected cards
-     * - deselecting all cards
-     * - getting new cards from the deck
-     * - updating ImageButtons of the cards
-     */
-    private void recycleAndDisplayNewCards() {
-        recycleCards();
-        deselectAllCards();
-        dealCards();
-        refreshImageButtons();
-    }
-
-    /**
      * Recycles cards that has been executed back to deck.
      * Also empties the cards currently chosen.
      */
     public void recycleCards() {
         for (Player player : players) {
-            for (int i = 0; i < NUM_CARDS_SERVED; i++) {
-                if (player.getCards()[i].getImageButton().isChecked()) {
-                    deck.recycle(player.getCards()[i].copy());
-                }
-            }
-            cardsChosen = new LinkedList<>();
+            deck.recycleAll(player.getSelectedCards());
+            player.setSelectedCards(new LinkedList<>());
         }
     }
 
     /**
-     * Deselecting all ImageButtons representing the cards.
+     * Unchecking all ImageButtons representing the cards.
      * This only needs to be done for this player, as only that player has GUI.
      */
-    public void deselectAllCards() {
+    public void uncheckAllCards() {
         for (int i = 0; i < NUM_CARDS_SERVED; i++) {
             if (cardButtons[i].isChecked()) {
                 cardButtons[i].setChecked(false);
-                getThisPlayer().getCards()[i] = null;
-            }
-        }
-    }
-
-    /**
-     * Fetching new cards from the deck to replace the 5 executed.
-     *
-     * @param currentCards The current cards the player has
-     */
-    public void fillInNewCards(ProgramCard[] currentCards) {
-        for (int i = 0; i < NUM_CARDS_SERVED; i++) {
-            if (currentCards[i] == null) {
-                currentCards[i] = deck.pop();
             }
         }
     }
 
     /**
      * Updating the ImageButtons to correspond to the new cards.
+     *
      * This only needs to be done for this player, as only that player has GUI.
      */
     public void refreshImageButtons() {
         for (int i = 0; i < NUM_CARDS_SERVED; i++) {
             ImageButton.ImageButtonStyle oldImageButtonStyle = cardButtons[i].getStyle();
-            oldImageButtonStyle.imageUp = getThisPlayer().getCards()[i].getImageUp();
-            oldImageButtonStyle.imageChecked = getThisPlayer().getCards()[i].getImageDown();
-            oldImageButtonStyle.imageDown = getThisPlayer().getCards()[i].getImageDown();
+            oldImageButtonStyle.imageUp = getThisPlayer().getAvailableCards()[i].getImageUp();
+            oldImageButtonStyle.imageChecked = getThisPlayer().getAvailableCards()[i].getImageDown();
+            oldImageButtonStyle.imageDown = getThisPlayer().getAvailableCards()[i].getImageDown();
 
             cardButtons[i].setStyle(oldImageButtonStyle);
         }
@@ -384,35 +368,13 @@ public class RoboRally implements Screen {
      * @param index Index of the card in the array of cards to chose.
      */
     public void addClickedCardToStack(int index) {
-        if (cardsChosen.size() >= MAX_SELECTED_CARDS) {
+        if (getThisPlayer().getSelectedCards().size() >= MAX_SELECTED_CARDS) {
             System.err.println("[  THIS_ROBOT  ] Can't add any more cards to stack.");
             return;
         }
 
-        cardsChosen.add(getThisPlayer().getCards()[index]);
-        printChosenCards();
-    }
-
-    private void selectCardsToBots() {
-        for (Player player : players) {
-            if (player.equals(getThisPlayer())) continue;
-
-            // Selects the five first cards for bots
-            for (int i = 0; i < MAX_SELECTED_CARDS; i++)
-                addCardToStack(player, i);
-        }
-    }
-
-    public void addCardToStack(Player player, int index) {
-        if (cardsChosen.size() >= MAX_SELECTED_CARDS) {
-            System.err.println("Can't add any more cards to stack.");
-            return;
-        }
-
-        System.out.println("[  ROBOT " + (players.indexOf(player)) + "  ] Adding " + player.getCards()[index].getType() + " to selected hand!");
-
-        player.getChosenCards().add(player.getCards()[index]);
-        printChosenCards();
+        getThisPlayer().selectCard(index);
+        printThisPlayerSelectedCards();
     }
 
     /**
@@ -422,29 +384,43 @@ public class RoboRally implements Screen {
      * @param index Index of the card in the array of cards to chose.
      */
     public void removeClickedCardFromStack(int index) {
-        if (cardsChosen.size() == 0) {
+        if (getThisPlayer().getSelectedCards().size() == 0) {
             System.err.println("[  THIS_ROBOT  ] Can't remove any more cards from stack.");
             return;
         }
 
-        System.out.println("[  THIS_ROBOT  ] Removing " + getThisPlayer().getCards()[index].getType() + " from stack.");
+        System.out.println("[  THIS_ROBOT  ] Removing " + getThisPlayer().getSelectedCards().get(index) + " from stack.");
+        getThisPlayer().deselectCard(index);
+    }
 
-        cardsChosen.remove(getThisPlayer().getCards()[index]);
-        printChosenCards();
+    /**
+     * Selects 5 cards from available cards for all bots.
+     */
+    private void selectCardsForBots() {
+        for (Player player : players) {
+            if (player.equals(getThisPlayer())) continue;  // Skip this player
+
+            // Selects the first 5 available cards
+            for (int i = 0; i < MAX_SELECTED_CARDS; i++) {
+                if (player.getSelectedCards().size() >= MAX_SELECTED_CARDS) break;
+
+                player.selectCard(i);
+            }
+        }
     }
 
     /**
      * Prints all the cards the user currently has chosen.
      */
-    public void printChosenCards() {
-        if (cardsChosen.size() == 0) return;
+    public void printThisPlayerSelectedCards() {
+        if (getThisPlayer().getSelectedCards().size() == 0) return;
 
         System.out.print("[  THIS_ROBOT  ] : [");
-        for (int i = 0; i < cardsChosen.size(); i++) {
-            if (i != cardsChosen.size() - 1)
-                System.out.print("(" + i + ", " + cardsChosen.get(i).getType() + "), ");
+        for (int i = 0; i < getThisPlayer().getSelectedCards().size(); i++) {
+            if (i != getThisPlayer().getSelectedCards().size() - 1)
+                System.out.print("(" + i + ", " + getThisPlayer().getSelectedCards().get(i).getType() + "), ");
             else
-                System.out.println("(" + i + ", " + cardsChosen.get(i).getType() + ")]");
+                System.out.println("(" + i + ", " + getThisPlayer().getSelectedCards().get(i).getType() + ")]");
         }
     }
 
