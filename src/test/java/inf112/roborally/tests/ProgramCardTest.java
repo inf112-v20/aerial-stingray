@@ -7,7 +7,8 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class ProgramCardTest {
-    ProgramCard card;
+
+    private ProgramCard card;
 
     @Test
     public void testCorrectType() {
@@ -41,6 +42,5 @@ public class ProgramCardTest {
 
         card = new ProgramCard(CardType.MOVE1, 10);
         assertEquals(card.getPriority(), 10);
-
     }
 }

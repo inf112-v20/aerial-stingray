@@ -6,16 +6,28 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
 import inf112.roborally.cards.ProgramCard;
-import inf112.roborally.events.EventHandler;
+import inf112.roborally.events.EventUtil;
 import inf112.roborally.screens.LoseScreen;
 import inf112.roborally.screens.ScreenManager;
 import inf112.roborally.screens.WinScreen;
 import inf112.roborally.ui.Board;
 
+import java.util.ArrayList;
+
 /**
  * Represents the "robot"/playing piece the human player is associated with.
  */
 public class Player {
+
+    /**
+     * Player ID
+     */
+    private int id;
+
+    /**
+     * Robot alive or dead
+     */
+    boolean robotAlive = true;
 
     /**
      * Graphics
@@ -53,12 +65,27 @@ public class Player {
      */
     private int currentRotation = 2;
 
-    public Player(Vector2 pos, Color color) {
+    public Player(Vector2 pos, Color color, int id) {
         this.pos = pos;
         this.backup = new Vector2(pos.x, pos.y);
         this.color = color;
+        this.id = id;
     }
 
+    /**
+     * @return player ID
+     */
+    public int getID(){
+        return id;
+    }
+
+    public boolean getRobotAlive(){
+        return robotAlive;
+    }
+
+    public void setRobotAlive(boolean state){
+        robotAlive = state;
+    }
     /**
      * @return player direction icon
      */
@@ -82,29 +109,29 @@ public class Player {
     /**
      * Moves the player in a certain direction with specified num. of steps.
      * Checks that the player can go on each tile for each step.
-     *
-     * @param board The board to move on
+     *  @param board The board to move on
      * @param dir   The direction to move 1 step towards
      * @param steps Number of steps to take
+     * @param players The other robots in the game
      */
-    public void move(Board board, Direction dir, int steps) {
+    public void move(Board board, Direction dir, int steps, ArrayList<Player> players) {
         for (int i = 0; i < steps; i++) {
             switch (dir) {
                 case NORTH:
-                    if (EventHandler.canGo(board, this, Direction.NORTH, 1))
+                    if (EventUtil.canGo(board, this, Direction.NORTH, 1, players))
                         getPos().y++;
                     break;
                 case EAST:
-                    if (EventHandler.canGo(board, this, Direction.EAST, 1))
+                    if (EventUtil.canGo(board, this, Direction.EAST, 1, players))
                         getPos().x++;
                     break;
                 case SOUTH:
-                    if (EventHandler.canGo(board, this, Direction.SOUTH, 1))
+                    if (EventUtil.canGo(board, this, Direction.SOUTH, 1, players))
                         getPos().y--;
                     break;
 
                 case WEST:
-                    if (EventHandler.canGo(board, this, Direction.WEST, 1))
+                    if (EventUtil.canGo(board, this, Direction.WEST, 1, players))
                         getPos().x--;
                     break;
 
@@ -199,11 +226,15 @@ public class Player {
         this.pos = pos;
     }
 
+    public void setBackup(Vector2 backup) { this.backup = backup; }
+
     /**
      * Changes position to backup-pos.
      * Also sets player icon to normal-mode.
      */
     public void respawn() {
+        this.currentRotation = 2;
+        this.dir = Direction.NORTH;
         setPos(new Vector2(backup.x, backup.y));
         System.out.println(backup);
     }
@@ -232,6 +263,14 @@ public class Player {
         if (damage >= 10) {
             subtractLife();
             damage = 0;
+        }
+    }
+    /**
+     * remove one damage
+     */
+    public void healDamage() {
+        if (damage > 0 ){
+            damage--;
         }
     }
 
@@ -285,47 +324,47 @@ public class Player {
         }
     }
 
-    public void executeCard(Board board, ProgramCard card) {
+    public void executeCard(Board board, ProgramCard card, ArrayList<Player> players) {
         switch (card.getType()) {
             case TURN_RIGHT:
                 this.rotate(true);
-                EventHandler.handleEvent(board, this);
+                EventUtil.handleEvent(board, this, players);
                 break;
 
             case TURN_LEFT:
                 this.rotate(false);
-                EventHandler.handleEvent(board, this);
+                EventUtil.handleEvent(board, this, players);
                 break;
 
             case TURN_U:
                 this.rotate180();
-                EventHandler.handleEvent(board, this);
+                EventUtil.handleEvent(board, this, players);
                 break;
 
             case BACKUP:
-                this.move(board, this.getOppositeDir(), 1);
-                EventHandler.handleEvent(board, this);
+                this.move(board, this.getOppositeDir(), 1, players);
+                EventUtil.handleEvent(board, this, players);
                 break;
 
             case MOVE1:
-                this.move(board, this.getDir(), 1);
-                EventHandler.handleEvent(board, this);
+                this.move(board, this.getDir(), 1, players);
+                EventUtil.handleEvent(board, this, players);
                 break;
 
             case MOVE2:
-                this.move(board, this.getDir(), 1);
-                EventHandler.handleEvent(board, this);
-                this.move(board, this.getDir(), 1);
-                EventHandler.handleEvent(board, this);
+                this.move(board, this.getDir(), 1, players);
+                EventUtil.handleEvent(board, this, players);
+                this.move(board, this.getDir(), 1, players);
+                EventUtil.handleEvent(board, this, players);
                 break;
 
             case MOVE3:
-                this.move(board, this.getDir(), 1);
-                EventHandler.handleEvent(board, this);
-                this.move(board, this.getDir(), 1);
-                EventHandler.handleEvent(board, this);
-                this.move(board, this.getDir(), 1);
-                EventHandler.handleEvent(board, this);
+                this.move(board, this.getDir(), 1, players);
+                EventUtil.handleEvent(board, this, players);
+                this.move(board, this.getDir(), 1, players);
+                EventUtil.handleEvent(board, this, players);
+                this.move(board, this.getDir(), 1, players);
+                EventUtil.handleEvent(board, this, players);
                 break;
 
             default:

@@ -20,8 +20,6 @@ import inf112.roborally.cards.ProgramCard;
 import inf112.roborally.entities.Color;
 import inf112.roborally.entities.Player;
 import inf112.roborally.events.EventHandler;
-import inf112.roborally.server.Client;
-import inf112.roborally.server.Server;
 import inf112.roborally.ui.Board;
 
 import java.util.ArrayList;
@@ -80,17 +78,6 @@ public class RoboRally extends InputAdapter implements Screen {
     private LinkedList<ProgramCard> cardsChosen;
     private ProgramCard[] cardsToChoseFrom;
     private ImageButton[] cardButtons;
-
-    /**
-     * Variables used to be used in multiplayer/server
-     */
-    public Server server;
-    public Client client;
-    public ArrayList<String> playerNames;
-    public int playersInGame;
-    public int readyPlayers;
-    public boolean connected;
-    public ArrayList<String> deadPlayers;
 
 
     public RoboRally() {

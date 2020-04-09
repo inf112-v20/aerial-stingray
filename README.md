@@ -9,34 +9,20 @@
 This repo is going to re-create the game RoboRally.
 
 ## How to play
-Start by running Main. As of now, the player moves in the direction of it's feet when the up-arrow is pressed, backwards
-when the down-arrow is pressed, and rotates in right or left based on whether the right or left arrow is pressed. Walk 
-to the flags in order 1-4 to win the game. It will tell you in console how many flags you have, and also how many lives 
-you have left.
+1. Start by running Main.java
+    - Can also run jar-file found in [releases](https://github.com/inf112-v20/aerial-stingray/releases) from terminal: `java -jar RoboRally.jar`
+2. When the menu screen shows up, press 'Start game'
+3. Move your robot by assigning 5 cards to it, and then press 'Lock in cards'
+4. Win by collecting all 4 flags in the correct order
 
 ## Tests
-There are currently three test classes.
-
-* BoardTest will check if:
-    * Board.TILE_SIZE is the currently correct size of 60.
-
-* PlayerTest will check if:
-    * getPos() method gives the right position.
-    * player does not have all flags from the beginning.
-    * player do have all flags after the 4 flags are collected.
-    * Starting direction is north.
-    * Rotate left produce correct direction.
-    * Rotate right produce correct direction.
-    * Moving one step produce correct position.
-
-* DirectionsTest will check if:
-    * The number of directions is 4.
+We have [manual tests](Deliverables/ManualTests.md) as well as JUnit-tests.
 
 ## ER diagram for overview over essential classes
-(This diagram has changed slightly in-code. `GameScreen` is not longer a class, and the rendering is now directly below `RoboRally`)
-![ER](assets/ER.png)
+![ER](Deliverables/Overview_Classes.png)
 
 ## Thanks to :heart:
 * [gdx-skins](https://github.com/czyzby/gdx-skins) by czyzby for allowing us to use cool component-skins.
     * We used the "Rusty Robot UI" created by [Raymond "Raeleus" Buckley](https://ray3k.wordpress.com/software/skin-composer-for-libgdx/)
 * <a href="https://www.freepik.com/free-photos-vectors/infographic">Infographic vector created by freepik - www.freepik.com</a> (arrow graphics)
+

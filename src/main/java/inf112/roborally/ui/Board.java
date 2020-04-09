@@ -62,9 +62,11 @@ public class Board {
 
             case "OWalls":
                 return objectWalls;
-        }
 
-        return null;
+            default:
+                System.err.println("Layer \"" + layer + "\" not found.");
+                return null;
+        }
     }
 
 }

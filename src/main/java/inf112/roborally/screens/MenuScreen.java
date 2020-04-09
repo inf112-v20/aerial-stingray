@@ -39,7 +39,7 @@ public class MenuScreen implements Screen {
         start.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
-                new RoboRally();
+                new RoboRally(4);
             }
         });
 
@@ -75,26 +75,41 @@ public class MenuScreen implements Screen {
         stage.draw();
     }
 
+    /**
+     * Non-finished method implemented from Screen.
+     */
     @Override
     public void resize(int i, int i1) {
 
     }
 
+    /**
+     * Non-finished method implemented from Screen.
+     */
     @Override
     public void pause() {
 
     }
 
+    /**
+     * Non-finished method implemented from Screen.
+     */
     @Override
     public void resume() {
 
     }
 
+    /**
+     * Non-finished method implemented from Screen.
+     */
     @Override
     public void hide() {
 
     }
 
+    /**
+     * Non-finished method implemented from Screen.
+     */
     @Override
     public void dispose() {
 
