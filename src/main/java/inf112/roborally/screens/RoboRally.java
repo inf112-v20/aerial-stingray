@@ -179,7 +179,7 @@ public class RoboRally implements Screen {
                 String identifier;
                 if (player.equals(getThisPlayer())) identifier = "[  THIS_PLAYER  ]";
                 else identifier = "[  ROBOT_" + players.indexOf(player) + "  ]";
-                System.out.println(identifier + " Has card " + card.getType() + " with priority " + card.getPriority());
+                System.out.println(identifier + " Executes card " + card.getType() + " with priority " + card.getPriority());
                 executeCard(player, player.getSelectedCards().get(i));
             }
             System.out.println("=======================================");
