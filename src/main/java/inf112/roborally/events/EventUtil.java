@@ -28,62 +28,51 @@ public class EventUtil {
      *               <p>
      *               Temporary implementation for conveyors with two directions
      *               <p>
-     *               Known bug: Express_Conveyor_SouthWest case calls on Express_Conveyor_South
      * @param players The other robots in the game
      */
     public static void handleEvent(Board board, Player player, ArrayList<Player> players) {
+
+        expressConveyor(board, player, players);
+        normalConveyor(board, player, players);
+        rotators(board, player);
+
+        lasers(board, player);
+        flags(board, player);
+        repairs(board, player);
+
+
+        //should be called for each step the robot makes
+        hole(board, player);
+    }
+
+
+    /**
+     * If player is on a hole or outside the boar, subtract one life and set player.robotAlive to false
+     *  @param board  The current Board which holds all tiles
+     * @param player The player who stands on the tile
+     */
+    public static void hole(Board board, Player player){
+        if (getTileType(board, "OEvents", player.getPos()).equals("Hole")){
+            player.subtractLife();
+            player.setRobotAlive(false);
+        } else if (EventUtil.outOfBounds(player)) {
+            player.subtractLife();
+            player.setRobotAlive(false);
+            //Remove later when a fase is in place
+            player.respawn();
+        }
+    }
+
+    /**
+     * If player is on a express conveyor it moves player one step in the direction of the conveyor
+     *  @param board  The current Board which holds all tiles
+     * @param player The player who stands on the tile
+     * @param players The other robots in the game
+     */
+    private static void expressConveyor(Board board, Player player, ArrayList<Player> players){
         String movers = getTileType(board, "OMovers", player.getPos());
 
         switch (movers) {
-
-            case "Normal_Conveyor_North":
-                player.move(board, Direction.NORTH, 1, players);
-                fromConveyor = true;
-                break;
-
-            case "Normal_Conveyor_East":
-                player.move(board, Direction.EAST, 1, players);
-                fromConveyor = true;
-                break;
-
-            case "Normal_Conveyor_South":
-                player.move(board, Direction.SOUTH, 1, players);
-                fromConveyor = true;
-                break;
-
-            case "Normal_Conveyor_West":
-                player.move(board, Direction.WEST, 1, players);
-                fromConveyor = true;
-                break;
-
-            case "Normal_Conveyor_EastNorth":
-                if (fromConveyor)
-                    player.rotate(false);
-                player.move(board, Direction.NORTH, 1, players);
-                fromConveyor = true;
-                break;
-
-            case "Normal_Conveyor_NorthEast":
-                if (fromConveyor)
-                    player.rotate(true);
-                player.move(board, Direction.EAST, 1, players);
-                fromConveyor = true;
-                break;
-
-            case "Normal_Conveyor_EastSouth":
-                if (fromConveyor)
-                    player.rotate(true);
-                player.move(board, Direction.SOUTH, 1, players);
-                fromConveyor = true;
-                break;
-
-            case "Normal_Conveyor_SouthEast":
-                if (fromConveyor)
-                    player.rotate(false);
-                player.move(board, Direction.EAST, 1, players);
-                fromConveyor = true;
-                break;
-
             case "Express_Conveyor_North":
                 player.move(board, Direction.NORTH, 2, players);
                 fromConveyor = true;
@@ -139,12 +128,79 @@ public class EventUtil {
                 fromConveyor = true;
                 break;
         }
+    }
 
+    /**
+     * If player is on a normal conveyor it moves player one step in the direction of the conveyor
+     *  @param board  The current Board which holds all tiles
+     * @param player The player who stands on the tile
+     * @param players The other robots in the game
+     */
+    private static void normalConveyor(Board board, Player player, ArrayList<Player> players) {
+        String movers = getTileType(board, "OMovers", player.getPos());
+
+        switch (movers) {
+            case "Normal_Conveyor_North":
+            //case "Express_Conveyor_North":
+                player.move(board, Direction.NORTH, 1, players);
+                fromConveyor = true;
+                break;
+
+            case "Normal_Conveyor_East":
+                player.move(board, Direction.EAST, 1, players);
+                fromConveyor = true;
+                break;
+
+            case "Normal_Conveyor_South":
+                player.move(board, Direction.SOUTH, 1, players);
+                fromConveyor = true;
+                break;
+
+            case "Normal_Conveyor_West":
+                player.move(board, Direction.WEST, 1, players);
+                fromConveyor = true;
+                break;
+
+            case "Normal_Conveyor_EastNorth":
+                if (fromConveyor)
+                    player.rotate(false);
+                player.move(board, Direction.NORTH, 1, players);
+                fromConveyor = true;
+                break;
+
+            case "Normal_Conveyor_NorthEast":
+                if (fromConveyor)
+                    player.rotate(true);
+                player.move(board, Direction.EAST, 1, players);
+                fromConveyor = true;
+                break;
+
+            case "Normal_Conveyor_EastSouth":
+                if (fromConveyor)
+                    player.rotate(true);
+                player.move(board, Direction.SOUTH, 1, players);
+                fromConveyor = true;
+                break;
+
+            case "Normal_Conveyor_SouthEast":
+                if (fromConveyor)
+                    player.rotate(false);
+                player.move(board, Direction.EAST, 1, players);
+                fromConveyor = true;
+                break;
+
+        }
+    }
+
+    /**
+     * If player is on a gear it rotates the player 90 degrees in the direction of the gear
+     *  @param board  The current Board which holds all tiles
+     * @param player The player who stands on the tile
+     */
+    private static void rotators(Board board, Player player){
         String events = getTileType(board, "OEvents", player.getPos());
         switch (events) {
-            case "Hole":
-                player.subtractLife();
-                fromConveyor = false;
+            case "Floor":
                 break;
 
             case "RotateLeft":
@@ -155,6 +211,38 @@ public class EventUtil {
             case "RotateRight":
                 player.rotate(true);
                 fromConveyor = false;
+                break;
+        }
+    }
+
+    /**
+     * If player is on a flag and it is the right one, it "picks" it up
+     *  @param board  The current Board which holds all tiles
+     * @param player The player who stands on the tile
+     */
+    private static void lasers(Board board, Player player){
+        String lasers = getTileType(board, "OLasers", player.getPos());
+        switch (lasers) {
+            case "Laser":
+                player.takeDamage();
+                break;
+
+            case "Laser_2x":
+                player.takeDamage();
+                player.takeDamage();
+                break;
+        }
+    }
+
+    /**
+     * If player is on a flag and it is the right one, it "picks" it up
+     *  @param board  The current Board which holds all tiles
+     * @param player The player who stands on the tile
+     */
+    private static void flags(Board board, Player player){
+        String events = getTileType(board, "OEvents", player.getPos());
+        switch (events) {
+            case "Floor":
                 break;
 
             case "Flag1":
@@ -184,9 +272,18 @@ public class EventUtil {
                     player.addFlag(4);
                 fromConveyor = false;
                 break;
+        }
+    }
 
+    /**
+     * If player is on a flag and it is the right one, it "picks" it up
+     *  @param board  The current Board which holds all tiles
+     * @param player The player who stands on the tile
+     */
+    private static void repairs(Board board, Player player){
+        String events = getTileType(board, "OEvents", player.getPos());
+        switch (events) {
             case "Floor":
-                fromConveyor = false;
                 break;
 
             case "Single_Wrench":
@@ -203,25 +300,12 @@ public class EventUtil {
                 fromConveyor = false;
                 break;
         }
-
-        String lasers = getTileType(board, "OLasers", player.getPos());
-        switch (lasers) {
-            case "Laser":
-                player.takeDamage();
-                break;
-
-            case "Laser_2x":
-                player.takeDamage();
-                player.takeDamage();
-                break;
-        }
-
-        if (EventUtil.outOfBounds(player)) {
-            player.subtractLife();
-            player.respawn();
-        }
     }
 
+    /**
+     * @param player The player who stands on the tile
+     * @return true/false if player is outside the board
+     */
     public static boolean outOfBounds(Player player) {
         if (player.getPos().x < 0 || player.getPos().y < 0)
             return true;
@@ -254,7 +338,17 @@ public class EventUtil {
         if (!(pushPlayer(board, dir, players, (int) nextPos.x, (int) nextPos.y)))
             return false;
 
-        // Can go from current tile
+        return canGoFromTile(board, player, dir) && canGoToTile(board, dir, nextPos);
+    }
+
+    /**
+     * Checks if the player can move / be pushed in a certain direction from the current tile.
+     *
+     * @param board  The current Board which holds all tiles
+     * @param player Representing player, with it's direction
+     * @return A boolean true if you can go in a specific direction
+     */
+    public static boolean canGoFromTile(Board board, Player player, Direction dir) {
         String wallType = getTileType(board, "OWalls", player.getPos());
         if (wallType != null) {
             switch (wallType) {
@@ -279,9 +373,17 @@ public class EventUtil {
                     break;
             }
         }
+        return true;
+    }
 
-        // Can go to next tile
-        wallType = getTileType(board, "OWalls", nextPos);
+    /**
+     * Checks if the player can move / be pushed to a current tile.
+     *
+     * @param board  The current Board which holds all tiles
+     * @return A boolean true if you can go in a specific direction
+     */
+    public static boolean canGoToTile(Board board, Direction dir, Vector2 nextPos) {
+        String wallType = getTileType(board, "OWalls", nextPos);
         if (wallType != null) {
             switch (wallType) {
                 case "Wall_North":
@@ -305,7 +407,6 @@ public class EventUtil {
                     break;
             }
         }
-
         return true;
     }
 
@@ -335,7 +436,7 @@ public class EventUtil {
     /**
      *
      * @param board The current board
-     * @param dir The diraction of the player that is moving
+     * @param dir The direction of the player that is moving
      * @param players The other robots in the game
      * @param x x-coordinate
      * @param y y-coordinate
