@@ -192,7 +192,7 @@ public class RoboRally implements Screen {
      * Returns a sorted List of players, based on which card (at 'index') has highest priority.
      *
      * @param index Index of the card in selected cards - inventory
-     * @return A sorted list of players, based on priority cards
+     * @return A sorted list of players, based on prisority cards
      */
     private LinkedList<Player> getPriorityList(int index) {
         LinkedList<Player> copy = new LinkedList<>(players);
@@ -332,12 +332,13 @@ public class RoboRally implements Screen {
         Gdx.input.setInputProcessor(stage);
     }
 
+    /*
     private void run(){
         for (Player player : players) {
             EventUtil.handleEvent(board, player, players);
-
         }
     }
+    */
 
     /**
      * Locks in the selected cards and furthers the process
