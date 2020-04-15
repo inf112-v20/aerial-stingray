@@ -22,6 +22,7 @@ import inf112.roborally.cards.Deck;
 import inf112.roborally.cards.ProgramCard;
 import inf112.roborally.entities.Color;
 import inf112.roborally.entities.Player;
+import inf112.roborally.events.EventUtil;
 import inf112.roborally.ui.Board;
 
 import java.util.ArrayList;
@@ -182,6 +183,7 @@ public class RoboRally implements Screen {
                 System.out.println(identifier + " Executes card " + card.getType() + " with priority " + card.getPriority());
                 executeCard(player, player.getSelectedCards().get(i));
             }
+            EventUtil.handleEvent(board, players);
             System.out.println("=======================================");
         }
 
