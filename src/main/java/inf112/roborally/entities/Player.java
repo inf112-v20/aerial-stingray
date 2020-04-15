@@ -122,7 +122,6 @@ public class Player {
      * @param index Index of cards in selected cards
      */
     public void deselectCard(int index) {
-        // if damage > and index == locked { return; }
         availableCards[index] = selectedCards.get(index);
         selectedCards.remove(index);
     }
