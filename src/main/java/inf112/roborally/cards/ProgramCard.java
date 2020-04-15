@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import scala.Int;
 
 import java.awt.*;
 
@@ -28,6 +29,11 @@ public class ProgramCard {
     public ProgramCard(CardType type, int priority) {
         this.type = type;
         this.priority = priority;
+    }
+
+    public ProgramCard(String cardType, String priority) {
+        this.type = CardType.valueOf(cardType);
+        this.priority = Integer.parseInt(priority);
     }
 
     /**
@@ -119,6 +125,7 @@ public class ProgramCard {
 
         return texture;
     }
+
 
     public CardType getType() {
         return type;
