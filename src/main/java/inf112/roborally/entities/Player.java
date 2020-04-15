@@ -8,11 +8,13 @@ import com.badlogic.gdx.math.Vector2;
 import inf112.roborally.cards.ProgramCard;
 import inf112.roborally.events.EventUtil;
 import inf112.roborally.screens.LoseScreen;
+import inf112.roborally.screens.RoboRally;
 import inf112.roborally.screens.ScreenManager;
 import inf112.roborally.screens.WinScreen;
 import inf112.roborally.ui.Board;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Represents the "robot"/playing piece the human player is associated with.
@@ -20,10 +22,13 @@ import java.util.ArrayList;
 public class Player {
 
     /**
+     * Player color
+     */
+    public Color color;
+    /**
      * Player ID
      */
     private int id;
-
     /**
      * Robot alive or dead
      */
@@ -33,12 +38,6 @@ public class Player {
      * Graphics
      */
     private Vector2 backup;
-
-    /**
-     * Player color
-     */
-    public Color color;
-
     /**
      * Coordinates
      */
@@ -65,17 +64,95 @@ public class Player {
      */
     private int currentRotation = 2;
 
+    /**
+     * Holds references to current program cards this robot has.
+     */
+    private ProgramCard[] availableCards;
+    private LinkedList<ProgramCard> selectedCards;
+
+    /**
+     * True if the player wants to power down.
+     */
+    private boolean powerDown = false;
+
+    private boolean AI;
+
+
     public Player(Vector2 pos, Color color, int id) {
+        this.AI = true;
         this.pos = pos;
         this.backup = new Vector2(pos.x, pos.y);
         this.color = color;
         this.id = id;
+
+        // Cards
+        this.availableCards = new ProgramCard[RoboRally.NUM_CARDS_SERVED];
+        this.selectedCards = new LinkedList<>();
+    }
+
+    public Player(Vector2 pos, Color color, int id, boolean AI) {
+        this.AI = AI;
+        this.pos = pos;
+        this.backup = new Vector2(pos.x, pos.y);
+        this.color = color;
+        this.id = id;
+
+        // Cards
+        this.availableCards = new ProgramCard[RoboRally.NUM_CARDS_SERVED];
+        this.selectedCards = new LinkedList<>();
+    }
+
+    public boolean isAI() {
+        return this.AI;
+    }
+
+    /**
+     * Moves card from available cards to selected cards.
+     *
+     * @param index Index of card in available cards
+     */
+    public void selectCard(int index) {
+        selectedCards.add(availableCards[index]);
+        availableCards[index] = null;
+    }
+
+    /**
+     * Moves card from selected cards to available cards.
+     *
+     * @param index Index of cards in selected cards
+     */
+    public void deselectCard(int index) {
+        availableCards[index] = selectedCards.get(index);
+        selectedCards.remove(index);
+    }
+
+    public boolean isPowerDown() {
+        return powerDown;
+    }
+
+    public void setPowerDown(boolean val) {
+        powerDown = val;
+    }
+
+    public LinkedList<ProgramCard> getSelectedCards() {
+        return selectedCards;
+    }
+
+    public void setSelectedCards(LinkedList<ProgramCard> selectedCards) {
+        this.selectedCards = selectedCards;
+    }
+
+    /**
+     * @return All ProgramCard's this robot holds.
+     */
+    public ProgramCard[] getAvailableCards() {
+        return availableCards;
     }
 
     /**
      * @return player ID
      */
-    public int getID(){
+    public int getID() {
         return id;
     }
 
@@ -145,6 +222,7 @@ public class Player {
     public Direction getDir() {
         return dir;
     }
+
     public void setDir(Direction direction){
         this.dir = direction;
     }
@@ -188,7 +266,6 @@ public class Player {
         return tileCell;
     }
 
-
     public boolean hasAllFlags() {
         return flags[0] && flags[1] && flags[2] && flags[3];
     }
@@ -218,6 +295,15 @@ public class Player {
         }
     }
 
+
+    /**
+     * Rotates 2 x 90 degrees to the right= 180 degrees
+     */
+    public void rotate180() {
+        this.rotate(true);
+        this.rotate(true);
+    }
+
     public Vector2 getPos() {
         return pos;
     }
@@ -226,7 +312,9 @@ public class Player {
         this.pos = pos;
     }
 
-    public void setBackup(Vector2 backup) { this.backup = backup; }
+    public void setBackup(Vector2 backup) {
+        this.backup = backup;
+    }
 
     /**
      * Changes position to backup-pos.
@@ -294,14 +382,6 @@ public class Player {
     }
 
     /**
-     * Rotates 2 x 90 degrees to the right= 180 degrees
-     */
-    public void rotate180() {
-        this.rotate(true);
-        this.rotate(true);
-    }
-
-    /**
      * Adds a flag to the player inventory.
      *
      * @param flagNum Flag number to add
@@ -324,6 +404,13 @@ public class Player {
         }
     }
 
+    /**
+     * Executes a Program Card.
+     *
+     * @param board   The board the robot is on
+     * @param card    The card to execute
+     * @param players Other players in the game
+     */
     public void executeCard(Board board, ProgramCard card, ArrayList<Player> players) {
         switch (card.getType()) {
             case TURN_RIGHT:

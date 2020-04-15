@@ -19,7 +19,7 @@ import inf112.roborally.cards.Deck;
 import inf112.roborally.cards.ProgramCard;
 import inf112.roborally.entities.Color;
 import inf112.roborally.entities.Player;
-import inf112.roborally.events.EventHandler;
+import inf112.roborally.events.EventUtil;
 import inf112.roborally.ui.Board;
 
 import java.util.ArrayList;
@@ -80,9 +80,9 @@ public class RoboRally extends InputAdapter implements Screen {
     private ImageButton[] cardButtons;
 
 
-    public RoboRally() {
+    public RoboRally(int numPlayers) {
         setupGameComponents();
-        setupPlayers();
+        setupPlayers(numPlayers);
         setupRendering();
         setupUI();
         setupInput();
@@ -95,12 +95,17 @@ public class RoboRally extends InputAdapter implements Screen {
         cardButtons = new ImageButton[NUM_CARDS_SERVED];
     }
 
-    private void setupPlayers() {
+    private void setupPlayers(int numPlayers) {
         players = new ArrayList<>();
         cardsChosen = new LinkedList<>();
+        Color[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.PINK};
+        Vector2[] startPos = {new Vector2(6,1), new Vector2(9,1), new Vector2(13,1), new Vector2(16,1)};
 
-        Player p1 = new Player(new Vector2(13, 1), Color.RED);
-        players.add(p1);
+        for (int i = 0; i < numPlayers; i++) {
+            players.add(new Player(startPos[i], colors[i], i));
+        }
+        // Player p1 = new Player(startPos[0], colors[0]);
+        // players.add(p1);
 
         thisPlayer = players.get(0);
     }
@@ -172,6 +177,13 @@ public class RoboRally extends InputAdapter implements Screen {
         Gdx.input.setInputProcessor(im);
     }
 
+    private void run(){
+        for (Player player : players) {
+            EventUtil.handleEvent(board, player, players);
+
+        }
+    }
+
     /**
      * Locks in the selected cards and furthers the process
      * of executing them.
@@ -199,7 +211,7 @@ public class RoboRally extends InputAdapter implements Screen {
             Vector2 oldPos = thisPlayer.getPos();
             setCellToNull(oldPos);
 
-            thisPlayer.executeCard(board, currentCard);
+            thisPlayer.executeCard(board, currentCard, players);
             System.out.println(thisPlayer.showStatus());
         }
 
@@ -338,10 +350,10 @@ public class RoboRally extends InputAdapter implements Screen {
         int y = (int) thisPlayer.getPos().y;
 
         if (keycode == Input.Keys.UP) {
-            thisPlayer.move(board, thisPlayer.getDir(), 1);
+            thisPlayer.move(board, thisPlayer.getDir(), 1, players);
             moved = true;
         } else if (keycode == Input.Keys.DOWN) {
-            thisPlayer.move(board, thisPlayer.getOppositeDir(), 1);
+            thisPlayer.move(board, thisPlayer.getOppositeDir(), 1, players);
             moved = true;
         } else if (keycode == Input.Keys.LEFT) {
             thisPlayer.rotate(false);
@@ -354,7 +366,7 @@ public class RoboRally extends InputAdapter implements Screen {
         if (moved) {
             board.getPlayerLayer().setCell(x, y, null);
             System.out.println(thisPlayer.showStatus());
-            EventHandler.handleEvent(board, thisPlayer);
+            EventUtil.handleEvent(board, thisPlayer, players);
         }
 
         return moved;
@@ -374,7 +386,13 @@ public class RoboRally extends InputAdapter implements Screen {
      * Draws player on the map.
      */
     public void drawPlayer() {
-        board.getPlayerLayer().setCell((int) thisPlayer.getPos().x, (int) thisPlayer.getPos().y, thisPlayer.getPlayerIcon());
+        int i = 0;
+        for (Player player : this.players){
+            board.getPlayerLayer().setCell((int) player.getPos().x, (int) player.getPos().y, player.getPlayerIcon());
+            board.getPlayerLayer().getCell((int) player.getPos().x, (int) player.getPos().y).getTile().setId(i);
+            i++;
+
+        }
     }
 
     /**
@@ -405,6 +423,9 @@ public class RoboRally extends InputAdapter implements Screen {
         font.dispose();
     }
 
+    /**
+     * Non-finished method implemented from Screen.
+     */
     @Override
     public void show() {
     }
@@ -414,16 +435,24 @@ public class RoboRally extends InputAdapter implements Screen {
         Gdx.graphics.setWindowedMode(width, height);
     }
 
+    /**
+     * Non-finished method implemented from Screen.
+     */
     @Override
     public void pause() {
     }
 
+    /**
+     * Non-finished method implemented from Screen.
+     */
     @Override
     public void resume() {
     }
 
+    /**
+     * Non-finished method implemented from Screen.
+     */
     @Override
     public void hide() {
-
     }
 }
