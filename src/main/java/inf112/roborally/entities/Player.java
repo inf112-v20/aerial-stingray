@@ -442,14 +442,11 @@ public class Player {
                 break;
 
             case MOVE2:
-                this.move(board, this.getDir(), 1, players);
-                this.move(board, this.getDir(), 1, players);
+                this.move(board, this.getDir(), 2, players);
                 break;
 
             case MOVE3:
-                this.move(board, this.getDir(), 1, players);
-                this.move(board, this.getDir(), 1, players);
-                this.move(board, this.getDir(), 1, players);
+                this.move(board, this.getDir(), 3, players);
                 break;
 
             default:
