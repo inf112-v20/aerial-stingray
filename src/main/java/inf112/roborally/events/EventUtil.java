@@ -23,26 +23,19 @@ public class EventUtil {
 
     /**
      * Handles an event on a current tile with a given map & player.
-     *  @param board  The current Board which holds all tiles
-     * @param player The player who stands on the tile
-     *               <p>
-     *               Temporary implementation for conveyors with two directions
-     *               <p>
+     * @param board  The current Board which holds all tiles
      * @param players The other robots in the game
      */
-    public static void handleEvent(Board board, Player player, ArrayList<Player> players) {
+    public static void handleEvent(Board board, ArrayList<Player> players) {
+        for (Player player : players) {
+            expressConveyor(board, player, players);
+            normalConveyor(board, player, players);
+            rotators(board, player);
 
-        expressConveyor(board, player, players);
-        normalConveyor(board, player, players);
-        rotators(board, player);
-
-        lasers(board, player);
-        flags(board, player);
-        repairs(board, player);
-
-
-        //should be called for each step the robot makes
-        hole(board, player);
+            lasers(board, player);
+            flags(board, player);
+            repairs(board, player);
+        }
     }
 
 
