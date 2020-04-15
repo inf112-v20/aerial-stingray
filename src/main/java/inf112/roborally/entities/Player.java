@@ -423,43 +423,33 @@ public class Player {
         switch (card.getType()) {
             case TURN_RIGHT:
                 this.rotate(true);
-                EventUtil.handleEvent(board, players);
                 break;
 
             case TURN_LEFT:
                 this.rotate(false);
-                EventUtil.handleEvent(board, players);
                 break;
 
             case TURN_U:
                 this.rotate180();
-                EventUtil.handleEvent(board, players);
                 break;
 
             case BACKUP:
                 this.move(board, this.getOppositeDir(), 1, players);
-                EventUtil.handleEvent(board, players);
                 break;
 
             case MOVE1:
                 this.move(board, this.getDir(), 1, players);
-                EventUtil.handleEvent(board, players);
                 break;
 
             case MOVE2:
                 this.move(board, this.getDir(), 1, players);
-                EventUtil.handleEvent(board, players);
                 this.move(board, this.getDir(), 1, players);
-                EventUtil.handleEvent(board, players);
                 break;
 
             case MOVE3:
                 this.move(board, this.getDir(), 1, players);
-                EventUtil.handleEvent(board, players);
                 this.move(board, this.getDir(), 1, players);
-                EventUtil.handleEvent(board, players);
                 this.move(board, this.getDir(), 1, players);
-                EventUtil.handleEvent(board, players);
                 break;
 
             default:
