@@ -524,7 +524,7 @@ public class RoboRally implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        Gdx.graphics.setWindowedMode(width, height);
+        //Gdx.graphics.setWindowedMode(width, height);
     }
 
     /**
