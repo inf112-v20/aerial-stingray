@@ -332,13 +332,6 @@ public class RoboRally implements Screen {
         Gdx.input.setInputProcessor(stage);
     }
 
-    /*
-    private void run(){
-        for (Player player : players) {
-            EventUtil.handleEvent(board, player, players);
-        }
-    }
-    */
 
     /**
      * Locks in the selected cards and furthers the process
