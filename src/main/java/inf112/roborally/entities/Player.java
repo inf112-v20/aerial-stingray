@@ -195,21 +195,29 @@ public class Player {
         for (int i = 0; i < steps; i++) {
             switch (dir) {
                 case NORTH:
-                    if (EventUtil.canGo(board, this, Direction.NORTH, 1, players))
+                    if (EventUtil.canGo(board, this, Direction.NORTH, 1, players)){
                         getPos().y++;
+                        EventUtil.hole(board, this);
+                        }
                     break;
                 case EAST:
-                    if (EventUtil.canGo(board, this, Direction.EAST, 1, players))
+                    if (EventUtil.canGo(board, this, Direction.EAST, 1, players)) {
                         getPos().x++;
+                        EventUtil.hole(board, this);
+                    }
                     break;
                 case SOUTH:
-                    if (EventUtil.canGo(board, this, Direction.SOUTH, 1, players))
+                    if (EventUtil.canGo(board, this, Direction.SOUTH, 1, players)) {
                         getPos().y--;
+                        EventUtil.hole(board, this);
+                    }
                     break;
 
                 case WEST:
-                    if (EventUtil.canGo(board, this, Direction.WEST, 1, players))
+                    if (EventUtil.canGo(board, this, Direction.WEST, 1, players)){
                         getPos().x--;
+                        EventUtil.hole(board, this);
+                    }
                     break;
 
                 default:
