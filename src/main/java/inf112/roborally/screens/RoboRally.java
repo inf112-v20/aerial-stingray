@@ -69,10 +69,8 @@ public class RoboRally implements Screen {
      */
     private ImageButton[] cardButtons;
 
-    private int numPlayers;
-
+    
     public RoboRally(int numPlayers) {
-        this.numPlayers = numPlayers;
         setupGameComponents();
         setupPlayers(numPlayers);
         setupRendering();
