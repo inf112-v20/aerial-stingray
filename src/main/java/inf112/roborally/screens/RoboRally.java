@@ -22,6 +22,7 @@ import inf112.roborally.cards.Deck;
 import inf112.roborally.cards.ProgramCard;
 import inf112.roborally.entities.Color;
 import inf112.roborally.entities.Player;
+import inf112.roborally.events.EventUtil;
 import inf112.roborally.ui.Board;
 
 import java.util.ArrayList;
@@ -71,6 +72,8 @@ public class RoboRally implements Screen {
 
     
     public RoboRally(int numPlayers) {
+        Gdx.graphics.setContinuousRendering(false);  // Saving resources.
+
         setupGameComponents();
         setupPlayers(numPlayers);
         setupRendering();
@@ -179,6 +182,8 @@ public class RoboRally implements Screen {
                 else identifier = "[  ROBOT_" + players.indexOf(player) + "  ]";
                 System.out.println(identifier + " Executes card " + card.getType() + " with priority " + card.getPriority());
                 executeCard(player, player.getSelectedCards().get(i));
+
+                EventUtil.handleEvent(board, player, players);
             }
             System.out.println("=======================================");
         }
@@ -522,7 +527,7 @@ public class RoboRally implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        //Gdx.graphics.setWindowedMode(width, height);
+
     }
 
     /**
