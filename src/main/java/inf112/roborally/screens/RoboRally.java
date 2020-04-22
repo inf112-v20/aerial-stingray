@@ -182,8 +182,6 @@ public class RoboRally implements Screen {
                 else identifier = "[  ROBOT_" + players.indexOf(player) + "  ]";
                 System.out.println(identifier + " Executes card " + card.getType() + " with priority " + card.getPriority());
                 executeCard(player, player.getSelectedCards().get(i));
-
-                EventUtil.handleEvent(board, player, players);
             }
             EventUtil.handleEvent(board, players);
             System.out.println("=======================================");
