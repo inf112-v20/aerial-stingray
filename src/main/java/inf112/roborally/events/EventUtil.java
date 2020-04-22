@@ -47,12 +47,10 @@ public class EventUtil {
     public static void hole(Board board, Player player){
         if (getTileType(board, "OEvents", player.getPos()).equals("Hole")){
             player.subtractLife();
-            player.setRobotAlive(false);
+            player.setRobotState(false);
         } else if (EventUtil.outOfBounds(player)) {
             player.subtractLife();
-            player.setRobotAlive(false);
-            //Remove later when a fase is in place
-            player.respawn();
+            player.setRobotState(false);
         }
     }
 

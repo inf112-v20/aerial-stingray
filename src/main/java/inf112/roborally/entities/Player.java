@@ -156,11 +156,11 @@ public class Player {
         return id;
     }
 
-    public boolean getRobotAlive(){
+    public boolean getRobotState(){
         return robotAlive;
     }
 
-    public void setRobotAlive(boolean state){
+    public void setRobotState(boolean state){
         robotAlive = state;
     }
     /**
@@ -193,6 +193,7 @@ public class Player {
      */
     public void move(Board board, Direction dir, int steps, ArrayList<Player> players) {
         for (int i = 0; i < steps; i++) {
+            if (!getRobotState()){ return; }
             switch (dir) {
                 case NORTH:
                     if (EventUtil.canGo(board, this, Direction.NORTH, 1, players)){
@@ -331,6 +332,7 @@ public class Player {
     public void respawn() {
         this.currentRotation = 2;
         this.dir = Direction.NORTH;
+        setRobotState(true);
         setPos(new Vector2(backup.x, backup.y));
         System.out.println(backup);
     }
@@ -420,6 +422,7 @@ public class Player {
      * @param players Other players in the game
      */
     public void executeCard(Board board, ProgramCard card, ArrayList<Player> players) {
+        if (!getRobotState()){ return; }
         switch (card.getType()) {
             case TURN_RIGHT:
                 this.rotate(true);

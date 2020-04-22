@@ -220,7 +220,11 @@ public class RoboRally implements Screen {
      */
     private void cleanUp() {
         System.out.println("[  PHASE 5  ] Ending round and cleaning up board.");
-
+        for (Player player : players) {
+            if (!player.getRobotState()){
+                player.respawn();
+            }
+        }
         recycleCards();
         dealCardsToAll();  // Starting back at phase 1
     }
