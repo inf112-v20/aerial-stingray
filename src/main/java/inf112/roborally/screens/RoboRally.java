@@ -70,10 +70,10 @@ public class RoboRally implements Screen {
      */
     private ImageButton[] cardButtons;
 
-    private int numPlayers;
-
+    
     public RoboRally(int numPlayers) {
-        this.numPlayers = numPlayers;
+        Gdx.graphics.setContinuousRendering(false);  // Saving resources.
+
         setupGameComponents();
         setupPlayers(numPlayers);
         setupRendering();
@@ -182,6 +182,8 @@ public class RoboRally implements Screen {
                 else identifier = "[  ROBOT_" + players.indexOf(player) + "  ]";
                 System.out.println(identifier + " Executes card " + card.getType() + " with priority " + card.getPriority());
                 executeCard(player, player.getSelectedCards().get(i));
+
+                EventUtil.handleEvent(board, player, players);
             }
             EventUtil.handleEvent(board, players);
             System.out.println("=======================================");
@@ -523,7 +525,7 @@ public class RoboRally implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        Gdx.graphics.setWindowedMode(width, height);
+
     }
 
     /**
