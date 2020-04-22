@@ -422,7 +422,6 @@ public class Player {
      * @param players Other players in the game
      */
     public void executeCard(Board board, ProgramCard card, ArrayList<Player> players) {
-        if (getRobotDead()){ return; }
         switch (card.getType()) {
             case TURN_RIGHT:
                 this.rotate(true);
