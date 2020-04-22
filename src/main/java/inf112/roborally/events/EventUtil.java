@@ -47,10 +47,10 @@ public class EventUtil {
     public static void hole(Board board, Player player){
         if (getTileType(board, "OEvents", player.getPos()).equals("Hole")){
             player.subtractLife();
-            player.setRobotState(false);
+            player.setRobotDead(true);
         } else if (EventUtil.outOfBounds(player)) {
             player.subtractLife();
-            player.setRobotState(false);
+            player.setRobotDead(true);
         }
     }
 

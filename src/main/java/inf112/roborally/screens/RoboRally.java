@@ -180,8 +180,12 @@ public class RoboRally implements Screen {
                 String identifier;
                 if (player.equals(getThisPlayer())) identifier = "[  THIS_PLAYER  ]";
                 else identifier = "[  ROBOT_" + players.indexOf(player) + "  ]";
-                System.out.println(identifier + " Executes card " + card.getType() + " with priority " + card.getPriority());
-                executeCard(player, player.getSelectedCards().get(i));
+                if (player.getRobotDead()) {
+                    System.out.println(identifier + "The robot is dead, and will not execute cards");
+                } else {
+                    System.out.println(identifier + " Executes card " + card.getType() + " with priority " + card.getPriority());
+                    executeCard(player, player.getSelectedCards().get(i));
+                }
             }
             EventUtil.handleEvent(board, players);
             System.out.println("=======================================");
@@ -221,7 +225,7 @@ public class RoboRally implements Screen {
     private void cleanUp() {
         System.out.println("[  PHASE 5  ] Ending round and cleaning up board.");
         for (Player player : players) {
-            if (!player.getRobotState()){
+            if (player.getRobotDead()){
                 player.respawn();
             }
         }
