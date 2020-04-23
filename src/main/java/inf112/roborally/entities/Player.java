@@ -114,6 +114,8 @@ public class Player {
     public void selectCard(int index) {
         selectedCards.add(availableCards[index]);
         availableCards[index] = null;
+
+
     }
 
     /**

@@ -402,6 +402,7 @@ public class RoboRally implements Screen {
         for (int i = 0; i < NUM_CARDS_SERVED; i++) {
             Skin skin = new Skin(Gdx.files.internal("rusty-robot/skin/rusty-robot-ui.json"));
             int priority = getThisPlayer().getAvailableCards()[i].getPriority();
+            System.out.println(priority);
             Label priorityPoints = new Label(Integer.toString(priority), skin);
             priorityPoints.setSize(10, 20);
             priorityPoints.setPosition(margin + startX, 165);
@@ -415,7 +416,9 @@ public class RoboRally implements Screen {
 
             cardButtons[i].setStyle(oldImageButtonStyle);
             cardButtons[i].addActor(priorityPoints);
-
+            if(cardButtons[i].isChecked()){
+                cardButtons[i].removeActor(priorityPoints);
+            }
         }
     }
 
