@@ -78,6 +78,7 @@ public class Player {
     private boolean AI;
 
 
+
     public Player(Vector2 pos, Color color, int id) {
         this.AI = true;
         this.pos = pos;
@@ -104,6 +105,24 @@ public class Player {
 
     public boolean isAI() {
         return this.AI;
+    }
+
+    public int getNumCardsCerved(){
+        switch (getDamage()) {
+            case 5:
+                return 8;
+            case 6:
+                return 7;
+            case 7:
+                return 6;
+            case 8:
+                return 5;
+            case 9:
+                return 4;
+            default:
+                return 9;
+
+        }
     }
 
     /**
