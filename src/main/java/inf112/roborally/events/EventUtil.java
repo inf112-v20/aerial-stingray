@@ -408,7 +408,7 @@ public class EventUtil {
      * @param pos   Position of the cell
      * @return A String representing the type of tile at the pos.
      */
-    public static String getTileType(Board board, String layer, Vector2 pos) {
+    private static String getTileType(Board board, String layer, Vector2 pos) {
         for (MapObject mo : board.getObjectLayer(layer)) {
             if (mo instanceof RectangleMapObject) {
                 Rectangle rect = ((RectangleMapObject) mo).getRectangle();

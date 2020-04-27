@@ -2,6 +2,7 @@ package inf112.roborally.cards;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
@@ -86,31 +87,31 @@ public class ProgramCard {
         TextureRegionDrawable texture;
         switch (type) {
             case MOVE1:
-                texture = new TextureRegionDrawable(new Texture(Gdx.files.internal("cards/move1" + state)));
+                texture = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("cards/move1" + state))));
                 break;
 
             case MOVE2:
-                texture = new TextureRegionDrawable(new Texture(Gdx.files.internal("cards/move2" + state)));
+                texture = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("cards/move2" + state))));
                 break;
 
             case MOVE3:
-                texture = new TextureRegionDrawable(new Texture(Gdx.files.internal("cards/move3" + state)));
+                texture = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("cards/move3" + state))));
                 break;
 
             case BACKUP:
-                texture = new TextureRegionDrawable(new Texture(Gdx.files.internal("cards/backup" + state)));
+                texture = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("cards/backup" + state))));
                 break;
 
             case TURN_U:
-                texture = new TextureRegionDrawable(new Texture(Gdx.files.internal("cards/uTurn" + state)));
+                texture = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("cards/uTurn" + state))));
                 break;
 
             case TURN_LEFT:
-                texture = new TextureRegionDrawable(new Texture(Gdx.files.internal("cards/leftRotate" + state)));
+                texture = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("cards/leftRotate" + state))));
                 break;
 
             case TURN_RIGHT:
-                texture = new TextureRegionDrawable(new Texture(Gdx.files.internal("cards/rightRotate" + state)));
+                texture = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("cards/rightRotate" + state))));
                 break;
 
             default:

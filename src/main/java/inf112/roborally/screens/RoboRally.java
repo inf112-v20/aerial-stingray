@@ -4,18 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import inf112.roborally.Main;
 import inf112.roborally.cards.Deck;
@@ -333,6 +333,7 @@ public class RoboRally implements Screen {
 
             stage.addActor(btn);
         }
+
     }
 
     /**
@@ -396,13 +397,28 @@ public class RoboRally implements Screen {
      * This only needs to be done for this player, as only that player has GUI.
      */
     public void refreshImageButtons() {
+        int startX = 27;
+        int margin = 5;
         for (int i = 0; i < NUM_CARDS_SERVED; i++) {
+            Skin skin = new Skin(Gdx.files.internal("rusty-robot/skin/rusty-robot-ui.json"));
+            int priority = getThisPlayer().getAvailableCards()[i].getPriority();
+            System.out.println(priority);
+            Label priorityPoints = new Label(Integer.toString(priority), skin);
+            priorityPoints.setSize(10, 20);
+            priorityPoints.setPosition(margin + startX, 165);
+
+
             ImageButton.ImageButtonStyle oldImageButtonStyle = cardButtons[i].getStyle();
             oldImageButtonStyle.imageUp = getThisPlayer().getAvailableCards()[i].getImageUp();
             oldImageButtonStyle.imageChecked = getThisPlayer().getAvailableCards()[i].getImageDown();
             oldImageButtonStyle.imageDown = getThisPlayer().getAvailableCards()[i].getImageDown();
 
+
             cardButtons[i].setStyle(oldImageButtonStyle);
+            cardButtons[i].addActor(priorityPoints);
+            if(cardButtons[i].isChecked()){
+                cardButtons[i].removeActor(priorityPoints);
+            }
         }
     }
 
