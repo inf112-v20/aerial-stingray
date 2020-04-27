@@ -23,26 +23,19 @@ public class EventUtil {
 
     /**
      * Handles an event on a current tile with a given map & player.
-     *  @param board  The current Board which holds all tiles
-     * @param player The player who stands on the tile
-     *               <p>
-     *               Temporary implementation for conveyors with two directions
-     *               <p>
+     * @param board  The current Board which holds all tiles
      * @param players The other robots in the game
      */
-    public static void handleEvent(Board board, Player player, ArrayList<Player> players) {
+    public static void handleEvent(Board board, ArrayList<Player> players) {
+        for (Player player : players) {
+            expressConveyor(board, player, players);
+            normalConveyor(board, player, players);
+            rotators(board, player);
 
-        expressConveyor(board, player, players);
-        normalConveyor(board, player, players);
-        rotators(board, player);
-
-        lasers(board, player);
-        flags(board, player);
-        repairs(board, player);
-
-
-        //should be called for each step the robot makes
-        hole(board, player);
+            lasers(board, player);
+            flags(board, player);
+            repairs(board, player);
+        }
     }
 
 
@@ -54,12 +47,10 @@ public class EventUtil {
     public static void hole(Board board, Player player){
         if (getTileType(board, "OEvents", player.getPos()).equals("Hole")){
             player.subtractLife();
-            player.setRobotAlive(false);
+            player.setRobotDead(true);
         } else if (EventUtil.outOfBounds(player)) {
             player.subtractLife();
-            player.setRobotAlive(false);
-            //Remove later when a fase is in place
-            player.respawn();
+            player.setRobotDead(true);
         }
     }
 
@@ -417,7 +408,7 @@ public class EventUtil {
      * @param pos   Position of the cell
      * @return A String representing the type of tile at the pos.
      */
-    public static String getTileType(Board board, String layer, Vector2 pos) {
+    private static String getTileType(Board board, String layer, Vector2 pos) {
         for (MapObject mo : board.getObjectLayer(layer)) {
             if (mo instanceof RectangleMapObject) {
                 Rectangle rect = ((RectangleMapObject) mo).getRectangle();

@@ -12,9 +12,10 @@ public class Main {
     public final static int WIDTH = 1440;
 
     /**
-     * Num. of vertical tiles x size of tiles
+     * Num. of vertical tiles x size of tiles + height of deck-layout
      */
-    public final static int HEIGHT = 720;
+    public final static int DECK_WINDOW_SIZE = 280;
+    public final static int HEIGHT = 720 + DECK_WINDOW_SIZE;
 
     public static void main(String[] args) {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
