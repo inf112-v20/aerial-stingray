@@ -22,6 +22,8 @@ import inf112.roborally.cards.Deck;
 import inf112.roborally.cards.ProgramCard;
 import inf112.roborally.entities.Color;
 import inf112.roborally.entities.Player;
+import inf112.roborally.server.Client;
+import inf112.roborally.server.Server;
 import inf112.roborally.ui.Board;
 
 import java.util.ArrayList;
@@ -70,6 +72,19 @@ public class RoboRally implements Screen {
     private ImageButton[] cardButtons;
 
     private int numPlayers;
+
+    /**
+     * Variables to be used in networking/multiplayer
+     */
+    public Server server;
+    public Client client;
+    public ArrayList<String> playerNames;
+    public int playersInGame;
+    public int amountOfPlayers;
+    public int readyPlayers;
+    public boolean connected;
+    public ArrayList<String> deadPlayers;
+
 
     public RoboRally(int numPlayers) {
         this.numPlayers = numPlayers;

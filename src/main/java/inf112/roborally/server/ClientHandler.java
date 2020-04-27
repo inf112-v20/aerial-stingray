@@ -35,7 +35,6 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         String header = split[0];
 
         switch (header) {
-            /*
             case "HANDSHAKE":
                 game.connected = true;
                 System.out.println("CLIENT HANDSHAKE.");
@@ -44,7 +43,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
             case "LIST":
                 int size = Integer.parseInt(split[1]);
                 while (game.playerNames.size() < size) {
-                    game.playerNames.add("temp");
+                    game.playerNames.add("tmp");
                 }
                 break;
 
@@ -65,6 +64,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
                     @Override
                     public void run() {
                         System.out.printf("Amount of players = %d%n", game.amountOfPlayers);
+                        //
                         //
                     }
                 });
@@ -136,7 +136,6 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
             default:
                 System.out.println(data);
                 break;
-        */
         }
     }
 

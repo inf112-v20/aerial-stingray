@@ -54,11 +54,6 @@ public class ServerHandler extends SimpleChannelInboundHandler<String> {
         }
     }
 
-    public void reshuffle() {
-        while (!returnedCards.empty()) deckOfCards.push(returnedCards.pop());
-        deckOfCards.shuffle();
-    }
-
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, String message) throws Exception {
         Channel incoming = channelHandlerContext.channel();
@@ -141,6 +136,9 @@ public class ServerHandler extends SimpleChannelInboundHandler<String> {
         }
 
     }
+
+    // These two context handler functions may seem like unused code, but they are being called by netty it self,
+    // and not this class
 
     public void ctxHandlerAdded(ChannelHandlerContext context) {
         channels.add(context.channel());
