@@ -4,10 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -15,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import inf112.roborally.Main;
 import inf112.roborally.cards.Deck;
@@ -24,6 +21,7 @@ import inf112.roborally.entities.Color;
 import inf112.roborally.entities.Player;
 import inf112.roborally.events.EventUtil;
 import inf112.roborally.ui.Board;
+import inf112.roborally.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,12 +65,18 @@ public class RoboRally implements Screen {
     private ArrayList<Player> players;
 
     /**
+     * Holds the references to the ImageButtons, representing the cards on the screen.
      */
     private ImageButton[] cardButtons;
 
-    
+    /**
+     * Order of (Player, Card) to be executed
+     */
+    private LinkedList<Pair> executePairs;
+
+
     public RoboRally(int numPlayers) {
-        Gdx.graphics.setContinuousRendering(false);  // Saving resources.
+        Gdx.graphics.setContinuousRendering(false);
 
         setupGameComponents();
         setupPlayers(numPlayers);
@@ -170,12 +174,40 @@ public class RoboRally implements Screen {
         System.out.println("[  PHASE 4  ] Ready to execute cards!");
         System.out.println("=======================================");
 
+        executePairs = new LinkedList<>();  // Delete prev. content
         for (int i = 0; i < 5; i++) {  // 5 cards
             LinkedList<Player> highestPriority = getPriorityList(i);  // List of players, the one with highest card this iteration is first
 
             System.out.println("ITERATION = " + i);
             for (Player player : highestPriority) {  // Each player in correct order
                 ProgramCard card = player.getSelectedCards().get(i);
+
+                executePairs.add(new Pair(player, card));
+            }
+        }
+
+        executeNextCard();
+    }
+
+    /**
+     * Phase 4 - clicking this button will execute next card.
+     */
+    private void executeNextCard() {
+        Skin skin = new Skin(Gdx.files.internal("rusty-robot/skin/rusty-robot-ui.json"));
+        TextButton submitCards = new TextButton("Execute next card!", skin);
+        submitCards.setSize(200, 80);
+        submitCards.setPosition((float) Main.WIDTH - 350, 200);
+        submitCards.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (executePairs.size() > 0 == false) {
+                    submitCards.remove();
+                    cleanUp();  // Next phase
+                    return;
+                }
+                Pair nextPair = executePairs.pop();
+                Player player = nextPair.getPlayer();
+                ProgramCard card = nextPair.getProgramCard();
 
                 String identifier;
                 if (player.equals(getThisPlayer())) identifier = "[  THIS_PLAYER  ]";
@@ -184,15 +216,19 @@ public class RoboRally implements Screen {
                     System.out.println(identifier + "The robot is dead, and will not execute cards");
                 } else {
                     System.out.println(identifier + " Executes card " + card.getType() + " with priority " + card.getPriority());
-                    executeCard(player, player.getSelectedCards().get(i));
+                    executeCard(player, card);
                 }
-            }
-            EventUtil.handleEvent(board, players);
-            System.out.println("=======================================");
-        }
 
-        cleanUp();  // Next phase
+                EventUtil.handleEvent(board, players);
+                System.out.println("=======================================");
+
+                clearScreen();
+                actAndRender(Gdx.graphics.getDeltaTime());
+            }
+        });
+        stage.addActor(submitCards);
     }
+
 
     /**
      * Returns a sorted List of players, based on which card (at 'index') has highest priority.
@@ -245,6 +281,8 @@ public class RoboRally implements Screen {
         deck = new Deck();
         board = new Board();
         cardButtons = new ImageButton[NUM_CARDS_SERVED];
+
+        executePairs = new LinkedList<>();
     }
 
     private void setupPlayers(int numPlayers) {
