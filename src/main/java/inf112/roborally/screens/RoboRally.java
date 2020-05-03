@@ -441,17 +441,15 @@ public class RoboRally implements Screen {
         for (int i = 0; i < NUM_CARDS_SERVED; i++) {
             Skin skin = new Skin(Gdx.files.internal("rusty-robot/skin/rusty-robot-ui.json"));
             int priority = getThisPlayer().getAvailableCards()[i].getPriority();
-            System.out.println(priority);
+
             Label priorityPoints = new Label(Integer.toString(priority), skin);
             priorityPoints.setSize(10, 20);
             priorityPoints.setPosition(margin + startX, 165);
-
 
             ImageButton.ImageButtonStyle oldImageButtonStyle = cardButtons[i].getStyle();
             oldImageButtonStyle.imageUp = getThisPlayer().getAvailableCards()[i].getImageUp();
             oldImageButtonStyle.imageChecked = getThisPlayer().getAvailableCards()[i].getImageDown();
             oldImageButtonStyle.imageDown = getThisPlayer().getAvailableCards()[i].getImageDown();
-
 
             cardButtons[i].setStyle(oldImageButtonStyle);
             cardButtons[i].addActor(priorityPoints);
@@ -577,6 +575,13 @@ public class RoboRally implements Screen {
      * Clears the screen with a set background color.
      */
     public void clearScreen() {
+        // Removing player sprites
+        for (int y = 0; y < Gdx.graphics.getHeight(); y++)
+            for (int x = 0; x < Gdx.graphics.getWidth(); x++) {
+                board.getPlayerLayer().setCell(x, y, null);
+            }
+
+
         Gdx.gl.glClearColor(178 / 255f, 148 / 255f, 119 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
