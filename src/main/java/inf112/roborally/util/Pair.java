@@ -1,27 +1,24 @@
 package inf112.roborally.util;
 
-import inf112.roborally.cards.ProgramCard;
-import inf112.roborally.entities.Player;
-
 /**
  * A pair of Player & ProgramCard.
  */
-public class Pair {
+public class Pair<A, B> {
 
-    private final Player player;
-    private final ProgramCard programCard;
+    private final A first;
+    private final B snd;
 
 
-    public Pair(Player player, ProgramCard programCard) {
-        this.player = player;
-        this.programCard = programCard;
+    public Pair(A a, B b) {
+        this.first = a;
+        this.snd = b;
     }
 
-    public Player getPlayer() {
-        return player;
+    public A getFirst() {
+        return first;
     }
 
-    public ProgramCard getProgramCard() {
-        return programCard;
+    public B getSnd() {
+        return snd;
     }
 }

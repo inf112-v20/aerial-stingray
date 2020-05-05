@@ -72,7 +72,7 @@ public class RoboRally implements Screen {
     /**
      * Order of (Player, Card) to be executed
      */
-    private LinkedList<Pair> executePairs;
+    private LinkedList<Pair<Player, ProgramCard>> executePairs;
 
 
     public RoboRally(int numPlayers) {
@@ -206,8 +206,8 @@ public class RoboRally implements Screen {
                     return;
                 }
                 Pair nextPair = executePairs.pop();
-                Player player = nextPair.getPlayer();
-                ProgramCard card = nextPair.getProgramCard();
+                Player player = (Player) nextPair.getFirst();
+                ProgramCard card = (ProgramCard) nextPair.getSnd();
 
                 String identifier;
                 if (player.equals(getThisPlayer())) identifier = "[  THIS_PLAYER  ]";
