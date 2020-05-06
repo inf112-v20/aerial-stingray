@@ -377,7 +377,7 @@ public class Player {
             damage = 0;
         }
         if (damage > 4){
-            selectedCardsTest.put(9-damage, new Pair<Integer,Boolean>(selectedCardsTest.get(9-damage).getKey(), true));
+            selectedCardsTest.put(9-damage, new Pair<>(selectedCardsTest.get(9-damage).getKey(), true));
         }
 
 
