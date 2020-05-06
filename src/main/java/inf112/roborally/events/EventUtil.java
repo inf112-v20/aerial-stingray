@@ -240,6 +240,9 @@ public class EventUtil {
                 player.addFlag(1);
                 player.setBackup(new Vector2(player.getPos()));
                 fromConveyor = false;
+
+                if (player.getDamage() > 0)
+                    player.healDamage();
                 break;
 
             case "Flag2":
@@ -248,6 +251,9 @@ public class EventUtil {
                     player.setBackup(new Vector2(player.getPos()));
                 }
                 fromConveyor = false;
+
+                if (player.getDamage() > 0)
+                    player.healDamage();
                 break;
 
             case "Flag3":
@@ -256,12 +262,18 @@ public class EventUtil {
                     player.setBackup(new Vector2(player.getPos()));
                 }
                 fromConveyor = false;
+
+                if (player.getDamage() > 0)
+                    player.healDamage();
                 break;
 
             case "Flag4":
                 if (player.getFlags()[0] && player.getFlags()[1] && player.getFlags()[2])
                     player.addFlag(4);
                 fromConveyor = false;
+
+                if (player.getDamage() > 0)
+                    player.healDamage();
                 break;
         }
     }
