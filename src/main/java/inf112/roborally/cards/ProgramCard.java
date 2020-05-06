@@ -3,17 +3,9 @@ package inf112.roborally.cards;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-import java.awt.*;
-
 public class ProgramCard {
-
-    /**
-     * Each card's texture is 140x260 px
-     */
-    private final Dimension dimension = new Dimension(140, 260);
 
     /**
      * A unique priority to decide which card plays first.
@@ -32,15 +24,6 @@ public class ProgramCard {
     }
 
     /**
-     * Creates a new ProgramCard with the exact type and priority.
-     *
-     * @return A ProgramCard with equal properties
-     */
-    public ProgramCard copy() {
-        return new ProgramCard(type, priority);
-    }
-
-    /**
      * A method for getting the image up texture used on an ImageButton.
      *
      * @return A texture used on an ImageButton.
@@ -56,21 +39,6 @@ public class ProgramCard {
      */
     public TextureRegionDrawable getImageDown() {
         return this.getTextureFromType(this.getType(), true);
-    }
-
-    /**
-     * Getting the associated ImageButton with this ProgramCard.
-     *
-     * @return An ImageButton with the same type & priority graphics (not yet finished).
-     */
-    public ImageButton getImageButton() {
-        ImageButton imageButton = new ImageButton(
-                getTextureFromType(type, false),
-                getTextureFromType(type, true),
-                getTextureFromType(type, true)
-        );
-        imageButton.setSize(dimension.width, dimension.height);
-        return imageButton;
     }
 
     /**

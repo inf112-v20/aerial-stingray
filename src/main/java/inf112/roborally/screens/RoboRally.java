@@ -616,36 +616,28 @@ public class RoboRally implements Screen {
         font.dispose();
     }
 
-    /**
-     * Non-finished method implemented from Screen.
-     */
     @Override
     public void show() {
+        //Intentionally empty body
     }
 
     @Override
     public void resize(int width, int height) {
-
+        //Intentionally empty body
     }
 
-    /**
-     * Non-finished method implemented from Screen.
-     */
     @Override
     public void pause() {
+        //Intentionally empty body
     }
 
-    /**
-     * Non-finished method implemented from Screen.
-     */
     @Override
     public void resume() {
+        //Intentionally empty body
     }
 
-    /**
-     * Non-finished method implemented from Screen.
-     */
     @Override
     public void hide() {
+        //Intentionally empty body
     }
 }

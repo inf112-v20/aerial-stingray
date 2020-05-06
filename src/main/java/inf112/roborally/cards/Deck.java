@@ -73,26 +73,9 @@ public class Deck extends Stack<ProgramCard> {
     }
 
     /**
-     * Gets a list, which is equal in size as size of deck, with integers 10 to
-     * deck.size()*10 in a randomized order.
-     *
-     * @return A list with unique integers in a randomized order
-     */
-    private ArrayList<Integer> getRandomPriorities() {
-        ArrayList<Integer> randomPriorities = new ArrayList<>();
-
-        for (int i = 1; i < DECK_SIZE + 1; i++) {
-            randomPriorities.add(i * 10);
-        }
-
-        Collections.shuffle(randomPriorities);
-        return randomPriorities;
-    }
-
-    /**
      * Shuffles the deck. (pseudo-random)
      */
-    public void shuffle() {
+    private void shuffle() {
         Collections.shuffle(this);
     }
 

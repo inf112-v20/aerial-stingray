@@ -70,43 +70,28 @@ public class WinScreen implements Screen {
         stage.draw();
     }
 
-    /**
-     * Non-finished method implemented from Screen.
-     */
     @Override
     public void resize(int i, int i1) {
-
+        //Intentionally empty body
     }
 
-    /**
-     * Non-finished method implemented from Screen.
-     */
     @Override
     public void pause() {
-
+        //Intentionally empty body
     }
 
-    /**
-     * Non-finished method implemented from Screen.
-     */
     @Override
     public void resume() {
-
+        //Intentionally empty body
     }
 
-    /**
-     * Non-finished method implemented from Screen.
-     */
     @Override
     public void hide() {
-
+        //Intentionally empty body
     }
 
-    /**
-     * Non-finished method implemented from Screen.
-     */
     @Override
     public void dispose() {
-
+        //Intentionally empty body
     }
 }
