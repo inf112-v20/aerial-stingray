@@ -4,10 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -15,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import inf112.roborally.Main;
 import inf112.roborally.cards.Deck;
@@ -24,9 +21,9 @@ import inf112.roborally.entities.Color;
 import inf112.roborally.entities.Player;
 import inf112.roborally.events.EventUtil;
 import inf112.roborally.ui.Board;
+import inf112.roborally.util.Pair;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -67,12 +64,18 @@ public class RoboRally implements Screen {
     private ArrayList<Player> players;
 
     /**
+     * Holds the references to the ImageButtons, representing the cards on the screen.
      */
     private ImageButton[] cardButtons;
 
-    
+    /**
+     * Order of (Player, Card) to be executed
+     */
+    private LinkedList<Pair<Player, ProgramCard>> executePairs;
+
+
     public RoboRally(int numPlayers) {
-        Gdx.graphics.setContinuousRendering(false);  // Saving resources.
+        Gdx.graphics.setContinuousRendering(false);
 
         setupGameComponents();
         setupPlayers(numPlayers);
@@ -170,12 +173,40 @@ public class RoboRally implements Screen {
         System.out.println("[  PHASE 4  ] Ready to execute cards!");
         System.out.println("=======================================");
 
+        executePairs = new LinkedList<>();  // Delete prev. content
         for (int i = 0; i < 5; i++) {  // 5 cards
             LinkedList<Player> highestPriority = getPriorityList(i);  // List of players, the one with highest card this iteration is first
 
             System.out.println("ITERATION = " + i);
             for (Player player : highestPriority) {  // Each player in correct order
                 ProgramCard card = player.getSelectedCards().get(i);
+
+                executePairs.add(new Pair<>(player, card));
+            }
+        }
+
+        executeNextCard();
+    }
+
+    /**
+     * Phase 4 - clicking this button will execute next card.
+     */
+    private void executeNextCard() {
+        Skin skin = new Skin(Gdx.files.internal("rusty-robot/skin/rusty-robot-ui.json"));
+        TextButton submitCards = new TextButton("Execute next card!", skin);
+        submitCards.setSize(200, 80);
+        submitCards.setPosition((float) Main.WIDTH - 350, 200);
+        submitCards.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (executePairs.size() <= 0) {
+                    submitCards.remove();
+                    cleanUp();  // Next phase
+                    return;
+                }
+                Pair<Player, ProgramCard> nextPair = executePairs.pop();
+                Player player = nextPair.getFirst();
+                ProgramCard card = nextPair.getSnd();
 
                 String identifier;
                 if (player.equals(getThisPlayer())) identifier = "[  THIS_PLAYER  ]";
@@ -184,15 +215,19 @@ public class RoboRally implements Screen {
                     System.out.println(identifier + "The robot is dead, and will not execute cards");
                 } else {
                     System.out.println(identifier + " Executes card " + card.getType() + " with priority " + card.getPriority());
-                    executeCard(player, player.getSelectedCards().get(i));
+                    executeCard(player, card);
                 }
-            }
-            EventUtil.handleEvent(board, players);
-            System.out.println("=======================================");
-        }
 
-        cleanUp();  // Next phase
+                EventUtil.handleEvent(board, players);
+                System.out.println("=======================================");
+
+                clearScreen();
+                actAndRender(Gdx.graphics.getDeltaTime());
+            }
+        });
+        stage.addActor(submitCards);
     }
+
 
     /**
      * Returns a sorted List of players, based on which card (at 'index') has highest priority.
@@ -203,7 +238,7 @@ public class RoboRally implements Screen {
     private LinkedList<Player> getPriorityList(int index) {
         LinkedList<Player> copy = new LinkedList<>(players);
 
-        Collections.sort(copy, (player, t1) -> t1.getSelectedCards().get(index).getPriority() - player.getSelectedCards().get(index).getPriority());
+        copy.sort((player, t1) -> t1.getSelectedCards().get(index).getPriority() - player.getSelectedCards().get(index).getPriority());
         return copy;
     }
 
@@ -254,6 +289,8 @@ public class RoboRally implements Screen {
         deck = new Deck();
         board = new Board();
         cardButtons = new ImageButton[NUM_CARDS_SERVED];
+
+        executePairs = new LinkedList<>();
     }
 
     private void setupPlayers(int numPlayers) {
@@ -411,17 +448,15 @@ public class RoboRally implements Screen {
         for (int i = 0; i < NUM_CARDS_SERVED; i++) {
             Skin skin = new Skin(Gdx.files.internal("rusty-robot/skin/rusty-robot-ui.json"));
             int priority = getThisPlayer().getAvailableCards()[i].getPriority();
-            System.out.println(priority);
+
             Label priorityPoints = new Label(Integer.toString(priority), skin);
             priorityPoints.setSize(10, 20);
             priorityPoints.setPosition(margin + startX, 165);
-
 
             ImageButton.ImageButtonStyle oldImageButtonStyle = cardButtons[i].getStyle();
             oldImageButtonStyle.imageUp = getThisPlayer().getAvailableCards()[i].getImageUp();
             oldImageButtonStyle.imageChecked = getThisPlayer().getAvailableCards()[i].getImageDown();
             oldImageButtonStyle.imageDown = getThisPlayer().getAvailableCards()[i].getImageDown();
-
 
             cardButtons[i].setStyle(oldImageButtonStyle);
             cardButtons[i].addActor(priorityPoints);
@@ -464,17 +499,57 @@ public class RoboRally implements Screen {
     }
 
     /**
-     * Selects 5 cards from available cards for all bots.
+     * Depending on the random number generated, the AI will take a path according to the number generated
      */
     private void selectCardsForBots() {
         for (Player player : players) {
             if (player.equals(getThisPlayer())) continue;  // Skip this player
 
-            // Selects the first 5 available cards
-            for (int i = 0; i < MAX_SELECTED_CARDS; i++) {
-                if (player.getSelectedCards().size() >= MAX_SELECTED_CARDS) break;
+            // AI
+            int rng = (int)(Math.random() * 9 + 1);
 
-                player.selectCard(i);
+            // Path 1 is to pick first 5 available cards (dumb AI)
+            if (rng > 3 && rng <= 6) { // Between 4 and 6
+                for (int i = 0; i < MAX_SELECTED_CARDS; i++) {
+                    if (player.getSelectedCards().size() >= MAX_SELECTED_CARDS) break;
+
+                    player.selectCard(i);
+                }
+
+            }
+            // Path 2 is select 5 random of the 9 cards dealt depending on the random value rng2
+            else if (rng > 6 && rng <= 9) { // Between 7 and 9
+                for (int i = 0; i < MAX_SELECTED_CARDS; i++) {
+                    if (player.getSelectedCards().size() >= MAX_SELECTED_CARDS) break;
+                    int rng2 = (int)(Math.random() * 9 + 1);
+                    if (rng2 == 1) {
+                        player.selectCard(5);
+                    } else if (rng2 == 2) {
+                        player.selectCard(2);
+                    } else if (rng2 == 3) {
+                        player.selectCard(3);
+                    } else if (rng2 == 4) {
+                        player.selectCard(8);
+                    } else if (rng2 == 5) {
+                        player.selectCard(0);
+                    } else if (rng2 == 6) {
+                        player.selectCard(1);
+                    } else if (rng2 == 7) {
+                        player.selectCard(7);
+                    } else if (rng2 == 8) {
+                        player.selectCard(4);
+                    } else if (rng2 == 9) {
+                        player.selectCard(6);
+                    }
+                }
+            }
+            // Path 3 is where the bot picks card nr 0, 2, 3, 5 and 7, another random pick but with less linear pattern
+            else { // Between 1 and 3
+                for (int i = 0; i < MAX_SELECTED_CARDS; i++) {
+                    if (player.getSelectedCards().size() >= MAX_SELECTED_CARDS) break;
+
+                    player.selectCard(((i + 5) * 3) % 8);
+                }
             }
         }
     }
@@ -506,6 +581,13 @@ public class RoboRally implements Screen {
      * Clears the screen with a set background color.
      */
     public void clearScreen() {
+        // Removing player sprites
+        for (int y = 0; y < Gdx.graphics.getHeight(); y++)
+            for (int x = 0; x < Gdx.graphics.getWidth(); x++) {
+                board.getPlayerLayer().setCell(x, y, null);
+            }
+
+
         Gdx.gl.glClearColor(178 / 255f, 148 / 255f, 119 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
@@ -544,36 +626,28 @@ public class RoboRally implements Screen {
         font.dispose();
     }
 
-    /**
-     * Non-finished method implemented from Screen.
-     */
     @Override
     public void show() {
+        //Intentionally empty body
     }
 
     @Override
     public void resize(int width, int height) {
-
+        //Intentionally empty body
     }
 
-    /**
-     * Non-finished method implemented from Screen.
-     */
     @Override
     public void pause() {
+        //Intentionally empty body
     }
 
-    /**
-     * Non-finished method implemented from Screen.
-     */
     @Override
     public void resume() {
+        //Intentionally empty body
     }
 
-    /**
-     * Non-finished method implemented from Screen.
-     */
     @Override
     public void hide() {
+        //Intentionally empty body
     }
 }

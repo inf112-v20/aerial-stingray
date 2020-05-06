@@ -116,8 +116,6 @@ public class Player {
     public void selectCard(int index) {
         selectedCards.add(availableCards[index]);
         availableCards[index] = null;
-
-
     }
 
     /**
@@ -190,9 +188,10 @@ public class Player {
     /**
      * Moves the player in a certain direction with specified num. of steps.
      * Checks that the player can go on each tile for each step.
-     *  @param board The board to move on
-     * @param dir   The direction to move 1 step towards
-     * @param steps Number of steps to take
+     *
+     * @param board   The board to move on
+     * @param dir     The direction to move 1 step towards
+     * @param steps   Number of steps to take
      * @param players The other robots in the game
      */
     public void move(Board board, Direction dir, int steps, ArrayList<Player> players) {

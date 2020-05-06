@@ -1,9 +1,6 @@
 package inf112.roborally.cards;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class Deck extends Stack<ProgramCard> {
 
@@ -21,34 +18,54 @@ public class Deck extends Stack<ProgramCard> {
      */
     public Deck() {
         super();
-        ArrayList<Integer> randomPriorities = getRandomPriorities();
 
-        for (int i = 0; i < 18; i++) {
-            ProgramCard card = new ProgramCard(CardType.MOVE1, randomPriorities.remove(0));
+        // Creating priorities
+        LinkedList<Integer> priorities = new LinkedList<>();
+        for (int i = 1; i < 85; i++) {
+            priorities.add(i * 10);
+        }
+
+        // u-turn
+        for (int i = 0; i < 6; i++) {
+            ProgramCard card = new ProgramCard(CardType.TURN_U, priorities.pop());
             this.add(card);
         }
+
+        // rotate right / rotate left
+        boolean left = true;
+        for (int i = 0; i < 18 * 2; i++) {
+            ProgramCard card = null;
+            if (left) {
+                card = new ProgramCard(CardType.TURN_LEFT, priorities.pop());
+            } else {
+                card = new ProgramCard(CardType.TURN_RIGHT, priorities.pop());
+            }
+            this.add(card);
+
+            left = !left;
+        }
+
+        // backup
+        for (int i = 0; i < 6; i++) {
+            ProgramCard card = new ProgramCard(CardType.BACKUP, priorities.pop());
+            this.add(card);
+        }
+
+        // move 1
+        for (int i = 0; i < 18; i++) {
+            ProgramCard card = new ProgramCard(CardType.MOVE1, priorities.pop());
+            this.add(card);
+        }
+
+        // move 2
         for (int i = 0; i < 12; i++) {
-            ProgramCard card = new ProgramCard(CardType.MOVE2, randomPriorities.remove(0));
+            ProgramCard card = new ProgramCard(CardType.MOVE2, priorities.pop());
             this.add(card);
         }
+
+        // move 3
         for (int i = 0; i < 6; i++) {
-            ProgramCard card = new ProgramCard(CardType.MOVE3, randomPriorities.remove(0));
-            this.add(card);
-        }
-        for (int i = 0; i < 6; i++) {
-            ProgramCard card = new ProgramCard(CardType.BACKUP, randomPriorities.remove(0));
-            this.add(card);
-        }
-        for (int i = 0; i < 18; i++) {
-            ProgramCard card = new ProgramCard(CardType.TURN_RIGHT, randomPriorities.remove(0));
-            this.add(card);
-        }
-        for (int i = 0; i < 18; i++) {
-            ProgramCard card = new ProgramCard(CardType.TURN_LEFT, randomPriorities.remove(0));
-            this.add(card);
-        }
-        for (int i = 0; i < 6; i++) {
-            ProgramCard card = new ProgramCard(CardType.TURN_U, randomPriorities.remove(0));
+            ProgramCard card = new ProgramCard(CardType.MOVE3, priorities.pop());
             this.add(card);
         }
 
@@ -56,26 +73,9 @@ public class Deck extends Stack<ProgramCard> {
     }
 
     /**
-     * Gets a list, which is equal in size as size of deck, with integers 10 to
-     * deck.size()*10 in a randomized order.
-     *
-     * @return A list with unique integers in a randomized order
-     */
-    private ArrayList<Integer> getRandomPriorities() {
-        ArrayList<Integer> randomPriorities = new ArrayList<>();
-
-        for (int i = 1; i < DECK_SIZE + 1; i++) {
-            randomPriorities.add(i * 10);
-        }
-
-        Collections.shuffle(randomPriorities);
-        return randomPriorities;
-    }
-
-    /**
      * Shuffles the deck. (pseudo-random)
      */
-    public void shuffle() {
+    private void shuffle() {
         Collections.shuffle(this);
     }
 
