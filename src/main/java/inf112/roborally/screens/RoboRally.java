@@ -73,7 +73,7 @@ public class RoboRally implements Screen {
     /**
      * Order of (Player, Card) to be executed
      */
-    private LinkedList<Pair> executePairs;
+    private LinkedList<Pair<Player, ProgramCard>> executePairs;
 
 
     public RoboRally(int numPlayers) {
@@ -183,7 +183,7 @@ public class RoboRally implements Screen {
             for (Player player : highestPriority) {  // Each player in correct order
                 ProgramCard card = player.getSelectedCards().get(i);
 
-                executePairs.add(new Pair(player, card));
+                executePairs.add(new Pair<>(player, card));
             }
         }
 
@@ -201,14 +201,14 @@ public class RoboRally implements Screen {
         submitCards.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (executePairs.size() > 0 == false) {
+                if (executePairs.size() <= 0) {
                     submitCards.remove();
                     cleanUp();  // Next phase
                     return;
                 }
-                Pair nextPair = executePairs.pop();
-                Player player = nextPair.getPlayer();
-                ProgramCard card = nextPair.getProgramCard();
+                Pair<Player, ProgramCard> nextPair = executePairs.pop();
+                Player player = nextPair.getFirst();
+                ProgramCard card = nextPair.getSnd();
 
                 String identifier;
                 if (player.equals(getThisPlayer())) identifier = "[  THIS_PLAYER  ]";

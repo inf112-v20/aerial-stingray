@@ -12,10 +12,8 @@ import inf112.roborally.screens.RoboRally;
 import inf112.roborally.screens.ScreenManager;
 import inf112.roborally.screens.WinScreen;
 import inf112.roborally.ui.Board;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
@@ -70,7 +68,7 @@ public class Player {
      * Holds references to current program cards this robot has.
      */
     private ProgramCard[] availableCards;
-    private ArrayList<ProgramCard> selectedCards;
+    private LinkedList<ProgramCard> selectedCards;
 
     /**
      * True if the player wants to power down.
@@ -78,7 +76,6 @@ public class Player {
     private boolean powerDown = false;
 
     private boolean AI;
-
 
 
     public Player(Vector2 pos, Color color, int id) {
@@ -90,7 +87,7 @@ public class Player {
 
         // Cards
         this.availableCards = new ProgramCard[RoboRally.NUM_CARDS_SERVED];
-        this.selectedCards = new ArrayList<>();
+        this.selectedCards = new LinkedList<>();
     }
 
     public Player(Vector2 pos, Color color, int id, boolean AI) {
@@ -102,7 +99,7 @@ public class Player {
 
         // Cards
         this.availableCards = new ProgramCard[RoboRally.NUM_CARDS_SERVED];
-        this.selectedCards = new ArrayList<>();
+        this.selectedCards = new LinkedList<>();
     }
 
     public boolean isAI() {
@@ -117,7 +114,6 @@ public class Player {
     public void selectCard(int index) {
         selectedCards.add(availableCards[index]);
         availableCards[index] = null;
-
     }
 
     /**
@@ -138,11 +134,11 @@ public class Player {
         powerDown = val;
     }
 
-    public ArrayList<ProgramCard> getSelectedCards() {
+    public LinkedList<ProgramCard> getSelectedCards() {
         return selectedCards;
     }
 
-    public void setSelectedCards(ArrayList<ProgramCard> selectedCards) {
+    public void setSelectedCards(LinkedList<ProgramCard> selectedCards) {
         this.selectedCards = selectedCards;
     }
 

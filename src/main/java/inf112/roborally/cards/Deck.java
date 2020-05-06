@@ -1,9 +1,6 @@
 package inf112.roborally.cards;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class Deck extends Stack<ProgramCard> {
 
@@ -21,34 +18,56 @@ public class Deck extends Stack<ProgramCard> {
      */
     public Deck() {
         super();
-        ArrayList<Integer> randomPriorities = getRandomPriorities();
 
-        for (int i = 0; i < 18; i++) {
-            ProgramCard card = new ProgramCard(CardType.MOVE1, randomPriorities.remove(0));
+        // Creating priorities
+        LinkedList<Integer> priorities = new LinkedList<>();
+        for (int i = 1; i < 85; i++) {
+            priorities.add(i * 10);
+        }
+
+        // u-turn
+        for (int i = 0; i < 6; i++) {
+            ProgramCard card = new ProgramCard(CardType.TURN_U, priorities.pop());
             this.add(card);
         }
+
+        // rotate right / rotate left
+        boolean left = true;
+        for (int i = 0; i < 18 * 2; i++) {
+            ProgramCard card = null;
+            if (left) {
+                System.out.println("LEFT: " + priorities.peek());
+                card = new ProgramCard(CardType.TURN_LEFT, priorities.pop());
+            } else {
+                System.out.println("RIGHT: " + priorities.peek());
+                card = new ProgramCard(CardType.TURN_RIGHT, priorities.pop());
+            }
+            this.add(card);
+
+            left = !left;
+        }
+
+        // backup
+        for (int i = 0; i < 6; i++) {
+            ProgramCard card = new ProgramCard(CardType.BACKUP, priorities.pop());
+            this.add(card);
+        }
+
+        // move 1
+        for (int i = 0; i < 18; i++) {
+            ProgramCard card = new ProgramCard(CardType.MOVE1, priorities.pop());
+            this.add(card);
+        }
+
+        // move 2
         for (int i = 0; i < 12; i++) {
-            ProgramCard card = new ProgramCard(CardType.MOVE2, randomPriorities.remove(0));
+            ProgramCard card = new ProgramCard(CardType.MOVE2, priorities.pop());
             this.add(card);
         }
+
+        // move 3
         for (int i = 0; i < 6; i++) {
-            ProgramCard card = new ProgramCard(CardType.MOVE3, randomPriorities.remove(0));
-            this.add(card);
-        }
-        for (int i = 0; i < 6; i++) {
-            ProgramCard card = new ProgramCard(CardType.BACKUP, randomPriorities.remove(0));
-            this.add(card);
-        }
-        for (int i = 0; i < 18; i++) {
-            ProgramCard card = new ProgramCard(CardType.TURN_RIGHT, randomPriorities.remove(0));
-            this.add(card);
-        }
-        for (int i = 0; i < 18; i++) {
-            ProgramCard card = new ProgramCard(CardType.TURN_LEFT, randomPriorities.remove(0));
-            this.add(card);
-        }
-        for (int i = 0; i < 6; i++) {
-            ProgramCard card = new ProgramCard(CardType.TURN_U, randomPriorities.remove(0));
+            ProgramCard card = new ProgramCard(CardType.MOVE3, priorities.pop());
             this.add(card);
         }
 
