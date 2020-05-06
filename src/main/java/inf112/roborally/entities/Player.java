@@ -12,8 +12,10 @@ import inf112.roborally.screens.RoboRally;
 import inf112.roborally.screens.ScreenManager;
 import inf112.roborally.screens.WinScreen;
 import inf112.roborally.ui.Board;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
@@ -68,7 +70,9 @@ public class Player {
      * Holds references to current program cards this robot has.
      */
     private ProgramCard[] availableCards;
-    private LinkedList<ProgramCard> selectedCards;
+    private ArrayList<ProgramCard> selectedCards;
+    //private LinkedList<ProgramCard> selectedCards;
+    public HashMap<Integer, Pair<Integer, Boolean>> selectedCardsTest = new HashMap<>();
 
     /**
      * True if the player wants to power down.
@@ -88,7 +92,7 @@ public class Player {
 
         // Cards
         this.availableCards = new ProgramCard[RoboRally.NUM_CARDS_SERVED];
-        this.selectedCards = new LinkedList<>();
+        this.selectedCards = new ArrayList<>();
     }
 
     public Player(Vector2 pos, Color color, int id, boolean AI) {
@@ -100,29 +104,11 @@ public class Player {
 
         // Cards
         this.availableCards = new ProgramCard[RoboRally.NUM_CARDS_SERVED];
-        this.selectedCards = new LinkedList<>();
+        this.selectedCards = new ArrayList<>();
     }
 
     public boolean isAI() {
         return this.AI;
-    }
-
-    public int getNumCardsCerved(){
-        switch (getDamage()) {
-            case 5:
-                return 8;
-            case 6:
-                return 7;
-            case 7:
-                return 6;
-            case 8:
-                return 5;
-            case 9:
-                return 4;
-            default:
-                return 9;
-
-        }
     }
 
     /**
@@ -133,7 +119,7 @@ public class Player {
     public void selectCard(int index) {
         selectedCards.add(availableCards[index]);
         availableCards[index] = null;
-
+        selectedCardsTest.put(selectedCards.size()-1, new Pair<>(index, false));
 
     }
 
@@ -143,8 +129,15 @@ public class Player {
      * @param index Index of cards in selected cards
      */
     public void deselectCard(int index) {
-        availableCards[index] = selectedCards.get(index);
-        selectedCards.remove(index);
+
+        for (int idx : selectedCardsTest.keySet()) {
+            Pair<Integer, Boolean> value = selectedCardsTest.get(idx);
+            if (index == (Integer) value.getKey()){
+                availableCards[index] = selectedCards.get(idx);
+                selectedCards.remove(idx);
+                return;
+            }
+        }
     }
 
     public boolean isPowerDown() {
@@ -155,11 +148,11 @@ public class Player {
         powerDown = val;
     }
 
-    public LinkedList<ProgramCard> getSelectedCards() {
+    public ArrayList<ProgramCard> getSelectedCards() {
         return selectedCards;
     }
 
-    public void setSelectedCards(LinkedList<ProgramCard> selectedCards) {
+    public void setSelectedCards(ArrayList<ProgramCard> selectedCards) {
         this.selectedCards = selectedCards;
     }
 
@@ -383,6 +376,12 @@ public class Player {
             subtractLife();
             damage = 0;
         }
+        if (damage > 4){
+            selectedCardsTest.put(9-damage, new Pair<Integer,Boolean>(selectedCardsTest.get(9-damage).getKey(), true));
+        }
+
+
+
     }
     /**
      * remove one damage
