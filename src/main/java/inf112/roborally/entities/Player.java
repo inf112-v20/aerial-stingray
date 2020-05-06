@@ -43,6 +43,8 @@ public class Player {
      */
     private Vector2 pos;
 
+    private Vector2 nextLaserPos;
+
     /**
      * Life, damage & flags
      */
@@ -455,6 +457,55 @@ public class Player {
 
             default:
                 System.err.println("Unknown type of ProgramCard.");
+
         }
+    }
+    public void shootLaser(Board board) {
+        Vector2 laserPos = pos;
+        String wallTypeThis = EventUtil.getTileType(board, "OWalls", laserPos);
+        String wallTypeNext = EventUtil.getTileType(board, "OWalls", nextLaserPos);
+
+        switch (dir) {
+            case NORTH:
+                nextLaserPos = new Vector2(pos.x, pos.y+1);
+                while (!EventUtil.laserOutOfBounds(this)) {
+                    if (wallTypeThis.equals("Wall_North") || wallTypeNext.equals("Wall_South"))
+                        break;
+                    laserPos = nextLaserPos; //TODO: Check for players and deal damage to them
+                }
+                break;
+
+            case SOUTH:
+                nextLaserPos = new Vector2(pos.x, pos.y-1);
+                while (!EventUtil.laserOutOfBounds(this)) {
+                    if (wallTypeThis.equals("Wall_South") || wallTypeNext.equals("Wall_North"))
+                        break;
+                    laserPos = nextLaserPos; //TODO: Check for players and deal damage to them
+                }
+                break;
+
+            case WEST:
+                nextLaserPos = new Vector2(pos.x-1, pos.y);
+                while (!EventUtil.laserOutOfBounds(this)) {
+                    if (wallTypeThis.equals("Wall_West") || wallTypeNext.equals("Wall_East"))
+                        break;
+                    laserPos = nextLaserPos; //TODO: Check for players and deal damage to them
+                }
+                break;
+
+            case EAST:
+                nextLaserPos = new Vector2(pos.x+1, pos.y);
+                while (!EventUtil.laserOutOfBounds(this)) {
+                    if (wallTypeThis.equals("Wall_East") || wallTypeNext.equals("Wall_West"))
+                        break;
+                    laserPos = nextLaserPos; //TODO: Check for players and deal damage to them
+                }
+                break;
+        }
+
+    }
+
+    public Vector2 getNextLaserPos() {
+        return nextLaserPos;
     }
 }
