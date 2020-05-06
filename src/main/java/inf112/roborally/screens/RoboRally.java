@@ -414,7 +414,7 @@ public class RoboRally implements Screen {
     public void recycleCards() {
         for (Player player : players) {
             deck.recycleAll(player.getSelectedCards());
-            player.setSelectedCards(new LinkedList<>());
+            player.setSelectedCards(new ArrayList<>());
         }
     }
 

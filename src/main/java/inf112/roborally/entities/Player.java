@@ -71,8 +71,6 @@ public class Player {
      */
     private ProgramCard[] availableCards;
     private ArrayList<ProgramCard> selectedCards;
-    //private LinkedList<ProgramCard> selectedCards;
-    public HashMap<Integer, Pair<Integer, Boolean>> selectedCardsTest = new HashMap<>();
 
     /**
      * True if the player wants to power down.
@@ -119,7 +117,6 @@ public class Player {
     public void selectCard(int index) {
         selectedCards.add(availableCards[index]);
         availableCards[index] = null;
-        selectedCardsTest.put(selectedCards.size()-1, new Pair<>(index, false));
 
     }
 
@@ -129,15 +126,8 @@ public class Player {
      * @param index Index of cards in selected cards
      */
     public void deselectCard(int index) {
-
-        for (int idx : selectedCardsTest.keySet()) {
-            Pair<Integer, Boolean> value = selectedCardsTest.get(idx);
-            if (index == value.getKey()){
-                availableCards[index] = selectedCards.get(idx);
-                selectedCards.remove(idx);
-                return;
-            }
-        }
+        availableCards[index] = selectedCards.get(index);
+        selectedCards.remove(index);
     }
 
     public boolean isPowerDown() {
@@ -377,12 +367,6 @@ public class Player {
             subtractLife();
             damage = 0;
         }
-        if (damage > 4){
-            selectedCardsTest.put(9-damage, new Pair<>(selectedCardsTest.get(9-damage).getKey(), true));
-        }
-
-
-
     }
     /**
      * remove one damage
