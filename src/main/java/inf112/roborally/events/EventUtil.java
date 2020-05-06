@@ -304,6 +304,16 @@ public class EventUtil {
     }
 
     /**
+     * @param player The player who is firing a laser
+     * @return true if laser is outside the board, false if not
+     */
+    public static boolean laserOutOfBounds(Player player) {
+        if (player.getNextLaserPos().x < 0 || player.getNextLaserPos().y < 0)
+            return true;
+        return (player.getNextLaserPos().x >= (float) Main.WIDTH/60) || (player.getNextLaserPos().y >= (float)Main.HEIGHT/60);
+    }
+
+    /**
      * Checks if the player can move / be pushed in a certain direction.
      * E.g. false if player wants to move north but there is a wall there.
      * TODO add support for moving across multiple tiles.
@@ -408,7 +418,7 @@ public class EventUtil {
      * @param pos   Position of the cell
      * @return A String representing the type of tile at the pos.
      */
-    private static String getTileType(Board board, String layer, Vector2 pos) {
+    public static String getTileType(Board board, String layer, Vector2 pos) {
         for (MapObject mo : board.getObjectLayer(layer)) {
             if (mo instanceof RectangleMapObject) {
                 Rectangle rect = ((RectangleMapObject) mo).getRectangle();
