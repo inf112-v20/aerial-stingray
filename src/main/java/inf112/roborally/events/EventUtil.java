@@ -232,17 +232,16 @@ public class EventUtil {
      */
     private static void flags(Board board, Player player){
         String events = getTileType(board, "OEvents", player.getPos());
+        if (!events.startsWith("Flag"))
+            return;
 
-        // If player landed on a flag
-        if (events.startsWith("Flag")) {
-            // Setting backup
-            player.setBackup(new Vector2(player.getPos()));
-            fromConveyor = false;
+        // Setting backup
+        player.setBackup(new Vector2(player.getPos()));
+        fromConveyor = false;
 
-            // Heal robot
-            if (player.getDamage() > 0)
-                player.healDamage();
-        }
+        // Heal robot
+        if (player.getDamage() > 0)
+            player.healDamage();
 
         switch (events) {
             case "Flag1":
