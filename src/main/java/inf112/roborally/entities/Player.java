@@ -132,7 +132,7 @@ public class Player {
 
         for (int idx : selectedCardsTest.keySet()) {
             Pair<Integer, Boolean> value = selectedCardsTest.get(idx);
-            if (index == (Integer) value.getKey()){
+            if (index == value.getKey()){
                 availableCards[index] = selectedCards.get(idx);
                 selectedCards.remove(idx);
                 return;
