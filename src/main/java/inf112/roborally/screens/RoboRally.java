@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import inf112.roborally.Main;
+import inf112.roborally.cards.CardType;
 import inf112.roborally.cards.Deck;
 import inf112.roborally.cards.ProgramCard;
 import inf112.roborally.entities.Color;
@@ -239,7 +240,7 @@ public class RoboRally implements Screen {
     private LinkedList<Player> getPriorityList(int index) {
         LinkedList<Player> copy = new LinkedList<>(players);
 
-        Collections.sort(copy, (player, t1) -> t1.getSelectedCards().get(index).getPriority() - player.getSelectedCards().get(index).getPriority());
+        copy.sort((player, t1) -> t1.getSelectedCards().get(index).getPriority() - player.getSelectedCards().get(index).getPriority());
         return copy;
     }
 
@@ -491,17 +492,58 @@ public class RoboRally implements Screen {
     }
 
     /**
-     * Selects 5 cards from available cards for all bots.
+     * Depending on the random number generated, the AI will take a path according to the number generated
      */
     private void selectCardsForBots() {
         for (Player player : players) {
             if (player.equals(getThisPlayer())) continue;  // Skip this player
 
-            // Selects the first 5 available cards
-            for (int i = 0; i < MAX_SELECTED_CARDS; i++) {
-                if (player.getSelectedCards().size() >= MAX_SELECTED_CARDS) break;
+            // AI
 
-                player.selectCard(i);
+            int rng = (int)(Math.random() * 9 + 1);
+
+            // Path 1 is to pick first 5 available cards (dumb AI)
+            if (rng > 3 && rng <= 6) { // Between 4 and 6
+                for (int i = 0; i < MAX_SELECTED_CARDS; i++) {
+                    if (player.getSelectedCards().size() >= MAX_SELECTED_CARDS) break;
+
+                    player.selectCard(i);
+                }
+
+            }
+            // Path 2 is select 5 random of the 9 cards dealt depending on the random value rng2
+            else if (rng > 6 && rng <= 9) { // Between 7 and 9
+                for (int i = 0; i < MAX_SELECTED_CARDS; i++) {
+                    if (player.getSelectedCards().size() >= MAX_SELECTED_CARDS) break;
+                    int rng2 = (int)(Math.random() * 9 + 1);
+                    if (rng2 == 1) {
+                        player.selectCard(5);
+                    } else if (rng2 == 2) {
+                        player.selectCard(2);
+                    } else if (rng2 == 3) {
+                        player.selectCard(3);
+                    } else if (rng2 == 4) {
+                        player.selectCard(8);
+                    } else if (rng2 == 5) {
+                        player.selectCard(0);
+                    } else if (rng2 == 6) {
+                        player.selectCard(1);
+                    } else if (rng2 == 7) {
+                        player.selectCard(7);
+                    } else if (rng2 == 8) {
+                        player.selectCard(4);
+                    } else if (rng2 == 9) {
+                        player.selectCard(6);
+                    }
+                }
+            }
+            // Path 3 is where the bot picks card nr 0, 2, 3, 5 and 7, another random pick but with less linear pattern
+            else { // Between 1 and 3
+                for (int i = 0; i < MAX_SELECTED_CARDS; i++) {
+                    if (player.getSelectedCards().size() >= MAX_SELECTED_CARDS) break;
+
+                    player.selectCard(((i + 5) * 3) % 8);
+                }
             }
         }
     }
