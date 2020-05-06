@@ -104,6 +104,7 @@ public class RoboRally implements Screen {
      */
     private void refillCardsToAll() {
         for (Player player : players) {
+            if (player.isPowerDown()) { continue; }
             for (int i = 0; i < NUM_CARDS_SERVED; i++) {
                 if (player.getAvailableCards()[i] == null)
                     player.getAvailableCards()[i] = deck.pop();
@@ -181,6 +182,7 @@ public class RoboRally implements Screen {
 
             System.out.println("ITERATION = " + i);
             for (Player player : highestPriority) {  // Each player in correct order
+                if (player.isPowerDown()) { continue; }
                 ProgramCard card = player.getSelectedCards().get(i);
 
                 executePairs.add(new Pair<>(player, card));
@@ -414,7 +416,7 @@ public class RoboRally implements Screen {
     public void recycleCards() {
         for (Player player : players) {
             deck.recycleAll(player.getSelectedCards());
-            player.setSelectedCards(new ArrayList<>());
+            player.setSelectedCards(new LinkedList<>());
         }
     }
 
