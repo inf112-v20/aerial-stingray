@@ -238,11 +238,6 @@ public class EventUtil {
 
             case "Flag1":
                 player.addFlag(1);
-                player.setBackup(new Vector2(player.getPos()));
-                fromConveyor = false;
-
-                if (player.getDamage() > 0)
-                    player.healDamage();
                 break;
 
             case "Flag2":
@@ -250,10 +245,6 @@ public class EventUtil {
                     player.addFlag(2);
                     player.setBackup(new Vector2(player.getPos()));
                 }
-                fromConveyor = false;
-
-                if (player.getDamage() > 0)
-                    player.healDamage();
                 break;
 
             case "Flag3":
@@ -261,20 +252,23 @@ public class EventUtil {
                     player.addFlag(3);
                     player.setBackup(new Vector2(player.getPos()));
                 }
-                fromConveyor = false;
-
-                if (player.getDamage() > 0)
-                    player.healDamage();
                 break;
 
             case "Flag4":
                 if (player.getFlags()[0] && player.getFlags()[1] && player.getFlags()[2])
                     player.addFlag(4);
-                fromConveyor = false;
-
-                if (player.getDamage() > 0)
-                    player.healDamage();
                 break;
+        }
+
+        // If player landed on a flag
+        if (!events.equals("Floor")) {
+            // Setting backup
+            player.setBackup(new Vector2(player.getPos()));
+            fromConveyor = false;
+
+            // Heal robot
+            if (player.getDamage() > 0)
+                player.healDamage();
         }
     }
 
@@ -293,6 +287,7 @@ public class EventUtil {
                 if(player.getDamage() > 0)
                     player.healDamage();
                 fromConveyor = false;
+                player.setBackup(new Vector2(player.getPos()));
                 break;
 
             case "Hammer_Wrench":
@@ -301,6 +296,7 @@ public class EventUtil {
                     player.healDamage();
                 }
                 fromConveyor = false;
+                player.setBackup(new Vector2(player.getPos()));
                 break;
         }
     }
