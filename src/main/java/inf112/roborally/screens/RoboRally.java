@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import inf112.roborally.Main;
-import inf112.roborally.cards.CardType;
 import inf112.roborally.cards.Deck;
 import inf112.roborally.cards.ProgramCard;
 import inf112.roborally.entities.Color;
@@ -25,7 +24,6 @@ import inf112.roborally.ui.Board;
 import inf112.roborally.util.Pair;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -501,7 +499,6 @@ public class RoboRally implements Screen {
             if (player.equals(getThisPlayer())) continue;  // Skip this player
 
             // AI
-
             int rng = (int)(Math.random() * 9 + 1);
 
             // Path 1 is to pick first 5 available cards (dumb AI)
