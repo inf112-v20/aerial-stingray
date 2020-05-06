@@ -36,10 +36,8 @@ public class Deck extends Stack<ProgramCard> {
         for (int i = 0; i < 18 * 2; i++) {
             ProgramCard card = null;
             if (left) {
-                System.out.println("LEFT: " + priorities.peek());
                 card = new ProgramCard(CardType.TURN_LEFT, priorities.pop());
             } else {
-                System.out.println("RIGHT: " + priorities.peek());
                 card = new ProgramCard(CardType.TURN_RIGHT, priorities.pop());
             }
             this.add(card);
