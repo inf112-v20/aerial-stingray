@@ -220,6 +220,15 @@ public class RoboRally implements Screen {
     }
 
     /**
+     * Shoots laser from all players.
+     */
+    public void shootLasers() {
+        for (Player player : this.players) {
+            player.shootLaser(board);
+        }
+    }
+
+    /**
      * Phase 5 - ending round and cleaning up board.
      */
     private void cleanUp() {
@@ -514,6 +523,7 @@ public class RoboRally implements Screen {
             player.checkIfWon();
         }
     }
+
 
     /**
      * Wrapper method for acting and rendering the stage, map and camera.
