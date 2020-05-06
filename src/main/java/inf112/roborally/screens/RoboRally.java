@@ -99,7 +99,7 @@ public class RoboRally implements Screen {
      */
     private void refillCardsToAll() {
         for (Player player : players) {
-            for (int i = 0; i < NUM_CARDS_SERVED; i++) {
+            for (int i = 0; i < NUM_CARDS_SERVED; i++) {    //trekke fra antall nye kort basert på skade
                 if (player.getAvailableCards()[i] == null)
                     player.getAvailableCards()[i] = deck.pop();
             }
@@ -184,7 +184,7 @@ public class RoboRally implements Screen {
                     System.out.println(identifier + "The robot is dead, and will not execute cards");
                 } else {
                     System.out.println(identifier + " Executes card " + card.getType() + " with priority " + card.getPriority());
-                    executeCard(player, player.getSelectedCards().get(i));
+                    executeCard(player, card);  //player.getSelectedCards().get(i));
                 }
             }
             EventUtil.handleEvent(board, players);
@@ -375,7 +375,7 @@ public class RoboRally implements Screen {
     public void recycleCards() {
         for (Player player : players) {
             deck.recycleAll(player.getSelectedCards());
-            player.setSelectedCards(new LinkedList<>());
+            player.setSelectedCards(new ArrayList<>());
         }
     }
 
@@ -402,7 +402,7 @@ public class RoboRally implements Screen {
         for (int i = 0; i < NUM_CARDS_SERVED; i++) {
             Skin skin = new Skin(Gdx.files.internal("rusty-robot/skin/rusty-robot-ui.json"));
             int priority = getThisPlayer().getAvailableCards()[i].getPriority();
-            System.out.println(priority);
+            // System.out.println(priority);
             Label priorityPoints = new Label(Integer.toString(priority), skin);
             priorityPoints.setSize(10, 20);
             priorityPoints.setPosition(margin + startX, 165);
