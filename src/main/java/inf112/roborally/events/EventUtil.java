@@ -260,13 +260,16 @@ public class EventUtil {
                 break;
         }
 
-        // Setting backup
-        player.setBackup(new Vector2(player.getPos()));
-        fromConveyor = false;
+        // If player landed on a flag
+        if (!events.equals("Floor")) {
+            // Setting backup
+            player.setBackup(new Vector2(player.getPos()));
+            fromConveyor = false;
 
-        // Heal robot
-        if (player.getDamage() > 0)
-            player.healDamage();
+            // Heal robot
+            if (player.getDamage() > 0)
+                player.healDamage();
+        }
     }
 
     /**
@@ -284,6 +287,7 @@ public class EventUtil {
                 if(player.getDamage() > 0)
                     player.healDamage();
                 fromConveyor = false;
+                player.setBackup(new Vector2(player.getPos()));
                 break;
 
             case "Hammer_Wrench":
@@ -292,6 +296,7 @@ public class EventUtil {
                     player.healDamage();
                 }
                 fromConveyor = false;
+                player.setBackup(new Vector2(player.getPos()));
                 break;
         }
     }
