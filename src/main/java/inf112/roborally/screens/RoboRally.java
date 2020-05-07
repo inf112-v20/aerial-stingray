@@ -132,9 +132,9 @@ public class RoboRally implements Screen {
         Random random = new Random();
         for (Player player : players) {
             if (random.nextInt(21) == 0)
-                player.setPowerDown(true);
+                player.setPowerDownNextRound(true);
             else
-                player.setPowerDown(false);
+                player.setPowerDownNextRound(false);
         }
 
         // This player deciding if power down
@@ -146,11 +146,11 @@ public class RoboRally implements Screen {
                     String str = (String) object;
                     if (str.equals("Power down")) {
                         System.out.println("[  THIS_ROBOT  ] Power down");
-                        getThisPlayer().setPowerDown(true);
+                        getThisPlayer().setPowerDownNextRound(true);
                         executeRobotCards();  // Next phase
                     } else if (str.equals("Don't power down")) {
                         System.out.println("[  THIS_ROBOT  ] Don't power down");
-                        getThisPlayer().setPowerDown(false);
+                        getThisPlayer().setPowerDownNextRound(false);
                         executeRobotCards();  // Next phase
                     }
                 } catch (ClassCastException cce) {
@@ -180,7 +180,13 @@ public class RoboRally implements Screen {
 
             System.out.println("ITERATION = " + i);
             for (Player player : highestPriority) {  // Each player in correct order
-                if (player.isPowerDown()) { continue; }
+                if (player.isPowerDown()) {
+                    String identifier;
+                    if (player.equals(getThisPlayer())) identifier = "[  THIS_PLAYER  ]";
+                    else identifier = "[  ROBOT_" + players.indexOf(player) + "  ]";
+                    System.out.println(identifier + " is in power down");
+                    continue;
+                }
                 ProgramCard card = player.getSelectedCards().get(i);
 
                 executePairs.add(new Pair<>(player, card));
@@ -265,6 +271,10 @@ public class RoboRally implements Screen {
             if (player.getRobotDead()){
                 player.respawn();
             }
+            if(player.getPowerDownNextRound()){
+                player.setPowerDown(true);
+            }
+
         }
         recycleCards();
         dealCardsToAll();  // Starting back at phase 1

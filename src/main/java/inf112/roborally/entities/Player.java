@@ -71,9 +71,11 @@ public class Player {
     private LinkedList<ProgramCard> selectedCards;
 
     /**
-     * True if the player wants to power down.
+     * powerDown: True if the player is in power down.
+     * powerDownNextRound: True if the player wants to power down next round.
      */
     private boolean powerDown = false;
+    private boolean powerDownNextRound = false;
 
     private boolean AI;
 
@@ -129,9 +131,14 @@ public class Player {
     public boolean isPowerDown() {
         return powerDown;
     }
-
+    public boolean getPowerDownNextRound() {
+        return powerDownNextRound;
+    }
     public void setPowerDown(boolean val) {
         powerDown = val;
+    }
+    public void setPowerDownNextRound(boolean val) {
+        powerDownNextRound = val;
     }
 
     public LinkedList<ProgramCard> getSelectedCards() {
