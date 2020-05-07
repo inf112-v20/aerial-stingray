@@ -263,6 +263,15 @@ public class RoboRally implements Screen {
     }
 
     /**
+     * Shoots laser from all players.
+     */
+    public void shootLasers() {
+        for (Player player : this.players) {
+            player.shootLaser(board);
+        }
+    }
+
+    /**
      * Phase 5 - ending round and cleaning up board.
      */
     private void cleanUp() {
@@ -609,6 +618,7 @@ public class RoboRally implements Screen {
         }
     }
 
+
     /**
      * Wrapper method for acting and rendering the stage, map and camera.
      *
@@ -628,36 +638,28 @@ public class RoboRally implements Screen {
         font.dispose();
     }
 
-    /**
-     * Non-finished method implemented from Screen.
-     */
     @Override
     public void show() {
+        //Intentionally empty body
     }
 
     @Override
     public void resize(int width, int height) {
-
+        //Intentionally empty body
     }
 
-    /**
-     * Non-finished method implemented from Screen.
-     */
     @Override
     public void pause() {
+        //Intentionally empty body
     }
 
-    /**
-     * Non-finished method implemented from Screen.
-     */
     @Override
     public void resume() {
+        //Intentionally empty body
     }
 
-    /**
-     * Non-finished method implemented from Screen.
-     */
     @Override
     public void hide() {
+        //Intentionally empty body
     }
 }

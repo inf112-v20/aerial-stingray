@@ -44,31 +44,23 @@ public class ScreenManager extends Game implements ApplicationListener {
         super.getScreen().render(Gdx.graphics.getDeltaTime());
     }
 
-    /**
-     * Non-finished method implemented from Screen.
-     */
     @Override
     public void dispose() {
+        //Intentionally empty body
     }
 
-    /**
-     * Non-finished method implemented from Screen.
-     */
     @Override
     public void resize(int width, int height) {
+        //Intentionally empty body
     }
 
-    /**
-     * Non-finished method implemented from Screen.
-     */
     @Override
     public void pause() {
+        //Intentionally empty body
     }
 
-    /**
-     * Non-finished method implemented from Screen.
-     */
     @Override
     public void resume() {
+        //Intentionally empty body
     }
 }
