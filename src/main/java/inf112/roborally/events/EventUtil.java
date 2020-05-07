@@ -9,8 +9,6 @@ import inf112.roborally.entities.Direction;
 import inf112.roborally.entities.Player;
 import inf112.roborally.ui.Board;
 
-import java.util.ArrayList;
-
 import static inf112.roborally.ui.Board.TILE_SIZE;
 
 /**
@@ -23,10 +21,11 @@ public class EventUtil {
 
     /**
      * Handles an event on a current tile with a given map & player.
-     * @param board  The current Board which holds all tiles
+     *
+     * @param board   The current Board which holds all tiles
      * @param players The other robots in the game
      */
-    public static void handleEvent(Board board, ArrayList<Player> players) {
+    public static void handleEvent(Board board, Player[] players) {
         for (Player player : players) {
             expressConveyor(board, player, players);
             normalConveyor(board, player, players);
@@ -40,27 +39,29 @@ public class EventUtil {
 
 
     /**
-     * If player is on a hole or outside the boar, subtract one life and set player.robotAlive to false
-     *  @param board  The current Board which holds all tiles
+     * If player is on a hole or outside the board, subtract one life and set player.robotAlive to false
+     *
+     * @param board  The current Board which holds all tiles
      * @param player The player who stands on the tile
      */
     public static void hole(Board board, Player player){
         if (getTileType(board, "OEvents", player.getPos()).equals("Hole")){
             player.subtractLife();
-            player.setRobotDead(true);
+            player.setDead(true);
         } else if (EventUtil.outOfBounds(player)) {
             player.subtractLife();
-            player.setRobotDead(true);
+            player.setDead(true);
         }
     }
 
     /**
      * If player is on a express conveyor it moves player one step in the direction of the conveyor
-     *  @param board  The current Board which holds all tiles
-     * @param player The player who stands on the tile
+     *
+     * @param board   The current Board which holds all tiles
+     * @param player  The player who stands on the tile
      * @param players The other robots in the game
      */
-    private static void expressConveyor(Board board, Player player, ArrayList<Player> players){
+    private static void expressConveyor(Board board, Player player, Player[] players) {
         String movers = getTileType(board, "OMovers", player.getPos());
 
         switch (movers) {
@@ -123,16 +124,17 @@ public class EventUtil {
 
     /**
      * If player is on a normal conveyor it moves player one step in the direction of the conveyor
-     *  @param board  The current Board which holds all tiles
-     * @param player The player who stands on the tile
+     *
+     * @param board   The current Board which holds all tiles
+     * @param player  The player who stands on the tile
      * @param players The other robots in the game
      */
-    private static void normalConveyor(Board board, Player player, ArrayList<Player> players) {
+    private static void normalConveyor(Board board, Player player, Player[] players) {
         String movers = getTileType(board, "OMovers", player.getPos());
 
         switch (movers) {
             case "Normal_Conveyor_North":
-            //case "Express_Conveyor_North":
+                //case "Express_Conveyor_North":
                 player.move(board, Direction.NORTH, 1, players);
                 fromConveyor = true;
                 break;
@@ -241,7 +243,7 @@ public class EventUtil {
 
         // Heal robot
         if (player.getDamage() > 0)
-            player.healDamage();
+            player.heal();
 
         switch (events) {
             case "Flag1":
@@ -282,7 +284,7 @@ public class EventUtil {
 
             case "Single_Wrench":
                 if(player.getDamage() > 0)
-                    player.healDamage();
+                    player.heal();
                 fromConveyor = false;
                 player.setBackup(new Vector2(player.getPos()));
                 break;
@@ -290,7 +292,7 @@ public class EventUtil {
             case "Hammer_Wrench":
                 //Also need to give an option card
                 if(player.getDamage() > 0) {
-                    player.healDamage();
+                    player.heal();
                 }
                 fromConveyor = false;
                 player.setBackup(new Vector2(player.getPos()));
@@ -315,7 +317,7 @@ public class EventUtil {
     public static boolean laserOutOfBounds(Player player) {
         if (player.getNextLaserPos().x < 0 || player.getNextLaserPos().y < 0)
             return true;
-        return (player.getNextLaserPos().x >= (float) Main.WIDTH/60) || (player.getNextLaserPos().y >= (float)Main.HEIGHT/60);
+        return (player.getNextLaserPos().x >= (float) Main.WIDTH / 60) || (player.getNextLaserPos().y >= (float) Main.HEIGHT / 60);
     }
 
     /**
@@ -323,12 +325,12 @@ public class EventUtil {
      * E.g. false if player wants to move north but there is a wall there.
      * TODO add support for moving across multiple tiles.
      *
-     * @param board  The current Board which holds all tiles
-     * @param player Representing player, with it's direction
+     * @param board   The current Board which holds all tiles
+     * @param player  Representing player, with it's direction
      * @param players The other robots in the game
      * @return A boolean true if you can go in a specific direction
      */
-    public static boolean canGo(Board board, Player player, Direction dir, int steps, ArrayList<Player> players) {
+    public static boolean canGo(Board board, Player player, Direction dir, int steps, Player[] players) {
         // Getting position of player
         Vector2 nextPos;
         if (dir == Direction.NORTH)
@@ -440,21 +442,20 @@ public class EventUtil {
     }
 
     /**
-     *
-     * @param board The current board
-     * @param dir The direction of the player that is moving
+     * @param board   The current board
+     * @param dir     The direction of the player that is moving
      * @param players The other robots in the game
-     * @param x x-coordinate
-     * @param y y-coordinate
+     * @param x       x-coordinate
+     * @param y       y-coordinate
      * @return true/false if the player can move or not
      * True if there is no robot to push or if it is ok to push robot.
      * False if the player is trying to push the robot through a wall
      */
-    private static boolean pushPlayer(Board board, Direction dir, ArrayList<Player> players, int x, int y){
-        for (Player player : players){
-            if(board.getPlayerLayer().getCell(x,y) != null){
-                if (board.getPlayerLayer().getCell(x,y).getTile().getId() == player.getID()){
-                    if (canGo(board, player, dir, 1, players)){
+    private static boolean pushPlayer(Board board, Direction dir, Player[] players, int x, int y) {
+        for (Player player : players) {
+            if (board.getPlayerLayer().getCell(x, y) != null) {
+                if (board.getPlayerLayer().getCell(x, y).getTile().getId() == player.getID()) {
+                    if (canGo(board, player, dir, 1, players)) {
                         player.move(board, dir, 1, players);
                         return true;
                     }

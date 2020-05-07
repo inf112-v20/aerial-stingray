@@ -22,7 +22,7 @@ public class PlayerTest {
     public void initialize() {
         playerPos = new Vector2(0, 0);
         alternativePos = new Vector2(10, 10);
-        player = new Player(playerPos, Color.GREEN, 0);
+        player = new Player(playerPos, Color.GREEN, 0, true);
     }
 
     @Test
@@ -133,8 +133,8 @@ public class PlayerTest {
     @Test
     public void testSubtractLifeAndShowStatus(){
         player.subtractLife();
-        assertEquals(player.showStatus(), "Life: 2, Damage: 0");
+        assertEquals(player.status(), "Life: 2, Damage: 0");
         player.subtractLife();
-        assertEquals(player.showStatus(), "Life: 1, Damage: 0");
+        assertEquals(player.status(), "Life: 1, Damage: 0");
     }
 }

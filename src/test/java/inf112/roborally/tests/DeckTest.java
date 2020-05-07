@@ -5,9 +5,8 @@ import inf112.roborally.cards.ProgramCard;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class DeckTest {
 
@@ -36,12 +35,26 @@ public class DeckTest {
     public void testRecycleAllSizes() {
         sizeTest();  // Before
 
-        ArrayList<ProgramCard> toBeRecycled = deck.take(5);
-        assertEquals(5, toBeRecycled.size());
+        ProgramCard[] toBeRecycled = deck.take(5);
+        assertEquals(5, toBeRecycled.length);
 
-        assertEquals(Deck.DECK_SIZE - toBeRecycled.size(), deck.size());  // During
+        assertEquals(Deck.DECK_SIZE - toBeRecycled.length, deck.size());  // During
 
         deck.recycleAll(toBeRecycled);
         sizeTest();  // After
+    }
+
+    @Test
+    public void testNoNullCards() {
+        for (ProgramCard c : deck)
+            assertNotNull(c);
+    }
+
+    @Test
+    public void testTakeCardsNotNull() {
+        Deck deck = new Deck();
+        for (ProgramCard card : deck.take(Deck.DECK_SIZE)) {
+            assertNotNull(card);
+        }
     }
 }

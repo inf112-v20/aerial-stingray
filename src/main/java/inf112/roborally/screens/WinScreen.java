@@ -14,7 +14,7 @@ import inf112.roborally.Main;
 
 public class WinScreen implements Screen {
 
-    private Stage stage;
+    private final Stage stage;
 
     public WinScreen() {
         stage = new Stage(new StretchViewport(Main.WIDTH, Main.HEIGHT));
