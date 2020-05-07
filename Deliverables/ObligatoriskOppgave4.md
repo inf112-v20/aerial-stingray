@@ -23,6 +23,8 @@ Det er ikke noe som spesielt stikker seg ut som noe vi ville gjort annerledes, a
 
 [![Skjermbilde-2020-04-23-kl-12-50-43.png](https://i.postimg.cc/pVq28JGF/Skjermbilde-2020-04-23-kl-12-50-43.png)](https://postimg.cc/PNvsnYkX)
 
+Project boarden består nå av ulike bugs som vi må fikse opp i, og noen av denne sprintens mvp issues. Grunnen til at ikke alle er på listen, er at vi har kontinuerlig jobbet med oppgaven, og derfor closed issues før vi har begynt på siste skriftlige oppgave. 
+
 ### Krav
 
 Nå gjensto bare de siste punktene på mvp listen vår, og vi setter inn støtet for å klare å fullføre disse. Dessverre var vi nødt til å se vekk fra multiplayer ettersom dette ble for tidkrevende til at vi ikke rakk å bli ferdig med det. Bortsett fra det kom vi i mål på de siste kravene. Kravene som gjensto:
@@ -33,7 +35,6 @@ Nå gjensto bare de siste punktene på mvp listen vår, og vi setter inn støtet
 * Skademekanisme: Justere antall kort basert på skade
 * Dytte andre roboter
 * Gjennomføre en fase
-* Flytte roboten
 
 
 #### Brukerhistorier, arbeidsoppgaver og akseptansekriterier:
