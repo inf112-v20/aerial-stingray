@@ -32,6 +32,7 @@ public class EventUtil {
             rotators(board, player);
 
             lasers(board, player);
+            shootLasers(board, players);
             flags(board, player);
             repairs(board, player);
         }
@@ -440,6 +441,15 @@ public class EventUtil {
         }
 
         return "";
+    }
+
+    /**
+     * Shoots laser from all players.
+     */
+    public static void shootLasers(Board board, Player[] players) {
+        for (Player player : players) {
+            player.shootLaser(board);
+        }
     }
 
     /**
