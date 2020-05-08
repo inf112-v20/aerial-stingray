@@ -63,6 +63,8 @@ public class Player {
      * True if the player wants to power down.
      */
     private boolean powerDown = false;
+    private boolean powerDownNextRound = false;
+
     /**
      * Holds references to the visible cards (human only).
      */
@@ -465,8 +467,20 @@ public class Player {
 
     }
 
+    public boolean isPowerDown() {
+        return powerDown;
+    }
+
+    public boolean getPowerDownNextRound() {
+        return powerDownNextRound;
+    }
+
     public void setPowerDown(boolean powerDown) {
+        this.damage = 0;
         this.powerDown = powerDown;
+    }
+    public void setPowerDownNextRound(boolean powerDown) {
+        this.powerDownNextRound = powerDown;
     }
 
     /**
