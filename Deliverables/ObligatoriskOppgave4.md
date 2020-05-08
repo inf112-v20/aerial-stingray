@@ -53,7 +53,7 @@ _**Man må kunne skyte andre spillere innen rekkevidde med laser som peker rett 
 
 Brukerhistorie: Som spiller trenger jeg at lasere fungerer som de skal for å kunne planlegge trekkene mine.
 
-Arbeidsoppgave: 
+Arbeidsoppgave: Sørg for at på slutten av hver fase skal alle robotene skyte en laser i den retningen de står, som fortsetter fremover frem til de har truffet en vegg, spiller, eller er ute av banen. Treffer de en spiller skal den spilleren miste et liv.
 
 Akseptansekriterie: Hvis en brikke står i rekkevidden til en laser vil brikken ta en skade.
 
@@ -71,19 +71,18 @@ _**Dytte andre roboter**_
 
 Brukerhistorie: Som spiller trenger jeg å kunne dytte andre roboter, for å gjøre spille mer spennende.
 
-Arbeidsoppgave: 
+Arbeidsoppgave: Vi må lage en metode som kan dytte andre spillere. Denne metoden kan kallest når spilleren beveger seg mot en robot, men utføres bare dersom det er mulig for roboten å bli dyttet i samme retning som spilleren går i.
 
-Akseptansekriterie: Hvis en robot står i veien for en spilleren, vil spilleren kunne dytte roboten. 
+Akseptansekriterie: Hvis en robot står i veien for en spilleren, vil spilleren kunne dytte roboten.
 
 
 _**Gjennomføre en fase**_
 
-Brukerhistorie: Som spiller trenger jeg at jeg kan fullføre en fase, slik at jeg kan gå videre til neste. 
+Brukerhistorie: Som spiller trenger jeg at jeg kan fullføre en fase, slik at jeg kan gå videre til neste.
 
-Arbeidsoppgave:
+Arbeidsoppgave: Lage et system, der vi systematiserer de ulike fasene - gjerne i spesifike metoder. Disse metodene skal deretter utføre fasene, og aktivere brettet når alle spillere har utført et kort.
 
-Akseptansekriterie:
-
+Akseptansekriterie: Hvis spilleren er i en gitt fase, skal alle funksjonene knyttet til denne fungere.
 
 #### Oppdatert mvp - liste: 
 

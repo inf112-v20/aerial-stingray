@@ -32,7 +32,6 @@ public class MenuScreen implements Screen {
         textField.setDisabled(true);
         textField.setAlignment(Align.center);
         TextButton start = new TextButton("Singleplayer", menuSkin);
-        TextButton settings = new TextButton("Settings", menuSkin);
         TextButton exit = new TextButton("Exit", menuSkin);
 
         start.addListener(new ChangeListener() {
@@ -52,8 +51,6 @@ public class MenuScreen implements Screen {
         menuComponents.add(textField).size(200, 75).expandX().padBottom(20);
         menuComponents.row();
         menuComponents.add(start).size(300, 120).expandX();
-        menuComponents.row();
-        menuComponents.add(settings).size(300, 120).expandX();
         menuComponents.row();
         menuComponents.add(exit).size(300, 120).expandX();
         menuComponents.setFillParent(true);

@@ -25,6 +25,7 @@ import inf112.roborally.ui.Board;
 import inf112.roborally.util.Pair;
 
 import java.util.*;
+import java.util.List;
 
 /**
  * Handles logic of game & controlling players.
@@ -99,7 +100,7 @@ public class RoboRally implements Screen {
         refillHumanCards();
         giveBotsCards();
 
-        if(getHumanPlayer().isPowerDown()) { return; }
+
         setupCardButtons();
         updateCardGraphics();
     }
@@ -109,7 +110,6 @@ public class RoboRally implements Screen {
      */
     private void refillHumanCards() {
         // Deleting prev. cards.
-        if(getHumanPlayer().isPowerDown()) { return; }
         getHumanPlayer().setSelectedCards(new ProgramCard[MAX_SELECTED_CARDS]);
 
         ProgramCard[] visibleCards = deck.take(MAX_VISIBLE_CARDS);
@@ -121,7 +121,6 @@ public class RoboRally implements Screen {
      */
     private void giveBotsCards() {
         for (Player player : players) {
-            if (player.isPowerDown()) { continue; }
             if (player.isBot())
                 player.setSelectedCards(deck.take(5));
         }
@@ -167,7 +166,7 @@ public class RoboRally implements Screen {
                         System.out.println("[  THIS_ROBOT  ] Power down");
                         getHumanPlayer().setPowerDownNextRound(true);
                         executeRobotCards();  // Next phase
-                    } else if (str.equals("Don't power down")) {
+                    } else if ("Don't power down".equals(str)) {
                         System.out.println("[  THIS_ROBOT  ] Don't power down");
                         getHumanPlayer().setPowerDownNextRound(false);
                         executeRobotCards();  // Next phase
@@ -204,14 +203,9 @@ public class RoboRally implements Screen {
 
         for (int i = 0; i < MAX_SELECTED_CARDS; i++) {
 
-            ArrayList<Player> tempPlayersCopy = new ArrayList<>();
-            for (Player player : players) {
-                if(!player.isPowerDown())
-                    tempPlayersCopy.add(player);
-            }
+
             // Sort players for each card
-            // Player[] playersCopy = players;
-            Player[] playersCopy = tempPlayersCopy.toArray(new Player[tempPlayersCopy.size()]);
+            Player[] playersCopy = players;
 
             final int ii = i;
             Arrays.sort(playersCopy, Comparator.comparingInt(a -> a.getSelectedCards()[ii].getPriority()));
@@ -244,8 +238,6 @@ public class RoboRally implements Screen {
                 String entity = !player.isBot() ? "[  HUMAN  ]" : "[  BOT " + player.getID() + "  ]";
                 if (player.isDead()) {
                     System.out.println(entity + " The robot is dead, and will not execute cards");
-                } else if (player.isPowerDown()) {
-                    System.out.println(entity + " The robot is in powerdown");
                 } else {
                     System.out.println(entity + " Executes card " + card.getType() + " with priority " + card.getPriority());
                     executeCard(player, card);
@@ -272,24 +264,12 @@ public class RoboRally implements Screen {
         player.executeCard(board, selectedCard, players);
     }
 
-// --Commented out by Inspection START (07.05.2020, 23:34):
-//    /**
-//     * Shoots laser from all players.
-//     */
-//    public void shootLasers() {
-//        for (Player player : this.players) {
-//            player.shootLaser(board);
-//        }
-//    }
-// --Commented out by Inspection STOP (07.05.2020, 23:34)
-
     /**
      * Phase 5 - ending round and cleaning up board.
      */
     private void cleanUp() {
         System.out.println("[  PHASE 5  ] Ending round and cleaning up board.");
         for (Player player : players) {
-            player.setPowerDown(player.getPowerDownNextRound());
             if (player.isDead()) {
                 player.respawn();
                 System.out.println("Respawning " + player.getID());
@@ -377,9 +357,7 @@ public class RoboRally implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // If player can successfully lock in cards, begin round
-                if(getHumanPlayer().isPowerDown()) {
-                    selectCards();
-                } else if (humanHasEnoughCards())
+                if (humanHasEnoughCards())
                     selectCards();
             }
         });
