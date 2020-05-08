@@ -197,7 +197,7 @@ public class RoboRally implements Screen {
     }
 
     /**
-     * PER NOW - NOT SORTING
+     * Sorts players based on card priority for each round.
      */
     private void sortPlayers() {
         executeOrder = new LinkedList<>();  // Delete prev. content
@@ -242,7 +242,10 @@ public class RoboRally implements Screen {
                     executeCard(player, card);
                 }
 
-                if(executeOrder.size() % 4 == 0) { EventUtil.handleEvent(board, players); }
+                if (executeOrder.size() % 4 == 0) {
+                    EventUtil.handleEvent(board, players);
+                    //drawStatus();
+                }
 
                 clearScreen();
                 actAndRender(Gdx.graphics.getDeltaTime());
@@ -531,6 +534,19 @@ public class RoboRally implements Screen {
 
         actPlayers();
         actAndRender(Gdx.graphics.getDeltaTime());
+
+        status();
+    }
+
+    private void status() {
+        batch.begin();
+
+        int yMargin = 10;
+        for (Player player : players) {
+            font.draw(batch, player.status(), 10, Gdx.graphics.getHeight() - yMargin);
+            yMargin += 30;
+        }
+        batch.end();
     }
 
     /**

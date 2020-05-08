@@ -327,16 +327,24 @@ public class Player {
     }
 
     public String status() {
-        if (life <= 0) return "You are dead";
-        String str = "Life: " + life + ", Damage: " + damage;
-        if (hasAllFlags())
-            str += "\n You have all flags";
-        else if (flags[2] && flags[1] && flags[0])
-            str += "\n You have 3 flags";
-        else if (flags[1] && flags[0])
-            str += "\n You have 2 flags";
+        String str = "";
+        if (isBot())
+            str = "BOT " + getID() + ": ";
+        else
+            str = "HUMAN: ";
+
+        str += "Life:" + life + "  Damage:" + damage + "  Flags:";
+
+        if (flags[3])
+            str += "All";
+        else if (flags[2])
+            str += "3";
+        else if (flags[1])
+            str += "2";
         else if (flags[0])
-            str += "\n You have flag 1";
+            str += "1";
+        else
+            str += "0";
 
         return str;
     }
