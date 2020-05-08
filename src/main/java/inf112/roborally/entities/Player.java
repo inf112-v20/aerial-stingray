@@ -158,20 +158,20 @@ public class Player {
             }
             switch (dir) {
                 case NORTH:
-                    if (EventUtil.canGo(board, this, Direction.NORTH, 1, players))
+                    if (EventUtil.canGo(board, this, Direction.NORTH, players))
                         getPos().y++;
                     break;
                 case EAST:
-                    if (EventUtil.canGo(board, this, Direction.EAST, 1, players))
+                    if (EventUtil.canGo(board, this, Direction.EAST, players))
                         getPos().x++;
                     break;
                 case SOUTH:
-                    if (EventUtil.canGo(board, this, Direction.SOUTH, 1, players))
+                    if (EventUtil.canGo(board, this, Direction.SOUTH, players))
                         getPos().y--;
                     break;
 
                 case WEST:
-                    if (EventUtil.canGo(board, this, Direction.WEST, 1, players))
+                    if (EventUtil.canGo(board, this, Direction.WEST, players))
                         getPos().x--;
                     break;
 
@@ -179,6 +179,7 @@ public class Player {
                     System.err.println("Non-valid move!");
                     break;
             }
+            EventUtil.hole(board, this);
         }
     }
 
