@@ -330,17 +330,18 @@ public class EventUtil {
      * @param players The other robots in the game
      * @return A boolean true if you can go in a specific direction
      */
-    public static boolean canGo(Board board, Player player, Direction dir, int steps, Player[] players) {
+    public static boolean canGo(Board board, Player player, Direction dir, Player[] players) {
         // Getting position of player
+
         Vector2 nextPos;
         if (dir == Direction.NORTH)
-            nextPos = new Vector2(player.getPos().x, player.getPos().y + steps);
+            nextPos = new Vector2(player.getPos().x, player.getPos().y + 1);
         else if (dir == Direction.SOUTH)
-            nextPos = new Vector2(player.getPos().x, player.getPos().y - steps);
+            nextPos = new Vector2(player.getPos().x, player.getPos().y - 1);
         else if (dir == Direction.EAST)
-            nextPos = new Vector2(player.getPos().x + steps, player.getPos().y);
+            nextPos = new Vector2(player.getPos().x + 1, player.getPos().y);
         else
-            nextPos = new Vector2(player.getPos().x - steps, player.getPos().y);
+            nextPos = new Vector2(player.getPos().x - 1, player.getPos().y);
 
         //Can push robot
         if (!(pushPlayer(board, dir, players, (int) nextPos.x, (int) nextPos.y)))
@@ -455,7 +456,7 @@ public class EventUtil {
         for (Player player : players) {
             if (board.getPlayerLayer().getCell(x, y) != null) {
                 if (board.getPlayerLayer().getCell(x, y).getTile().getId() == player.getID()) {
-                    if (canGo(board, player, dir, 1, players)) {
+                    if (canGo(board, player, dir, players)) {
                         player.move(board, dir, 1, players);
                         return true;
                     }
