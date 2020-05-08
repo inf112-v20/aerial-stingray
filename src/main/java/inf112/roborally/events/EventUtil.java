@@ -304,7 +304,7 @@ public class EventUtil {
      * @param player The player who stands on the tile
      * @return true/false if player is outside the board
      */
-    public static boolean outOfBounds(Player player) {
+    private static boolean outOfBounds(Player player) {
         if (player.getPos().x < 0 || player.getPos().y < 0)
             return true;
         return (player.getPos().x >= (float) (Main.WIDTH / TILE_SIZE)) || (player.getPos().y >= (float) (Main.HEIGHT / TILE_SIZE));
@@ -357,7 +357,7 @@ public class EventUtil {
      * @param player Representing player, with it's direction
      * @return A boolean true if you can go in a specific direction
      */
-    public static boolean canGoFromTile(Board board, Player player, Direction dir) {
+    private static boolean canGoFromTile(Board board, Player player, Direction dir) {
         String wallType = getTileType(board, "OWalls", player.getPos());
         if (wallType != null) {
             switch (wallType) {
@@ -391,7 +391,7 @@ public class EventUtil {
      * @param board  The current Board which holds all tiles
      * @return A boolean true if you can go in a specific direction
      */
-    public static boolean canGoToTile(Board board, Direction dir, Vector2 nextPos) {
+    private static boolean canGoToTile(Board board, Direction dir, Vector2 nextPos) {
         String wallType = getTileType(board, "OWalls", nextPos);
         if (wallType != null) {
             switch (wallType) {
