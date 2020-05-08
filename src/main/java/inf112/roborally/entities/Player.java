@@ -179,6 +179,7 @@ public class Player {
                     System.err.println("Non-valid move!");
                     break;
             }
+            EventUtil.hole(board, this);
         }
     }
 
