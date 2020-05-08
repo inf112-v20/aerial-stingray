@@ -25,6 +25,7 @@ import inf112.roborally.ui.Board;
 import inf112.roborally.util.Pair;
 
 import java.util.*;
+import java.util.List;
 
 /**
  * Handles logic of game & controlling players.
@@ -99,7 +100,7 @@ public class RoboRally implements Screen {
         refillHumanCards();
         giveBotsCards();
 
-        if(getHumanPlayer().isPowerDown()) { return; }
+
         setupCardButtons();
         updateCardGraphics();
     }
@@ -109,7 +110,6 @@ public class RoboRally implements Screen {
      */
     private void refillHumanCards() {
         // Deleting prev. cards.
-        if(getHumanPlayer().isPowerDown()) { return; }
         getHumanPlayer().setSelectedCards(new ProgramCard[MAX_SELECTED_CARDS]);
 
         ProgramCard[] visibleCards = deck.take(MAX_VISIBLE_CARDS);
@@ -121,7 +121,6 @@ public class RoboRally implements Screen {
      */
     private void giveBotsCards() {
         for (Player player : players) {
-            if (player.isPowerDown()) { continue; }
             if (player.isBot())
                 player.setSelectedCards(deck.take(5));
         }
@@ -204,14 +203,9 @@ public class RoboRally implements Screen {
 
         for (int i = 0; i < MAX_SELECTED_CARDS; i++) {
 
-            ArrayList<Player> tempPlayersCopy = new ArrayList<>();
-            for (Player player : players) {
-                if(!player.isPowerDown())
-                    tempPlayersCopy.add(player);
-            }
+
             // Sort players for each card
-            // Player[] playersCopy = players;
-            Player[] playersCopy = tempPlayersCopy.toArray(new Player[tempPlayersCopy.size()]);
+            Player[] playersCopy = players;
 
             final int ii = i;
             Arrays.sort(playersCopy, Comparator.comparingInt(a -> a.getSelectedCards()[ii].getPriority()));
@@ -276,7 +270,6 @@ public class RoboRally implements Screen {
     private void cleanUp() {
         System.out.println("[  PHASE 5  ] Ending round and cleaning up board.");
         for (Player player : players) {
-            player.setPowerDown(player.getPowerDownNextRound());
             if (player.isDead()) {
                 player.respawn();
                 System.out.println("Respawning " + player.getID());
@@ -364,9 +357,7 @@ public class RoboRally implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // If player can successfully lock in cards, begin round
-                if(getHumanPlayer().isPowerDown()) {
-                    selectCards();
-                } else if (humanHasEnoughCards())
+                if (humanHasEnoughCards())
                     selectCards();
             }
         });
