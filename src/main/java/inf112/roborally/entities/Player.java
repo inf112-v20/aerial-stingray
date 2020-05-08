@@ -47,7 +47,7 @@ public class Player {
     /**
      * Robot alive or dead
      */
-    boolean dead = false;
+    private boolean dead = false;
 
     /**
      * Direction
@@ -505,7 +505,7 @@ public class Player {
     /**
      * TiledMapTileLayer.Cell
      */
-    public TiledMapTileLayer.Cell getPlayerNormalCell() {
+    private TiledMapTileLayer.Cell getPlayerNormalCell() {
         TextureRegion textureRegion = getNorthTextureRegion();
         switch (dir) {
             case NORTH:

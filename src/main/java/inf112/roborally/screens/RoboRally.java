@@ -37,13 +37,13 @@ public class RoboRally implements Screen {
     /**
      * Constants
      */
-    public final static int MAX_VISIBLE_CARDS = 9;
+    private final static int MAX_VISIBLE_CARDS = 9;
     public final static int MAX_SELECTED_CARDS = 5;
 
     /**
      * Rendering
      */
-    public SpriteBatch batch;
+    private SpriteBatch batch;
     private BitmapFont font;
     private TiledMapRenderer mapRenderer;
     private OrthographicCamera camera;
@@ -256,7 +256,7 @@ public class RoboRally implements Screen {
      *
      * @param selectedCard The card to execute
      */
-    public void executeCard(Player player, ProgramCard selectedCard) {
+    private void executeCard(Player player, ProgramCard selectedCard) {
         Vector2 oldPos = player.getPos();
         setCellToNull(oldPos);
 
@@ -436,7 +436,7 @@ public class RoboRally implements Screen {
     /**
      * Checks if player has selected enough cards.
      */
-    public boolean humanHasEnoughCards() {
+    private boolean humanHasEnoughCards() {
         if (getHumanPlayer().selectedCards() == MAX_SELECTED_CARDS)
             return true;
         else if (getHumanPlayer().selectedCards() > MAX_SELECTED_CARDS)
@@ -451,7 +451,7 @@ public class RoboRally implements Screen {
      * Recycles cards that has been executed back to deck.
      * Also empties the cards currently chosen.
      */
-    public void recycleCards() {
+    private void recycleCards() {
         for (Player player : players) {
             deck.recycleAll(player.getSelectedCards());
             player.setSelectedCards(new ProgramCard[MAX_SELECTED_CARDS]);
@@ -462,7 +462,7 @@ public class RoboRally implements Screen {
      * Unchecking all ImageButtons representing the cards.
      * This only needs to be done for this player, as only that player has GUI.
      */
-    public void uncheckAllCards() {
+    private void uncheckAllCards() {
         for (ImageButton btn : cardButtons) {
             if (btn.isChecked())
                 btn.setChecked(false);
@@ -474,7 +474,7 @@ public class RoboRally implements Screen {
      *
      * @param pos The position of the cell
      */
-    public void setCellToNull(Vector2 pos) {
+    private void setCellToNull(Vector2 pos) {
         board.getPlayerLayer().setCell((int) pos.x, (int) pos.y, null);
     }
 
@@ -483,7 +483,7 @@ public class RoboRally implements Screen {
      * <p>
      * This only needs to be done for this player, as only that player has GUI.
      */
-    public void updateCardGraphics() {
+    private void updateCardGraphics() {
         int startX = 27;
         int margin = 5;
         for (int i = 0; i < MAX_VISIBLE_CARDS; i++) {
@@ -510,7 +510,7 @@ public class RoboRally implements Screen {
     /**
      * Prints all the cards the user currently has chosen.
      */
-    public void printHumanSelectedCards() {
+    private void printHumanSelectedCards() {
         if (getHumanPlayer().getSelectedCards().length == 0) return;
 
         System.out.print("[  HUMAN  ] ");
@@ -536,7 +536,7 @@ public class RoboRally implements Screen {
     /**
      * Clears the screen with a set background color.
      */
-    public void clearScreen() {
+    private void clearScreen() {
         // Removing player sprites
         for (int y = 0; y < Gdx.graphics.getHeight(); y++)
             for (int x = 0; x < Gdx.graphics.getWidth(); x++) {
@@ -551,7 +551,7 @@ public class RoboRally implements Screen {
     /**
      * Updates all players' position and if any won.
      */
-    public void actPlayers() {
+    private void actPlayers() {
         int i = 0;
         for (Player player : this.players) {
             board.getPlayerLayer().setCell((int) player.getPos().x, (int) player.getPos().y, player.getPlayerIcon());
@@ -566,7 +566,7 @@ public class RoboRally implements Screen {
      *
      * @param v The delta-time used (usually Gdx.graphics.getDeltaTime())
      */
-    public void actAndRender(float v) {
+    private void actAndRender(float v) {
         camera.update();
         mapRenderer.render();
 
