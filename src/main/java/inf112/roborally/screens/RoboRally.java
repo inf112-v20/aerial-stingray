@@ -167,7 +167,7 @@ public class RoboRally implements Screen {
                         System.out.println("[  THIS_ROBOT  ] Power down");
                         getHumanPlayer().setPowerDownNextRound(true);
                         executeRobotCards();  // Next phase
-                    } else if (str.equals("Don't power down")) {
+                    } else if ("Don't power down".equals(str)) {
                         System.out.println("[  THIS_ROBOT  ] Don't power down");
                         getHumanPlayer().setPowerDownNextRound(false);
                         executeRobotCards();  // Next phase

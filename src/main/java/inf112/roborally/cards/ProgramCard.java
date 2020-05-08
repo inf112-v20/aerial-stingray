@@ -84,6 +84,7 @@ public class ProgramCard {
 
             default:
                 texture = null;
+                break;
         }
 
         return texture;

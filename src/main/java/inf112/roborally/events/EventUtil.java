@@ -120,6 +120,10 @@ public class EventUtil {
                 player.move(board, Direction.NORTH, 2, players);
                 fromConveyor = true;
                 break;
+
+            default:
+                System.err.println("Unknown mover: " + movers);
+                break;
         }
     }
 
@@ -183,6 +187,9 @@ public class EventUtil {
                 fromConveyor = true;
                 break;
 
+            default:
+                System.err.println("Not a mover: " + movers);
+                break;
         }
     }
 
@@ -206,6 +213,10 @@ public class EventUtil {
                 player.rotate(true);
                 fromConveyor = false;
                 break;
+
+            default:
+                System.err.println("Unknown event: " + events);
+                break;
         }
     }
 
@@ -224,6 +235,10 @@ public class EventUtil {
             case "Laser_2x":
                 player.takeDamage();
                 player.takeDamage();
+                break;
+
+            default:
+                System.err.println("Unknown laser: " + lasers);
                 break;
         }
     }
@@ -269,6 +284,10 @@ public class EventUtil {
                 if (player.getFlags()[0] && player.getFlags()[1] && player.getFlags()[2])
                     player.addFlag(4);
                 break;
+
+            default:
+                System.err.println("Unknown event: " + events);
+                break;
         }
     }
 
@@ -292,11 +311,15 @@ public class EventUtil {
 
             case "Hammer_Wrench":
                 //Also need to give an option card
-                if(player.getDamage() > 0) {
+                if (player.getDamage() > 0) {
                     player.heal();
                 }
                 fromConveyor = false;
                 player.setBackup(new Vector2(player.getPos()));
+                break;
+
+            default:
+                System.err.println("Unknown event: " + events);
                 break;
         }
     }
@@ -381,6 +404,10 @@ public class EventUtil {
                     if (dir == Direction.WEST)
                         return false;
                     break;
+
+                default:
+                    System.err.println("Unknown walltype: " + wallType);
+                    break;
             }
         }
         return true;
@@ -453,12 +480,12 @@ public class EventUtil {
     }
 
     /**
-     * @param board   The current board
-     * @param dir     The direction of the player that is moving
-     * @param players The other robots in the game
-     * @param x       x-coordinate
-     * @param y       y-coordinate
-     * @param thisPlayer
+     * @param board      The current board
+     * @param dir        The direction of the player that is moving
+     * @param players    The other robots in the game
+     * @param x          x-coordinate
+     * @param y          y-coordinate
+     * @param thisPlayer Reference to human player
      * @return true/false if the player can move or not
      * True if there is no robot to push or if it is ok to push robot.
      * False if the player is trying to push the robot through a wall
