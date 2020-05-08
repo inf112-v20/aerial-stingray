@@ -306,7 +306,7 @@ public class RoboRally implements Screen {
             if (!player.isBot()) return player;
         }
 
-        throw new NullPointerException("Human player could not be found!");
+        throw new IllegalArgumentException("Human player could not be found!");
     }
 
     private void setupGameComponents() {
