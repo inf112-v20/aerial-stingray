@@ -62,7 +62,7 @@ _**Skademekanisme: Justere antall kort basert på skade.**_
 
 Brukerhistorie: Som spiller trenger jeg at kortene justeres basert på skade, for å gjøre spillet mer spennende.
 
-Arbeidsoppgave: 
+Arbeidsoppgave: Vi må oppdatere av-velging av kort slik at de kortene som er låst ikke kan velges bort, vi må og finne en måte å låse kort på. Dette kan gjøres ved å endre typen til listen av vaglte kort. Vi må også oppdatere diverse ting i RoboRally for at "kortknappen" til de låste kortene holder seg trykket.
 
 Akseptansekriterie: Hvis spilleren har damage points, skal kortene justeres heretter.
 
