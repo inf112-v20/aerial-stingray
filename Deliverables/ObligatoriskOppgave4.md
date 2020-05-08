@@ -118,3 +118,6 @@ Mvp listen er så og si lik tidligere mvp liste, bortsett fra at vi måtte flytt
 
 Sluttvis kan vi vel bare si som sagt tidligere, og at vi alt i alt er fornøyd med hvordan oppgaven ble. Vi har møtt andre type utfordringer denne perioden som ikke var forutsett av noen, og selv om vi sikkert kunne håndtert det bedre, gjorde vi det beste vi kunne der og da. Dette har vært utrolig lærerikt og gitt en liten smakebit på hvordan jobbtilværelsen kan være for systemutviklere. Igjen, har vi tatt imot tilbakemeldingen vi fikk fra forrige sprint, og prøvd å møte disse kravene så godt vi klarer. For denne perioden har det kanskje ikke vært så mange krav på mvp listen som har vært hovedfokus, men rett og slett fikse opp i den koden vi har og prøve å gi best mulig kvalitet av spillet vi hittil har utviklet. 
 
+
+### Valg
+Laser fra spillere ble til slutt kuttet ut grunnet utfordringer med å få det rett innenfor fristen. Blant annet tok feil spiller skade, derfor var det greiere å fjerne koden for det. 
