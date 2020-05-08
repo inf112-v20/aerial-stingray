@@ -107,12 +107,12 @@ Akseptansekriterie: Hvis spilleren er i en gitt fase, skal alle funksjonene knyt
 * **Prioritering på kortene**
 * **Rekkefølge på eventene**
 * **Man må kunne skyte andre spillere innen rekkevidde med laser som peker rett frem**
-* **Skademekanisme: Justere antall kort basert på skade**
+* Skademekanisme: Justere antall kort basert på skade
 * **Dytte andre roboter**
 * **Gjennomføre en fase**
 * Multiplayer vennlig
 
-Mvp listen er så og si lik tidligere mvp liste, bortsett fra at vi måtte flytte punktet "Flytte roboten", ettersom dette er et punkt som ble gjort tidlig og oppgaven og har blir feilplassert sist runde. Vi ble også nødt til å droppe powerdown, men det har vi heller ikke hatt på mvp listen. Vi har jobbet med det, men spillet kræsjet så vi var nødt til å fjerne det. De uthevede punktene er krav vi mener vi har fullført hittil. 
+Mvp listen er så og si lik tidligere mvp liste, bortsett fra at vi måtte flytte punktet "Flytte roboten", ettersom dette er et punkt som ble gjort tidlig og oppgaven og har blir feilplassert sist runde. Vi ble også nødt til å droppe powerdown, men det har vi heller ikke hatt på mvp listen. Vi har jobbet med det, men spillet kræsjet så vi var nødt til å fjerne det. Kom heller ikke i mål med justere antall kort basert på skade, men litt er gjort her hvertfall. De uthevede punktene er krav vi mener vi har fullført hittil. 
 
 
 Sluttvis kan vi vel bare si som sagt tidligere, og at vi alt i alt er fornøyd med hvordan oppgaven ble. Vi har møtt andre type utfordringer denne perioden som ikke var forutsett av noen, og selv om vi sikkert kunne håndtert det bedre, gjorde vi det beste vi kunne der og da. Dette har vært utrolig lærerikt og gitt en liten smakebit på hvordan jobbtilværelsen kan være for systemutviklere. Igjen, har vi tatt imot tilbakemeldingen vi fikk fra forrige sprint, og prøvd å møte disse kravene så godt vi klarer. For denne perioden har det kanskje ikke vært så mange krav på mvp listen som har vært hovedfokus, men rett og slett fikse opp i den koden vi har og prøve å gi best mulig kvalitet av spillet vi hittil har utviklet. 
