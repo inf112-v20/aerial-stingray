@@ -552,9 +552,9 @@ public class RoboRally implements Screen {
      * Updates all players' position and if any won.
      */
     public void actPlayers() {
-        int i = 0;
         for (Player player : this.players) {
             board.getPlayerLayer().setCell((int) player.getPos().x, (int) player.getPos().y, player.getPlayerIcon());
+            board.getPlayerLayer().getCell((int) player.getPos().x, (int) player.getPos().y).getTile().setId(player.getID());
 
             player.won();
         }
