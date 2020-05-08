@@ -244,8 +244,6 @@ public class RoboRally implements Screen {
                 String entity = !player.isBot() ? "[  HUMAN  ]" : "[  BOT " + player.getID() + "  ]";
                 if (player.isDead()) {
                     System.out.println(entity + " The robot is dead, and will not execute cards");
-                } else if (player.isPowerDown()) {
-                    System.out.println(entity + " The robot is in powerdown");
                 } else {
                     System.out.println(entity + " Executes card " + card.getType() + " with priority " + card.getPriority());
                     executeCard(player, card);
@@ -271,17 +269,6 @@ public class RoboRally implements Screen {
 
         player.executeCard(board, selectedCard, players);
     }
-
-// --Commented out by Inspection START (07.05.2020, 23:34):
-//    /**
-//     * Shoots laser from all players.
-//     */
-//    public void shootLasers() {
-//        for (Player player : this.players) {
-//            player.shootLaser(board);
-//        }
-//    }
-// --Commented out by Inspection STOP (07.05.2020, 23:34)
 
     /**
      * Phase 5 - ending round and cleaning up board.
