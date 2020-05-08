@@ -197,7 +197,7 @@ public class RoboRally implements Screen {
     }
 
     /**
-     * PER NOW - NOT SORTING
+     * Sorts based on which cards the players are holding (priority of the cards).
      */
     private void sortPlayers() {
         executeOrder = new LinkedList<>();  // Delete prev. content
@@ -538,8 +538,30 @@ public class RoboRally implements Screen {
         batch.begin();
         int marginY = 15;
         for (Player p : players) {
+            switch (p.getID()) {  // Selecting clr based on player
+                case 0:
+                    font.setColor(com.badlogic.gdx.graphics.Color.RED);
+                    break;
+
+                case 1:
+                    font.setColor(com.badlogic.gdx.graphics.Color.GREEN);
+                    break;
+
+                case 2:
+                    font.setColor(com.badlogic.gdx.graphics.Color.BLUE);
+                    break;
+
+                case 3:
+                    font.setColor(com.badlogic.gdx.graphics.Color.PINK);
+                    break;
+
+                default:
+                    font.setColor(com.badlogic.gdx.graphics.Color.WHITE);
+                    break;
+            }
             font.draw(batch, p.status(), 15, Gdx.graphics.getHeight() - marginY);
             marginY += 25;
+            font.setColor(255, 255, 255, 1);  // white
         }
         batch.end();
     }
