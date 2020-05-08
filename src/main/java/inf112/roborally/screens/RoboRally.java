@@ -531,6 +531,17 @@ public class RoboRally implements Screen {
 
         actPlayers();
         actAndRender(Gdx.graphics.getDeltaTime());
+        drawStatus();
+    }
+
+    private void drawStatus() {
+        batch.begin();
+        int marginY = 15;
+        for (Player p : players) {
+            font.draw(batch, p.status(), 15, Gdx.graphics.getHeight() - marginY);
+            marginY += 25;
+        }
+        batch.end();
     }
 
     /**
