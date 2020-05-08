@@ -242,7 +242,7 @@ public class RoboRally implements Screen {
                     executeCard(player, card);
                 }
 
-                EventUtil.handleEvent(board, players);
+                if(executeOrder.size() % 4 == 0) { EventUtil.handleEvent(board, players); }
 
                 clearScreen();
                 actAndRender(Gdx.graphics.getDeltaTime());
