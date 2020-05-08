@@ -37,7 +37,9 @@ public class Player {
      * True if this player is a bot.
      */
     private final boolean bot;
-    private Vector2 nextLaserPos;
+
+    private Vector2 laserPos = new Vector2(0,0);
+    private Vector2 nextLaserPos = new Vector2(0,0);
 
     /**
      * Life, damage & flags
@@ -421,48 +423,81 @@ public class Player {
     }
 
     public void shootLaser(Board board) {
-        Vector2 laserPos = pos;
         String wallTypeThis = EventUtil.getTileType(board, "OWalls", laserPos);
         String wallTypeNext = EventUtil.getTileType(board, "OWalls", nextLaserPos);
 
         switch (dir) {
             case NORTH:
-                nextLaserPos = new Vector2(pos.x, pos.y + 1);
-                while (!EventUtil.laserOutOfBounds(this)) {
+                for (int i = 0; i < 24; i++) {
+                    nextLaserPos = new Vector2(pos.x, pos.y + 1);
                     if (wallTypeThis.equals("Wall_North") || wallTypeNext.equals("Wall_South"))
                         break;
-                    laserPos = nextLaserPos; //TODO: Check for players and deal damage to them
+                    laserPos = nextLaserPos;
+                    if (EventUtil.laserOutOfBounds(this))
+                        break;
+                    if (playerHit(board) == true)
+                        if (board.getPlayerLayer().getCell((int) laserPos.x, (int) laserPos.y).getTile().getId() == getID()) {
+                            takeDamage();
+                            break;
+                        }
+                    break;
                 }
-                break;
 
             case SOUTH:
-                nextLaserPos = new Vector2(pos.x, pos.y-1);
-                while (!EventUtil.laserOutOfBounds(this)) {
+                for (int i = 0; i < 24; i++) {
+                    nextLaserPos = new Vector2(pos.x, pos.y-1);
                     if (wallTypeThis.equals("Wall_South") || wallTypeNext.equals("Wall_North"))
                         break;
-                    laserPos = nextLaserPos; //TODO: Check for players and deal damage to them
+                    if (EventUtil.laserOutOfBounds(this))
+                        break;
+                    laserPos = nextLaserPos;
+                    if (playerHit(board) == true)
+                        if (board.getPlayerLayer().getCell((int) laserPos.x, (int) laserPos.y).getTile().getId() == getID()) {
+                            takeDamage();
+                            break;
+                        }
                 }
                 break;
 
             case WEST:
-                nextLaserPos = new Vector2(pos.x-1, pos.y);
-                while (!EventUtil.laserOutOfBounds(this)) {
+                for (int i = 0; i < 24; i++) {
+                    nextLaserPos = new Vector2(pos.x-1, pos.y);
                     if (wallTypeThis.equals("Wall_West") || wallTypeNext.equals("Wall_East"))
                         break;
-                    laserPos = nextLaserPos; //TODO: Check for players and deal damage to them
+                    if (EventUtil.laserOutOfBounds(this))
+                        break;
+                    laserPos = nextLaserPos;
+                    if (playerHit(board) == true)
+                        if (board.getPlayerLayer().getCell((int) laserPos.x, (int) laserPos.y).getTile().getId() == getID()) {
+                            takeDamage();
+                            break;
+                        }
                 }
                 break;
 
             case EAST:
-                nextLaserPos = new Vector2(pos.x + 1, pos.y);
-                while (!EventUtil.laserOutOfBounds(this)) {
+                for (int i = 0; i < 24; i++) {
+                    nextLaserPos = new Vector2(pos.x + 1, pos.y);
                     if (wallTypeThis.equals("Wall_East") || wallTypeNext.equals("Wall_West"))
                         break;
-                    laserPos = nextLaserPos; //TODO: Check for players and deal damage to them
+                    if (EventUtil.laserOutOfBounds(this))
+                        break;
+                    laserPos = nextLaserPos;
+                    if (playerHit(board) == true)
+                        if (board.getPlayerLayer().getCell((int) laserPos.x, (int) laserPos.y).getTile().getId() == getID()) {
+                            takeDamage();
+                            break;
+                        }
                 }
                 break;
         }
 
+    }
+
+    private boolean playerHit(Board board) {
+        if (board.getPlayerLayer().getCell((int) laserPos.x, (int) laserPos.y) != null)
+            return true;
+        else return false;
     }
 
     public void setPowerDown(boolean powerDown) {
