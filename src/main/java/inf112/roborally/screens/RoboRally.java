@@ -280,9 +280,8 @@ public class RoboRally implements Screen {
             if (player.getRobotDead()){
                 player.respawn();
             }
-            if(player.getPowerDownNextRound()){
-                player.setPowerDown(true);
-            }
+
+            player.setPowerDown(player.getPowerDownNextRound());
 
         }
         recycleCards();
