@@ -32,7 +32,6 @@ public class EventUtil {
             rotators(board, player);
 
             lasers(board, player);
-            shootLasers(board, players);
             flags(board, player);
             repairs(board, player);
         }
@@ -312,16 +311,6 @@ public class EventUtil {
     }
 
     /**
-     * @param player The player who is firing a laser
-     * @return true if laser is outside the board, false if not
-     */
-    public static boolean laserOutOfBounds(Player player) {
-        if (player.getNextLaserPos().x < 0 || player.getNextLaserPos().y < 0)
-            return true;
-        return (player.getNextLaserPos().x >= (float) Main.WIDTH / 60) || (player.getNextLaserPos().y >= (float) Main.HEIGHT / 60);
-    }
-
-    /**
      * Checks if the player can move / be pushed in a certain direction.
      * E.g. false if player wants to move north but there is a wall there.
      * TODO add support for moving across multiple tiles.
@@ -441,15 +430,6 @@ public class EventUtil {
         }
 
         return "";
-    }
-
-    /**
-     * Shoots laser from all players.
-     */
-    public static void shootLasers(Board board, Player[] players) {
-        for (Player player : players) {
-            player.shootLaser(board);
-        }
     }
 
     /**
