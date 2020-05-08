@@ -129,12 +129,4 @@ public class PlayerTest {
         assertEquals(player.getPos(), playerPos); //since backup (for now) is starting point.
         assertNotEquals(player.getPos(),alternativePos);
     }
-
-    @Test
-    public void testSubtractLifeAndShowStatus(){
-        player.subtractLife();
-        assertEquals(player.status(), "Life: 2, Damage: 0");
-        player.subtractLife();
-        assertEquals(player.status(), "Life: 1, Damage: 0");
-    }
 }
