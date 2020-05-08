@@ -1,6 +1,8 @@
 package inf112.roborally.cards;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.Stack;
 
 public class Deck extends Stack<ProgramCard> {
 
@@ -34,12 +36,11 @@ public class Deck extends Stack<ProgramCard> {
         // rotate right / rotate left
         boolean left = true;
         for (int i = 0; i < 18 * 2; i++) {
-            ProgramCard card = null;
-            if (left) {
+            ProgramCard card;
+            if (left)
                 card = new ProgramCard(CardType.TURN_LEFT, priorities.pop());
-            } else {
+            else
                 card = new ProgramCard(CardType.TURN_RIGHT, priorities.pop());
-            }
             this.add(card);
 
             left = !left;
@@ -83,13 +84,12 @@ public class Deck extends Stack<ProgramCard> {
      * Method for drawing specified amount of cards.
      *
      * @param amount Number of cards to draw
-     * @return An ArrayList<ProgramCard> with size 'amount'
+     * @return A ProgramCard[] with length 'amount'
      */
-    public ArrayList<ProgramCard> take(int amount) {
-        ArrayList<ProgramCard> cardsToDraw = new ArrayList<>();
-        for (int i = 0; i < amount; i++) {
-            cardsToDraw.add(this.pop());
-        }
+    public ProgramCard[] take(int amount) {
+        ProgramCard[] cardsToDraw = new ProgramCard[amount];
+        for (int i = 0; i < amount; i++)
+            cardsToDraw[i] = this.pop();
 
         return cardsToDraw;
     }
@@ -108,10 +108,8 @@ public class Deck extends Stack<ProgramCard> {
      *
      * @param cards The cards to recycle
      */
-    public void recycleAll(List<ProgramCard> cards) {
-        for (ProgramCard card : cards) {
+    public void recycleAll(ProgramCard[] cards) {
+        for (ProgramCard card : cards)
             this.recycle(card);
-        }
-        shuffle();
     }
 }

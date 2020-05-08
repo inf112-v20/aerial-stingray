@@ -14,7 +14,7 @@ import inf112.roborally.Main;
 
 public class LoseScreen implements Screen {
 
-    private Stage stage;
+    private final Stage stage;
 
     public LoseScreen() {
         stage = new Stage(new StretchViewport(Main.WIDTH, Main.HEIGHT));

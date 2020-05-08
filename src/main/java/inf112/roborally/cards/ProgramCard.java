@@ -10,12 +10,12 @@ public class ProgramCard {
     /**
      * A unique priority to decide which card plays first.
      */
-    private int priority;
+    private final int priority;
 
     /**
      * The type of the card.
      */
-    private CardType type;
+    private final CardType type;
 
 
     public ProgramCard(CardType type, int priority) {

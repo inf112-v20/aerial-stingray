@@ -15,20 +15,20 @@ public class Board {
     /**
      * Map
      */
-    private TiledMap map;
+    private final TiledMap map;
 
     /**
      * Map Layer
      */
-    private TiledMapTileLayer playerLayer;
+    private final TiledMapTileLayer playerLayer;
 
     /**
      * Object Layers
      */
-    private MapObjects objectEvents;
-    private MapObjects objectMovers;
-    private MapObjects objectLasers;
-    private MapObjects objectWalls;
+    private final MapObjects objectEvents;
+    private final MapObjects objectMovers;
+    private final MapObjects objectLasers;
+    private final MapObjects objectWalls;
 
 
     public Board() {

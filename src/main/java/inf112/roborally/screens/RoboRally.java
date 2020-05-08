@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import inf112.roborally.Main;
+import inf112.roborally.cards.CardType;
 import inf112.roborally.cards.Deck;
 import inf112.roborally.cards.ProgramCard;
 import inf112.roborally.entities.Color;
@@ -23,7 +24,8 @@ import inf112.roborally.events.EventUtil;
 import inf112.roborally.ui.Board;
 import inf112.roborally.util.Pair;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -35,9 +37,8 @@ public class RoboRally implements Screen {
     /**
      * Constants
      */
-    public final static int NUM_CARDS_SERVED = 9;
-    private final int MAX_SELECTED_CARDS = 5;
-    private final int DECK_WINDOW_SIZE = 280;
+    public final static int MAX_VISIBLE_CARDS = 9;
+    public final static int MAX_SELECTED_CARDS = 5;
 
     /**
      * Rendering
@@ -61,7 +62,7 @@ public class RoboRally implements Screen {
     /**
      * All players in the game.
      */
-    private ArrayList<Player> players;
+    private Player[] players;
 
     /**
      * Holds the references to the ImageButtons, representing the cards on the screen.
@@ -71,8 +72,14 @@ public class RoboRally implements Screen {
     /**
      * Order of (Player, Card) to be executed
      */
-    private LinkedList<Pair<Player, ProgramCard>> executePairs;
+    private LinkedList<Pair<Player, ProgramCard>> executeOrder;
 
+    /**
+     * Buttons
+     */
+    private TextButton finishedBtn;
+    private TextButton undoBtn;
+    private TextButton executeBtn;
 
     public RoboRally(int numPlayers) {
         Gdx.graphics.setContinuousRendering(false);
@@ -92,21 +99,31 @@ public class RoboRally implements Screen {
     private void dealCardsToAll() {
         System.out.println("[  PHASE 1  ] Dealing out cards to all");
 
-        refillCardsToAll();
-        refreshImageButtons();
-        uncheckAllCards();
+        refillHumanCards();
+        giveBotsCards();
+
+        setupCardButtons();
+        updateCardGraphics();
     }
 
     /**
-     * Fills in missing cards in in available cards.
+     * Gives new cards to human (not selecting).
      */
-    private void refillCardsToAll() {
+    private void refillHumanCards() {
+        // Deleting prev. cards.
+        getHumanPlayer().setSelectedCards(new ProgramCard[MAX_SELECTED_CARDS]);
+
+        ProgramCard[] visibleCards = deck.take(MAX_VISIBLE_CARDS);
+        getHumanPlayer().setVisibleCards(visibleCards);
+    }
+
+    /**
+     * Gives bots cards.
+     */
+    private void giveBotsCards() {
         for (Player player : players) {
-            if (player.isPowerDown()) { continue; }
-            for (int i = 0; i < NUM_CARDS_SERVED; i++) {
-                if (player.getAvailableCards()[i] == null)
-                    player.getAvailableCards()[i] = deck.pop();
-            }
+            if (player.isBot())
+                player.setSelectedCards(deck.take(5));
         }
     }
 
@@ -115,10 +132,10 @@ public class RoboRally implements Screen {
      */
     private void selectCards() {
         System.out.println("[  PHASE 2  ] Cards selected!");
-        printThisPlayerSelectedCards();
+        printHumanSelectedCards();
 
-        selectCardsForBots();
-
+        finishedBtn.remove();
+        undoBtn.remove();
         promptPowerDown();  // Next phase - Not functional atm.
     }
 
@@ -131,13 +148,15 @@ public class RoboRally implements Screen {
         // Other players deciding if power down - 5 % chance
         Random random = new Random();
         for (Player player : players) {
+            if (!player.isBot()) continue;
+
             if (random.nextInt(21) == 0)
-                player.setPowerDownNextRound(true);
+                player.setPowerDown(true);
             else
-                player.setPowerDownNextRound(false);
+                player.setPowerDown(false);
         }
 
-        // This player deciding if power down
+        // Human dialog for power down
         Skin skin = new Skin(Gdx.files.internal("rusty-robot/skin/rusty-robot-ui.json"));
         Dialog dialog = new Dialog("Power Down", skin) {
             @Override
@@ -146,11 +165,11 @@ public class RoboRally implements Screen {
                     String str = (String) object;
                     if (str.equals("Power down")) {
                         System.out.println("[  THIS_ROBOT  ] Power down");
-                        getThisPlayer().setPowerDownNextRound(true);
+                        getHumanPlayer().setPowerDown(true);
                         executeRobotCards();  // Next phase
                     } else if (str.equals("Don't power down")) {
                         System.out.println("[  THIS_ROBOT  ] Don't power down");
-                        getThisPlayer().setPowerDownNextRound(false);
+                        getHumanPlayer().setPowerDown(false);
                         executeRobotCards();  // Next phase
                     }
                 } catch (ClassCastException cce) {
@@ -172,82 +191,64 @@ public class RoboRally implements Screen {
      */
     private void executeRobotCards() {
         System.out.println("[  PHASE 4  ] Ready to execute cards!");
-        System.out.println("=======================================");
 
-        executePairs = new LinkedList<>();  // Delete prev. content
-        for (int i = 0; i < 5; i++) {  // 5 cards
-            LinkedList<Player> highestPriority = getPriorityList(i);  // List of players, the one with highest card this iteration is first
+        sortPlayers();
+        setupExecuteBtn();  // Phase 4
+    }
 
-            System.out.println("ITERATION = " + i);
-            for (Player player : highestPriority) {  // Each player in correct order
-                if (player.isPowerDown()) {
-                    String identifier;
-                    if (player.equals(getThisPlayer())) identifier = "[  THIS_PLAYER  ]";
-                    else identifier = "[  ROBOT_" + players.indexOf(player) + "  ]";
-                    System.out.println(identifier + " is in power down");
-                    continue;
-                }
-                ProgramCard card = player.getSelectedCards().get(i);
+    /**
+     * PER NOW - NOT SORTING
+     */
+    private void sortPlayers() {
+        executeOrder = new LinkedList<>();  // Delete prev. content
 
-                executePairs.add(new Pair<>(player, card));
+        for (int i = 0; i < MAX_SELECTED_CARDS; i++) {
+
+            // Sort players for each card
+            Player[] playersCopy = players;
+            final int ii = i;
+            Arrays.sort(playersCopy, Comparator.comparingInt(a -> a.getSelectedCards()[ii].getPriority()));
+            for (Player p : playersCopy) {
+                executeOrder.add(new Pair<>(p, p.getSelectedCards()[i]));
             }
         }
-
-        executeNextCard();
     }
 
     /**
      * Phase 4 - clicking this button will execute next card.
      */
-    private void executeNextCard() {
+    private void setupExecuteBtn() {
         Skin skin = new Skin(Gdx.files.internal("rusty-robot/skin/rusty-robot-ui.json"));
-        TextButton submitCards = new TextButton("Execute next card!", skin);
-        submitCards.setSize(200, 80);
-        submitCards.setPosition((float) Main.WIDTH - 350, 200);
-        submitCards.addListener(new ClickListener() {
+        executeBtn = new TextButton("Execute next card!", skin);
+        executeBtn.setSize(200, 80);
+        executeBtn.setPosition((float) Main.WIDTH - 350, 200);
+        executeBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (executePairs.size() <= 0) {
-                    submitCards.remove();
+                if (executeOrder.size() <= 0) {
+                    executeBtn.remove();
                     cleanUp();  // Next phase
                     return;
                 }
-                Pair<Player, ProgramCard> nextPair = executePairs.pop();
+                Pair<Player, ProgramCard> nextPair = executeOrder.pop();
                 Player player = nextPair.getFirst();
                 ProgramCard card = nextPair.getSnd();
 
-                String identifier;
-                if (player.equals(getThisPlayer())) identifier = "[  THIS_PLAYER  ]";
-                else identifier = "[  ROBOT_" + players.indexOf(player) + "  ]";
-                if (player.getRobotDead()) {
-                    System.out.println(identifier + "The robot is dead, and will not execute cards");
+                String entity = !player.isBot() ? "[  HUMAN  ]" : "[  BOT " + player.getID() + "  ]";
+                if (player.isDead()) {
+                    System.out.println(entity + " The robot is dead, and will not execute cards");
                 } else {
-                    System.out.println(identifier + " Executes card " + card.getType() + " with priority " + card.getPriority());
+                    System.out.println(entity + " Executes card " + card.getType() + " with priority " + card.getPriority());
                     executeCard(player, card);
                 }
 
                 EventUtil.handleEvent(board, players);
-                System.out.println("=======================================");
 
                 clearScreen();
                 actAndRender(Gdx.graphics.getDeltaTime());
             }
         });
-        stage.addActor(submitCards);
-    }
-
-
-    /**
-     * Returns a sorted List of players, based on which card (at 'index') has highest priority.
-     *
-     * @param index Index of the card in selected cards - inventory
-     * @return A sorted list of players, based on prisority cards
-     */
-    private LinkedList<Player> getPriorityList(int index) {
-        LinkedList<Player> copy = new LinkedList<>(players);
-
-        copy.sort((player, t1) -> t1.getSelectedCards().get(index).getPriority() - player.getSelectedCards().get(index).getPriority());
-        return copy;
+        stage.addActor(executeBtn);
     }
 
     /**
@@ -262,14 +263,16 @@ public class RoboRally implements Screen {
         player.executeCard(board, selectedCard, players);
     }
 
-    /**
-     * Shoots laser from all players.
-     */
-    public void shootLasers() {
-        for (Player player : this.players) {
-            player.shootLaser(board);
-        }
-    }
+// --Commented out by Inspection START (07.05.2020, 23:34):
+//    /**
+//     * Shoots laser from all players.
+//     */
+//    public void shootLasers() {
+//        for (Player player : this.players) {
+//            player.shootLaser(board);
+//        }
+//    }
+// --Commented out by Inspection STOP (07.05.2020, 23:34)
 
     /**
      * Phase 5 - ending round and cleaning up board.
@@ -277,47 +280,58 @@ public class RoboRally implements Screen {
     private void cleanUp() {
         System.out.println("[  PHASE 5  ] Ending round and cleaning up board.");
         for (Player player : players) {
-            if (player.getRobotDead()){
+            if (player.isDead()) {
                 player.respawn();
+                System.out.println("Respawning " + player.getID());
             }
-
-            player.setPowerDown(player.getPowerDownNextRound());
-
         }
+
         recycleCards();
+
+        setupUndoBtn();
+        setupFinishedButton();
+
+        // Removes all prev. cards
+        removeCardButtons();
         dealCardsToAll();  // Starting back at phase 1
     }
 
-    private Player getThisPlayer() {
+    private void removeCardButtons() {
+        for (ImageButton button : cardButtons)
+            button.remove();
+    }
+
+    private Player getHumanPlayer() {
         for (Player player : players) {
-            if (!player.isAI()) return player;
+            if (!player.isBot()) return player;
         }
 
-        throw new NullPointerException("\"This player\" could not be found!");
+        throw new NullPointerException("Human player could not be found!");
     }
 
     private void setupGameComponents() {
         deck = new Deck();
         board = new Board();
-        cardButtons = new ImageButton[NUM_CARDS_SERVED];
+        cardButtons = new ImageButton[MAX_VISIBLE_CARDS];
 
-        executePairs = new LinkedList<>();
+        executeOrder = new LinkedList<>();
     }
 
     private void setupPlayers(int numPlayers) {
-        players = new ArrayList<>();
+        players = new Player[numPlayers];
         Color[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.PINK};
         Vector2[] startPos = {new Vector2(6, 1), new Vector2(9, 1), new Vector2(13, 1), new Vector2(16, 1)};
 
         for (int i = 0; i < numPlayers; i++) {
             if (i == 0)
-                players.add(new Player(startPos[i], colors[i], i, false));  // Human
+                players[i] = new Player(startPos[i], colors[i], i, false);  // Human
             else
-                players.add(new Player(startPos[i], colors[i], i));
+                players[i] = new Player(startPos[i], colors[i], i, true);
         }
     }
 
     private void setupRendering() {
+        int DECK_WINDOW_SIZE = 280;
         resize(Main.WIDTH, Main.HEIGHT + DECK_WINDOW_SIZE);
 
         batch = new SpriteBatch();
@@ -333,8 +347,9 @@ public class RoboRally implements Screen {
     private void setupUI() {
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
-        setupButtons();
-        setupCardButtons();
+        setupFinishedButton();
+        // setupCardButtons();
+        setupUndoBtn();
 
         ScreenManager.getInstance().setScreen(this);
     }
@@ -343,21 +358,36 @@ public class RoboRally implements Screen {
      * Adds necessary buttons to the screen.
      * As of now, only one button.
      */
-    private void setupButtons() {
+    private void setupFinishedButton() {
         Skin skin = new Skin(Gdx.files.internal("rusty-robot/skin/rusty-robot-ui.json"));
-        TextButton submitCards = new TextButton("Lock in cards!", skin);
-        submitCards.setSize(200, 80);
-        submitCards.setPosition((float) Main.WIDTH / 2 - (submitCards.getWidth() / 2), 200);
-        submitCards.addListener(new ClickListener() {
+        finishedBtn = new TextButton("Finished!", skin);
+        finishedBtn.setSize(200, 80);
+        finishedBtn.setPosition((float) Main.WIDTH / 2 - (finishedBtn.getWidth() / 2), 200);
+        finishedBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // If player can successfully lock in cards, begin round
-                if (canSelectCards()) {
+                if (humanHasEnoughCards())
                     selectCards();
-                }
             }
         });
-        stage.addActor(submitCards);
+        stage.addActor(finishedBtn);
+    }
+
+    private void setupUndoBtn() {
+        Skin skin = new Skin(Gdx.files.internal("rusty-robot/skin/rusty-robot-ui.json"));
+        undoBtn = new TextButton("Undo", skin);
+        undoBtn.setSize(200, 80);
+        undoBtn.setPosition((float) Main.WIDTH - 550, 200);
+        undoBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                getHumanPlayer().removeCards();
+                printHumanSelectedCards();
+                uncheckAllCards();
+            }
+        });
+        stage.addActor(undoBtn);
     }
 
     /**
@@ -367,8 +397,8 @@ public class RoboRally implements Screen {
     private void setupCardButtons() {
         int startX = 21;
         int margin = 155;
-        for (int i = 0; i < NUM_CARDS_SERVED; i++) {
-            int index_copy = i;
+        for (int i = 0; i < MAX_VISIBLE_CARDS; i++) {
+            int visibleCardIndex = i;
 
             ImageButton btn = new ImageButton(null, null, null);
             btn.setPosition(i * margin + startX, 0);
@@ -376,14 +406,16 @@ public class RoboRally implements Screen {
             btn.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    if (!btn.isChecked())
-                        removeClickedCardFromStack(index_copy);
-
-                    if (getThisPlayer().getSelectedCards().size() == MAX_SELECTED_CARDS) {
+                    if (getHumanPlayer().selectedCards() == MAX_SELECTED_CARDS && btn.isChecked()) {
                         btn.setChecked(false);
                         System.err.println("Can't choose more cards (MAX=5).");
-                    } else if (btn.isChecked())
-                        addClickedCardToStack(index_copy);
+                        return;
+                    }
+
+                    if (btn.isChecked())
+                        getHumanPlayer().addCard(visibleCardIndex);
+
+                    printHumanSelectedCards();
                 }
             });
             cardButtons[i] = btn;
@@ -402,18 +434,39 @@ public class RoboRally implements Screen {
 
 
     /**
-     * Locks in the selected cards and furthers the process
-     * of executing them.
+     * Checks if player has selected enough cards.
      */
-    public boolean canSelectCards() {
-        if (getThisPlayer().getSelectedCards().size() == MAX_SELECTED_CARDS) {
+    public boolean humanHasEnoughCards() {
+        if (getHumanPlayer().selectedCards() == MAX_SELECTED_CARDS)
             return true;
-        } else if (getThisPlayer().getSelectedCards().size() > MAX_SELECTED_CARDS)
+        else if (getHumanPlayer().selectedCards() > MAX_SELECTED_CARDS)
             System.err.println("Too many cards to lock in.");
         else
             System.err.println("Too few cards to lock in.");
 
         return false;
+    }
+
+    /**
+     * Recycles cards that has been executed back to deck.
+     * Also empties the cards currently chosen.
+     */
+    public void recycleCards() {
+        for (Player player : players) {
+            deck.recycleAll(player.getSelectedCards());
+            player.setSelectedCards(new ProgramCard[MAX_SELECTED_CARDS]);
+        }
+    }
+
+    /**
+     * Unchecking all ImageButtons representing the cards.
+     * This only needs to be done for this player, as only that player has GUI.
+     */
+    public void uncheckAllCards() {
+        for (ImageButton btn : cardButtons) {
+            if (btn.isChecked())
+                btn.setChecked(false);
+        }
     }
 
     /**
@@ -426,141 +479,30 @@ public class RoboRally implements Screen {
     }
 
     /**
-     * Recycles cards that has been executed back to deck.
-     * Also empties the cards currently chosen.
-     */
-    public void recycleCards() {
-        for (Player player : players) {
-            deck.recycleAll(player.getSelectedCards());
-            player.setSelectedCards(new LinkedList<>());
-        }
-    }
-
-    /**
-     * Unchecking all ImageButtons representing the cards.
-     * This only needs to be done for this player, as only that player has GUI.
-     */
-    public void uncheckAllCards() {
-        for (int i = 0; i < NUM_CARDS_SERVED; i++) {
-            if (cardButtons[i].isChecked()) {
-                cardButtons[i].setChecked(false);
-            }
-        }
-    }
-
-    /**
      * Updating the ImageButtons to correspond to the new cards.
-     *
+     * <p>
      * This only needs to be done for this player, as only that player has GUI.
      */
-    public void refreshImageButtons() {
+    public void updateCardGraphics() {
         int startX = 27;
         int margin = 5;
-        for (int i = 0; i < NUM_CARDS_SERVED; i++) {
+        for (int i = 0; i < MAX_VISIBLE_CARDS; i++) {
             Skin skin = new Skin(Gdx.files.internal("rusty-robot/skin/rusty-robot-ui.json"));
-            int priority = getThisPlayer().getAvailableCards()[i].getPriority();
+            int priority = getHumanPlayer().getVisibleCards()[i].getPriority();
 
             Label priorityPoints = new Label(Integer.toString(priority), skin);
             priorityPoints.setSize(10, 20);
             priorityPoints.setPosition(margin + startX, 165);
 
             ImageButton.ImageButtonStyle oldImageButtonStyle = cardButtons[i].getStyle();
-            oldImageButtonStyle.imageUp = getThisPlayer().getAvailableCards()[i].getImageUp();
-            oldImageButtonStyle.imageChecked = getThisPlayer().getAvailableCards()[i].getImageDown();
-            oldImageButtonStyle.imageDown = getThisPlayer().getAvailableCards()[i].getImageDown();
+            oldImageButtonStyle.imageUp = getHumanPlayer().getVisibleCards()[i].getImageUp();
+            oldImageButtonStyle.imageChecked = getHumanPlayer().getVisibleCards()[i].getImageDown();
+            oldImageButtonStyle.imageDown = getHumanPlayer().getVisibleCards()[i].getImageDown();
 
             cardButtons[i].setStyle(oldImageButtonStyle);
             cardButtons[i].addActor(priorityPoints);
-            if(cardButtons[i].isChecked()){
+            if (cardButtons[i].isChecked()) {
                 cardButtons[i].removeActor(priorityPoints);
-            }
-        }
-    }
-
-    /**
-     * Adding a card to the queue.
-     * This only needs to be done for this player, as only that player has GUI.
-     *
-     * @param index Index of the card in the array of cards to chose.
-     */
-    public void addClickedCardToStack(int index) {
-        if (getThisPlayer().getSelectedCards().size() >= MAX_SELECTED_CARDS) {
-            System.err.println("[  THIS_ROBOT  ] Can't add any more cards to stack.");
-            return;
-        }
-
-        getThisPlayer().selectCard(index);
-        printThisPlayerSelectedCards();
-    }
-
-    /**
-     * Removing a card from the queue.
-     * This only needs to be done for this player, as only that player has GUI.
-     *
-     * @param index Index of the card in the array of cards to chose.
-     */
-    public void removeClickedCardFromStack(int index) {
-        if (getThisPlayer().getSelectedCards().size() == 0) {
-            System.err.println("[  THIS_ROBOT  ] Can't remove any more cards from stack.");
-            return;
-        }
-
-        System.out.println("[  THIS_ROBOT  ] Removing " + getThisPlayer().getSelectedCards().get(index) + " from stack.");
-        getThisPlayer().deselectCard(index);
-    }
-
-    /**
-     * Depending on the random number generated, the AI will take a path according to the number generated
-     */
-    private void selectCardsForBots() {
-        for (Player player : players) {
-            if (player.equals(getThisPlayer())) continue;  // Skip this player
-
-            // AI
-            int rng = (int)(Math.random() * 9 + 1);
-
-            // Path 1 is to pick first 5 available cards (dumb AI)
-            if (rng > 3 && rng <= 6) { // Between 4 and 6
-                for (int i = 0; i < MAX_SELECTED_CARDS; i++) {
-                    if (player.getSelectedCards().size() >= MAX_SELECTED_CARDS) break;
-
-                    player.selectCard(i);
-                }
-
-            }
-            // Path 2 is select 5 random of the 9 cards dealt depending on the random value rng2
-            else if (rng > 6 && rng <= 9) { // Between 7 and 9
-                for (int i = 0; i < MAX_SELECTED_CARDS; i++) {
-                    if (player.getSelectedCards().size() >= MAX_SELECTED_CARDS) break;
-                    int rng2 = (int)(Math.random() * 9 + 1);
-                    if (rng2 == 1) {
-                        player.selectCard(5);
-                    } else if (rng2 == 2) {
-                        player.selectCard(2);
-                    } else if (rng2 == 3) {
-                        player.selectCard(3);
-                    } else if (rng2 == 4) {
-                        player.selectCard(8);
-                    } else if (rng2 == 5) {
-                        player.selectCard(0);
-                    } else if (rng2 == 6) {
-                        player.selectCard(1);
-                    } else if (rng2 == 7) {
-                        player.selectCard(7);
-                    } else if (rng2 == 8) {
-                        player.selectCard(4);
-                    } else if (rng2 == 9) {
-                        player.selectCard(6);
-                    }
-                }
-            }
-            // Path 3 is where the bot picks card nr 0, 2, 3, 5 and 7, another random pick but with less linear pattern
-            else { // Between 1 and 3
-                for (int i = 0; i < MAX_SELECTED_CARDS; i++) {
-                    if (player.getSelectedCards().size() >= MAX_SELECTED_CARDS) break;
-
-                    player.selectCard(((i + 5) * 3) % 8);
-                }
             }
         }
     }
@@ -568,16 +510,19 @@ public class RoboRally implements Screen {
     /**
      * Prints all the cards the user currently has chosen.
      */
-    public void printThisPlayerSelectedCards() {
-        if (getThisPlayer().getSelectedCards().size() == 0) return;
+    public void printHumanSelectedCards() {
+        if (getHumanPlayer().getSelectedCards().length == 0) return;
 
-        System.out.print("[  THIS_ROBOT  ] : [");
-        for (int i = 0; i < getThisPlayer().getSelectedCards().size(); i++) {
-            if (i != getThisPlayer().getSelectedCards().size() - 1)
-                System.out.print("(" + i + ", " + getThisPlayer().getSelectedCards().get(i).getType() + "), ");
-            else
-                System.out.println("(" + i + ", " + getThisPlayer().getSelectedCards().get(i).getType() + ")]");
+        System.out.print("[  HUMAN  ] ");
+        for (int i = 0; i < getHumanPlayer().getSelectedCards().length; i++) {
+            if (getHumanPlayer().getSelectedCards()[i] == null)
+                System.out.print("(" + i + ", NONE) ");
+            else {
+                CardType cardType = getHumanPlayer().getSelectedCards()[i].getType();
+                System.out.print("(" + i + ", " + cardType + ") ");
+            }
         }
+        System.out.println();
     }
 
     @Override
@@ -610,10 +555,8 @@ public class RoboRally implements Screen {
         int i = 0;
         for (Player player : this.players) {
             board.getPlayerLayer().setCell((int) player.getPos().x, (int) player.getPos().y, player.getPlayerIcon());
-            board.getPlayerLayer().getCell((int) player.getPos().x, (int) player.getPos().y).getTile().setId(i);
-            i++;
 
-            player.checkIfWon();
+            player.won();
         }
     }
 

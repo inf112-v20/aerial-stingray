@@ -14,7 +14,7 @@ import inf112.roborally.Main;
 
 public class MenuScreen implements Screen {
 
-    private Stage stage;
+    private final Stage stage;
 
     public MenuScreen() {
         stage = new Stage(new StretchViewport(Main.WIDTH, Main.HEIGHT));
